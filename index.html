@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>גרעיני עפולה חממה</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --black:#111111; --black2:#1a1a1a; --card:#1e1e1e;
+  --gold:#c9a84c; --gold2:#e8c96a;
+  --gold-dim:rgba(201,168,76,0.15); --gold-border:rgba(201,168,76,0.35);
+  --white:#ffffff; --text:#f0f0f0; --muted:#888; --border:#2e2e2e;
+  --bg:#111111; --dark2:#2a2a2a; --border2:#3a3a3a; --gray:#888;
+}
+body { font-family:'Heebo','Segoe UI',sans-serif; background:var(--black); color:var(--text); min-height:100vh; }
+
+/* ══ PAGES ══ */
+.page { display:none; flex-direction:column; min-height:100vh; }
+.page.active { display:flex; }
+
+/* ══ HEADER ══ */
+header {
+  background:#111; border-bottom:2px solid var(--gold);
+  padding:10px 16px; display:flex; align-items:center; gap:14px;
+  position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,0.5);
+}
+.header-text h1 { font-size:18px; font-weight:800; color:#fff; line-height:1.2; }
+.header-sub { font-size:11px; color:var(--gold); margin-top:2px; letter-spacing:0.5px; }
+.back-btn {
+  background:none; border:1px solid var(--border); border-radius:8px;
+  color:var(--muted); font-size:18px; width:34px; height:34px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.back-btn:active { background:var(--border); }
+
+/* ══ MAIN MENU ══ */
+.hero { width:100%; max-width:480px; padding:32px 20px 0; text-align:center; margin:0 auto; }
+.hero-title { font-size:13px; color:var(--gold); letter-spacing:2px; margin-bottom:8px; font-weight:600; }
+.hero-sub { font-size:12px; color:var(--muted); margin-bottom:32px; }
+.menu-grid { width:100%; max-width:480px; padding:0 16px 40px; display:flex; flex-direction:column; gap:14px; margin:0 auto; }
+.menu-card {
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:20px 22px; cursor:pointer; display:flex; align-items:center; gap:18px;
+  color:var(--text); transition:border-color 0.2s,transform 0.15s; position:relative; overflow:hidden;
+}
+.menu-card::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,var(--gold-dim) 0%,transparent 60%);
+  opacity:0; transition:opacity 0.2s;
+}
+.menu-card:active { transform:scale(0.98); }
+.menu-card:hover { border-color:var(--gold); }
+.menu-card:hover::before { opacity:1; }
+.menu-card.primary { border-color:var(--gold-border); background:linear-gradient(135deg,#222218 0%,var(--card) 100%); }
+.card-icon {
+  width:52px; height:52px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px; flex-shrink:0; background:var(--black2); border:1px solid var(--border); position:relative; z-index:1;
+}
+.menu-card.primary .card-icon { background:var(--gold-dim); border-color:var(--gold-border); }
+.card-body { flex:1; position:relative; z-index:1; }
+.card-body h2 { font-size:17px; font-weight:700; color:#fff; margin-bottom:4px; }
+.card-body p { font-size:12px; color:var(--muted); line-height:1.4; }
+.menu-card.primary .card-body h2 {
+  background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 40%,var(--gold) 100%);
+  background-size:200% auto; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; animation:shimmer 4s linear infinite;
+}
+.card-arrow { font-size:18px; color:var(--gold); opacity:0.6; position:relative; z-index:1; flex-shrink:0; }
+@keyframes shimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
+footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444; border-top:1px solid var(--border); margin-top:auto; }
+
+/* ══ SUPPLIERS LIST ══ */
+.supplier-list { padding:16px; display:flex; flex-direction:column; gap:12px; }
+.supplier-card {
+  background:#1e1e1e; border:1px solid #3a3a3a; border-radius:12px;
+  padding:16px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer;
+  transition:border-color 0.2s;
+}
+.supplier-card:active { transform:scale(0.98); }
+.supplier-card:hover { border-color:var(--gold); }
+.supplier-card-name { font-size:16px; font-weight:700; color:#fff; }
+.supplier-card-sub { font-size:12px; color:#888; margin-top:3px; }
+.supplier-arrow { color:var(--gold); font-size:20px; }
+
+/* ══ ORDER FORM SHARED ══ */
+.source-bar { background:var(--dark2); padding:14px 16px; border-bottom:1px solid var(--border2); }
+.source-bar label { display:block; font-size:12px; color:var(--gold); margin-bottom:6px; font-weight:600; letter-spacing:0.5px; }
+.source-select {
+  width:100%; padding:10px 14px; background:var(--black); border:1.5px solid var(--gold);
+  border-radius:10px; color:#fff; font-size:15px; font-family:inherit; appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:left 12px center;
+}
+.source-select option { background:#1a1a1a; }
+.dest-info { border:1px solid var(--border2); border-radius:8px; padding:0; margin-top:8px; display:none; overflow:hidden; }
+.dest-row { display:flex; align-items:center; gap:10px; padding:8px 12px; font-size:12px; border-bottom:1px solid var(--border2); }
+.dest-row:last-child { border-bottom:none; }
+.dest-row .label { color:var(--gray); min-width:60px; }
+.dest-row .value { color:var(--gold2); font-weight:600; }
+.section { margin:10px 12px; background:var(--card); border-radius:12px; border:1px solid var(--border2); overflow:hidden; }
+.section-title {
+  background:var(--dark2); padding:10px 16px; font-weight:700; font-size:13px; color:var(--gold);
+  border-bottom:1px solid var(--border2); display:flex; align-items:center; gap:8px; letter-spacing:0.3px;
+}
+.section-badge { font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; margin-right:auto; }
+.badge-modiin { background:rgba(100,180,255,0.15); color:#7ec8f7; border:1px solid rgba(100,180,255,0.3); }
+.badge-herz   { background:rgba(201,168,76,0.15); color:var(--gold); border:1px solid rgba(201,168,76,0.3); }
+.items-grid { display:grid; grid-template-columns:1fr 1fr; }
+.item-row { display:flex; align-items:center; padding:7px 8px; border-bottom:1px solid #252525; gap:4px; }
+.item-row:nth-child(odd) { border-left:1px solid #252525; }
+.item-name { flex:1; font-size:11.5px; color:#ddd; line-height:1.3; }
+.qty-control { display:flex; align-items:center; gap:2px; flex-shrink:0; }
+.qty-btn {
+  width:22px; height:22px; border:1px solid var(--border2); border-radius:5px;
+  background:var(--black); color:var(--gold); font-size:14px; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.1s;
+}
+.qty-btn:active { background:var(--gold); color:var(--black); }
+.qty-input {
+  width:28px; text-align:center; border:1px solid var(--border2); border-radius:4px;
+  padding:2px 1px; font-size:12px; background:var(--black); color:var(--text); font-family:inherit;
+}
+.qty-input:focus { outline:none; border-color:var(--gold); }
+.qty-input.active { background:var(--gold); color:var(--black); font-weight:700; border-color:var(--gold); }
+.misc-section { padding:10px 14px; }
+.misc-row { display:flex; gap:7px; margin-bottom:7px; align-items:center; }
+.misc-input { flex:1; padding:8px 11px; background:var(--black); border:1px solid var(--border2); border-radius:8px; color:var(--text); font-size:13px; font-family:inherit; }
+.misc-input:focus { outline:none; border-color:var(--gold); }
+.misc-qty { width:56px; padding:8px 4px; background:var(--black); border:1px solid var(--border2); border-radius:8px; color:var(--text); font-size:13px; text-align:center; font-family:inherit; }
+.misc-qty:focus { outline:none; border-color:var(--gold); }
+.add-misc { padding:8px 14px; background:transparent; border:1px solid var(--gold); border-radius:8px; color:var(--gold); font-size:13px; font-weight:600; cursor:pointer; margin:0 14px 12px; display:block; font-family:inherit; }
+.add-misc:active { background:var(--gold); color:var(--black); }
+.remove-btn { background:none; border:none; color:#666; font-size:17px; cursor:pointer; padding:2px 4px; }
+.summary-bar {
+  position:fixed; bottom:0; left:0; right:0; background:var(--dark2);
+  border-top:2px solid var(--gold); padding:10px 16px; display:flex;
+  align-items:center; gap:12px; box-shadow:0 -4px 20px rgba(0,0,0,0.4); z-index:50;
+}
+.summary-text { color:var(--gold); flex:1; font-size:13px; }
+.summary-count { font-size:24px; font-weight:700; color:var(--gold2); }
+.send-btn { background:var(--gold); color:var(--black); border:none; border-radius:10px; padding:11px 22px; font-size:15px; font-weight:700; cursor:pointer; white-space:nowrap; font-family:inherit; }
+.send-btn:active { background:var(--gold2); }
+.pb90 { padding-bottom:90px; }
+
+/* ══ MODAL ══ */
+.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:200; align-items:flex-end; justify-content:center; }
+.modal.open { display:flex; }
+.modal-box { background:var(--card); border:1.5px solid var(--gold); border-radius:20px 20px 0 0; width:100%; max-width:520px; max-height:88vh; overflow:hidden; display:flex; flex-direction:column; }
+.modal-header { background:var(--black); border-bottom:1px solid var(--gold); color:var(--gold); padding:14px 18px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0; }
+.modal-header h2 { font-size:15px; font-weight:700; }
+.close-btn { background:none; border:none; color:var(--gold); font-size:20px; cursor:pointer; }
+.modal-tabs { display:flex; background:var(--black); border-bottom:1px solid var(--border2); flex-shrink:0; }
+.modal-tab { flex:1; padding:10px; font-size:12px; font-weight:600; text-align:center; cursor:pointer; color:var(--gray); border-bottom:2px solid transparent; transition:all 0.2s; font-family:inherit; background:none; border-left:1px solid var(--border2); }
+.modal-tab:first-child { border-left:none; }
+.modal-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+.modal-body { padding:14px 16px; font-size:13px; line-height:2; white-space:pre-wrap; font-family:monospace; color:#ddd; background:var(--black); overflow-y:auto; max-height:55vh; }
+.modal-footer { padding:12px 16px; display:flex; gap:10px; background:var(--card); flex-shrink:0; }
+.copy-btn { flex:1; padding:11px; background:transparent; border:1.5px solid var(--gold); border-radius:10px; color:var(--gold); font-weight:700; cursor:pointer; font-size:14px; font-family:inherit; }
+.whatsapp-btn { flex:1; padding:11px; background:#25d366; color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer; font-size:14px; font-family:inherit; }
+.hidden { display:none !important; }
+.tab-pane { display:none; flex:1; overflow:hidden; flex-direction:column; }
+.tab-pane.active { display:flex; }
+.split-notice { display:none; margin:10px 12px 0; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.3); border-radius:10px; padding:10px 14px; font-size:12px; color:var(--gold); line-height:1.6; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     PAGE: MAIN MENU
+══════════════════════════════════════ -->
+<div class="page active" id="page-main">
+  <header>
+    <div class="header-text"><h1>גרעיני עפולה חממה</h1></div>
+  </header>
+  <div class="hero">
+    <div class="hero-title">מערכת הזמנות</div>
+    <div class="hero-sub">בחר את סוג ההזמנה</div>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card primary" onclick="showPage('page-network')">
+      <div class="card-icon">🏪</div>
+      <div class="card-body"><h2>הזמנות רשת</h2><p>הזמנה פנימית בין סניפי הרשת</p></div>
+      <div class="card-arrow">‹</div>
+    </div>
+    <div class="menu-card" onclick="showPage('page-importers')">
+      <div class="card-icon">🚢</div>
+      <div class="card-body"><h2>הזמנות יבואנים</h2><p>פיצוחים טבעיים ופירות יבשים</p></div>
+      <div class="card-arrow">‹</div>
+    </div>
+    <div class="menu-card" onclick="showPage('page-suppliers')">
+      <div class="card-icon">🏭</div>
+      <div class="card-body"><h2>הזמנות ספקים</h2><p>כרם, אלמנדוס, נווה התבלין, מנצס</p></div>
+      <div class="card-arrow">‹</div>
+    </div>
+  </div>
+  <footer>גרעיני עפולה חממה © 2025</footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: SUPPLIERS LIST
+══════════════════════════════════════ -->
+<div class="page" id="page-suppliers">
+  <header>
+    <button class="back-btn" onclick="showPage('page-main')">‹</button>
+    <div class="header-text"><h1>הזמנות ספקים</h1><p class="header-sub">בחר ספק</p></div>
+  </header>
+  <div class="supplier-list">
+    <div class="supplier-card" onclick="showPage('page-supplier-karem')">
+      <div><div class="supplier-card-name">כרם</div><div class="supplier-card-sub">מוצרים ללא גלוטן ואורגני</div></div>
+      <div class="supplier-arrow">‹</div>
+    </div>
+    <div class="supplier-card" onclick="showPage('page-supplier-almendos')">
+      <div><div class="supplier-card-name">אלמנדוס</div><div class="supplier-card-sub">שוקולד, ממרחים וסירופים</div></div>
+      <div class="supplier-arrow">‹</div>
+    </div>
+    <div class="supplier-card" onclick="showPage('page-supplier-nave')">
+      <div><div class="supplier-card-name">נווה התבלין</div><div class="supplier-card-sub">תבלינים וצמחי מרפא</div></div>
+      <div class="supplier-arrow">‹</div>
+    </div>
+    <div class="supplier-card" onclick="showPage('page-supplier-menzes')">
+      <div><div class="supplier-card-name">מנצס</div><div class="supplier-card-sub">חטיפים וממתקים</div></div>
+      <div class="supplier-arrow">‹</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: NETWORK ORDERS
+══════════════════════════════════════ -->
+<div class="page" id="page-network">
+  <header>
+    <button class="back-btn" onclick="showPage('page-main')">‹</button>
+    <div class="header-text"><h1>גרעיני עפולה חממה</h1><p class="header-sub">הזמנה פנימית</p></div>
+  </header>
+  <div class="source-bar">
+    <label id="networkBranchLabel">📍 בחר סניף מזמין</label>
+    <select class="source-select" id="sourceBranch" onchange="onSourceChange()">
+      <option value="">— בחר סניף —</option>
+      <option value="כדורי">הרצליה צומת כדורי</option>
+      <option value="שופרסל">מודיעין מתחם שופרסל</option>
+      <option value="סוקולוב16">הרצליה סוקולוב 16</option>
+      <option value="סוקולוב27">הרצליה סוקולוב 27</option>
+      <option value="גבעה">גבעת שמואל</option>
+      <option value="רמילוי">מודיעין מתחם רמי לוי</option>
+      <option value="דם">מודיעין דם המכבים</option>
+      <option value="פתח">פתח תקווה</option>
+    </select>
+    <div class="dest-info" id="destInfo">
+      <div class="dest-row"><span class="label">📦 יעד:</span><span class="value" id="destValue">—</span></div>
+    </div>
+  </div>
+  <div class="split-notice" id="splitNotice">⚡ <strong>הזמנה מפוצלת:</strong> קטניות ודגנים → מודיעין שופרסל | פיצוחים / גרנולות / ציוד → הרצליה צומת כדורי</div>
+  <div id="networkSectionsContainer" class="pb90"></div>
+  <div class="section">
+    <div class="section-title">✏️ שונות — הוסף ידנית</div>
+    <div class="misc-section" id="networkMiscSection">
+      <div class="misc-row">
+        <input class="misc-input" placeholder="שם פריט..." oninput="networkUpdateTotal()"/>
+        <input class="misc-qty" type="number" min="0" placeholder="כמות" oninput="networkUpdateTotal()"/>
+      </div>
+    </div>
+    <button class="add-misc" onclick="networkAddMiscRow()">+ הוסף שורה</button>
+  </div>
+  <div class="summary-bar">
+    <div class="summary-text"><div>פריטים בהזמנה</div><div class="summary-count" id="networkTotalCount">0</div></div>
+    <button class="send-btn" onclick="networkShowPreview()">צפה ושלח ▶</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: IMPORTERS
+══════════════════════════════════════ -->
+<div class="page" id="page-importers">
+  <header>
+    <button class="back-btn" onclick="showPage('page-main')">‹</button>
+    <div class="header-text"><h1>גרעיני עפולה חממה</h1><p class="header-sub">הזמנות יבואנים</p></div>
+  </header>
+  <div class="source-bar">
+    <label id="importersBranchLabel">📍 בחר סניף מזמין</label>
+    <select class="source-select" id="importersBranch">
+      <option value="">— בחר סניף —</option>
+      <option value="הרצליה צומת כדורי">הרצליה צומת כדורי</option>
+      <option value="מודיעין מתחם שופרסל">מודיעין מתחם שופרסל</option>
+      <option value="הרצליה סוקולוב 16">הרצליה סוקולוב 16</option>
+      <option value="הרצליה סוקולוב 27">הרצליה סוקולוב 27</option>
+      <option value="גבעת שמואל">גבעת שמואל</option>
+      <option value="מודיעין מתחם רמי לוי">מודיעין מתחם רמי לוי</option>
+      <option value="מודיעין דם המכבים">מודיעין דם המכבים</option>
+      <option value="פתח תקווה">פתח תקווה</option>
+    </select>
+  </div>
+  <div id="importersSectionsContainer" class="pb90"></div>
+  <div class="section">
+    <div class="section-title">✏️ שונות — הוסף ידנית</div>
+    <div class="misc-section" id="importersMiscSection">
+      <div class="misc-row">
+        <input class="misc-input" placeholder="שם פריט..." oninput="importersUpdateTotal()"/>
+        <input class="misc-qty" type="number" min="0" placeholder="כמות" oninput="importersUpdateTotal()"/>
+      </div>
+    </div>
+    <button class="add-misc" onclick="importersAddMiscRow()">+ הוסף שורה</button>
+  </div>
+  <div class="summary-bar">
+    <div class="summary-text"><div>פריטים בהזמנה</div><div class="summary-count" id="importersTotalCount">0</div></div>
+    <button class="send-btn" onclick="importersShowPreview()">צפה ושלח ▶</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE: SUPPLIER (generic template)
+══════════════════════════════════════ -->
+<div class="page" id="page-supplier-karem">
+  <header>
+    <button class="back-btn" onclick="showPage('page-suppliers')">‹</button>
+    <div class="header-text"><h1>כרם</h1><p class="header-sub">הזמנה לספק</p></div>
+  </header>
+  <div class="source-bar">
+    <label>📍 בחר סניף מזמין</label>
+    <select class="source-select" id="karemBranch">
+      <option value="">— בחר סניף —</option>
+      <option value="הרצליה צומת כדורי">הרצליה צומת כדורי</option>
+      <option value="מודיעין מתחם שופרסל">מודיעין מתחם שופרסל</option>
+      <option value="הרצליה סוקולוב 16">הרצליה סוקולוב 16</option>
+      <option value="הרצליה סוקולוב 27">הרצליה סוקולוב 27</option>
+      <option value="גבעת שמואל">גבעת שמואל</option>
+      <option value="מודיעין מתחם רמי לוי">מודיעין מתחם רמי לוי</option>
+      <option value="מודיעין דם המכבים">מודיעין דם המכבים</option>
+      <option value="פתח תקווה">פתח תקווה</option>
+    </select>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:var(--muted);padding:40px 20px;text-align:center;">
+    <div style="font-size:56px;">🏗️</div>
+    <div style="font-size:18px;color:var(--text);font-weight:700;">בקרוב</div>
+    <div style="font-size:13px;line-height:1.6;">רשימת מוצרי כרם תתווסף כאן<br>ממתינים לקבלת האקסל</div>
+  </div>
+</div>
+<div class="page" id="page-supplier-almendos">
+  <header>
+    <button class="back-btn" onclick="showPage('page-suppliers')">‹</button>
+    <div class="header-text"><h1>אלמנדוס</h1><p class="header-sub">הזמנה לספק</p></div>
+  </header>
+  <div class="source-bar">
+    <label>📍 בחר סניף מזמין</label>
+    <select class="source-select" id="almendosBranch">
+      <option value="">— בחר סניף —</option>
+      <option value="הרצליה צומת כדורי">הרצליה צומת כדורי</option>
+      <option value="מודיעין מתחם שופרסל">מודיעין מתחם שופרסל</option>
+      <option value="הרצליה סוקולוב 16">הרצליה סוקולוב 16</option>
+      <option value="הרצליה סוקולוב 27">הרצליה סוקולוב 27</option>
+      <option value="גבעת שמואל">גבעת שמואל</option>
+      <option value="מודיעין מתחם רמי לוי">מודיעין מתחם רמי לוי</option>
+      <option value="מודיעין דם המכבים">מודיעין דם המכבים</option>
+      <option value="פתח תקווה">פתח תקווה</option>
+    </select>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:var(--muted);padding:40px 20px;text-align:center;">
+    <div style="font-size:56px;">🏗️</div>
+    <div style="font-size:18px;color:var(--text);font-weight:700;">בקרוב</div>
+    <div style="font-size:13px;line-height:1.6;">רשימת מוצרי אלמנדוס תתווסף כאן</div>
+  </div>
+</div>
+<div class="page" id="page-supplier-nave">
+  <header>
+    <button class="back-btn" onclick="showPage('page-suppliers')">‹</button>
+    <div class="header-text"><h1>נווה התבלין</h1><p class="header-sub">הזמנה לספק</p></div>
+  </header>
+  <div class="source-bar">
+    <label>📍 בחר סניף מזמין</label>
+    <select class="source-select" id="naveBranch">
+      <option value="">— בחר סניף —</option>
+      <option value="הרצליה צומת כדורי">הרצליה צומת כדורי</option>
+      <option value="מודיעין מתחם שופרסל">מודיעין מתחם שופרסל</option>
+      <option value="הרצליה סוקולוב 16">הרצליה סוקולוב 16</option>
+      <option value="הרצליה סוקולוב 27">הרצליה סוקולוב 27</option>
+      <option value="גבעת שמואל">גבעת שמואל</option>
+      <option value="מודיעין מתחם רמי לוי">מודיעין מתחם רמי לוי</option>
+      <option value="מודיעין דם המכבים">מודיעין דם המכבים</option>
+      <option value="פתח תקווה">פתח תקווה</option>
+    </select>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:var(--muted);padding:40px 20px;text-align:center;">
+    <div style="font-size:56px;">🏗️</div>
+    <div style="font-size:18px;color:var(--text);font-weight:700;">בקרוב</div>
+    <div style="font-size:13px;line-height:1.6;">רשימת מוצרי נווה התבלין תתווסף כאן</div>
+  </div>
+</div>
+<div class="page" id="page-supplier-menzes">
+  <header>
+    <button class="back-btn" onclick="showPage('page-suppliers')">‹</button>
+    <div class="header-text"><h1>מנצס</h1><p class="header-sub">הזמנה לספק</p></div>
+  </header>
+  <div class="source-bar">
+    <label>📍 בחר סניף מזמין</label>
+    <select class="source-select" id="menzesBranch">
+      <option value="">— בחר סניף —</option>
+      <option value="הרצליה צומת כדורי">הרצליה צומת כדורי</option>
+      <option value="מודיעין מתחם שופרסל">מודיעין מתחם שופרסל</option>
+      <option value="הרצליה סוקולוב 16">הרצליה סוקולוב 16</option>
+      <option value="הרצליה סוקולוב 27">הרצליה סוקולוב 27</option>
+      <option value="גבעת שמואל">גבעת שמואל</option>
+      <option value="מודיעין מתחם רמי לוי">מודיעין מתחם רמי לוי</option>
+      <option value="מודיעין דם המכבים">מודיעין דם המכבים</option>
+      <option value="פתח תקווה">פתח תקווה</option>
+    </select>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:var(--muted);padding:40px 20px;text-align:center;">
+    <div style="font-size:56px;">🏗️</div>
+    <div style="font-size:18px;color:var(--text);font-weight:700;">בקרוב</div>
+    <div style="font-size:13px;line-height:1.6;">רשימת מוצרי מנצס תתווסף כאן</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODAL — NETWORK
+══════════════════════════════════════ -->
+<div class="modal" id="networkModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="networkModalTitle">📋 הזמנה מפוצלת</h2>
+      <button class="close-btn" onclick="closeModal('networkModal')">✕</button>
+    </div>
+    <div class="modal-tabs hidden" id="networkModalTabs">
+      <button class="modal-tab active" id="ntab-modiin" onclick="networkSwitchTab('modiin')">🔵 מודיעין שופרסל</button>
+      <button class="modal-tab" id="ntab-herz" onclick="networkSwitchTab('herz')">🟡 הרצליה צומת כדורי</button>
+    </div>
+    <div class="tab-pane active" id="npane-modiin"><pre class="modal-body" id="networkPreviewModiin"></pre></div>
+    <div class="tab-pane" id="npane-herz"><pre class="modal-body" id="networkPreviewHerz"></pre></div>
+    <div class="modal-footer">
+      <button class="copy-btn" onclick="networkCopyText()">📋 העתק</button>
+      <button class="whatsapp-btn" onclick="networkSendWhatsApp()">📤 שלח וואטסאפ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODAL — IMPORTERS
+══════════════════════════════════════ -->
+<div class="modal" id="importersModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>📋 הזמנת יבואנים</h2>
+      <button class="close-btn" onclick="closeModal('importersModal')">✕</button>
+    </div>
+    <pre class="modal-body" id="importersPreviewText"></pre>
+    <div class="modal-footer">
+      <button class="copy-btn" onclick="importersCopyText()">📋 העתק</button>
+      <button class="whatsapp-btn" onclick="importersSendWhatsApp()">📤 וואטסאפ</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ NAVIGATION ══
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ══ URL PARAMS — direct link from WhatsApp bot ══
+const BRANCH_NAME_TO_KEY = {
+  "הרצליה צומת כדורי":"כדורי","מודיעין מתחם שופרסל":"שופרסל",
+  "הרצליה סוקולוב 16":"סוקולוב16","הרצליה סוקולוב 27":"סוקולוב27",
+  "גבעת שמואל":"גבעה","מודיעין מתחם רמי לוי":"רמילוי",
+  "מודיעין דם המכבים":"דם","פתח תקווה":"פתח"
+};
+window.addEventListener('DOMContentLoaded', async () => {
+  await loadProducts();
+  const params = new URLSearchParams(window.location.search);
+  const branchParam = params.get('branch');
+  if (branchParam) {
+    showPage('page-main');
+    const key = BRANCH_NAME_TO_KEY[branchParam] || branchParam;
+    const sel = document.getElementById('sourceBranch');
+    if (sel) { sel.value = key; if (sel.value === key) onSourceChange(); }
+    // בחר סניף אוטומטי בכל הדפים
+    ['importersBranch','karemBranch','almendosBranch','naveBranch','menzesBranch'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = branchParam;
+    });
+  }
+  networkBuildSections();
+  importersBuildSections();
+});
+
+// ══════════════════════════════════════
+// NETWORK ORDER DATA
+// ══════════════════════════════════════
+let CATALOG_LEGUMES = { "🌾 קטניות ודגנים": [] };
+let CATALOG_HERZ = { "🥜 פיצוחים": [], "🥣 גרנולות": [], "🫙 מוצרי קופה ונלוות": [], "📦 ציוד ואחר": [] };
+let CATALOG_IMPORTERS = { "🥜 טבעיים": [], "🍇 פירות יבשים": [] };
+
+// טעינת נתונים מ-products.json
+async function loadProducts() {
+  try {
+    const res = await fetch('products.json?t=' + Date.now());
+    const data = await res.json();
+    // network
+    const n = data.network;
+    CATALOG_LEGUMES = { [n.legumes.title]: n.legumes.items };
+    CATALOG_HERZ = {
+      [n.nuts.title]:      n.nuts.items,
+      [n.granola.title]:   n.granola.items,
+      [n.store.title]:     n.store.items,
+      [n.equipment.title]: n.equipment.items,
+    };
+    // importers
+    const imp = data.importers;
+    CATALOG_IMPORTERS = {
+      [imp.natural.title]:     imp.natural.items,
+      [imp.driedfruits.title]: imp.driedfruits.items,
+    };
+  } catch(e) {
+    console.warn('לא ניתן לטעון products.json, משתמש בנתוני ברירת מחדל');
+  }
+}
+const BRANCH_CONFIG = {
+  "כדורי":     { name:"הרצליה צומת כדורי",   dest:"מודיעין מתחם שופרסל",                 catalogs:["legumes"] },
+  "שופרסל":   { name:"מודיעין מתחם שופרסל", dest:"הרצליה צומת כדורי",                   catalogs:["herz"] },
+  "סוקולוב16":{ name:"הרצליה סוקולוב 16",   dest:"הרצליה צומת כדורי + מודיעין שופרסל", catalogs:["legumes","herz"] },
+  "סוקולוב27":{ name:"הרצליה סוקולוב 27",   dest:"הרצליה צומת כדורי + מודיעין שופרסל", catalogs:["legumes","herz"] },
+  "גבעה":     { name:"גבעת שמואל",          dest:"הרצליה צומת כדורי + מודיעין שופרסל", catalogs:["legumes","herz"] },
+  "רמילוי":   { name:"מודיעין מתחם רמי לוי",dest:"הרצליה צומת כדורי + מודיעין שופרסל", catalogs:["legumes","herz"] },
+  "דם":       { name:"מודיעין דם המכבים",   dest:"הרצליה צומת כדורי + מודיעין שופרסל", catalogs:["legumes","herz"] },
+  "פתח":      { name:"פתח תקווה",           dest:"הרצליה צומת כדורי + מודיעין שופרסל", catalogs:["legumes","herz"] },
+};
+const networkQty = {};
+let currentSource = '';
+let networkActiveTab = 'modiin';
+
+function onSourceChange() {
+  currentSource = document.getElementById('sourceBranch').value;
+  const cfg = BRANCH_CONFIG[currentSource];
+  const destInfo = document.getElementById('destInfo');
+  if (cfg) { destInfo.style.display='block'; document.getElementById('destValue').textContent=cfg.dest; }
+  else { destInfo.style.display='none'; }
+  networkBuildSections();
+}
+
+function networkBuildSections() {
+  const container = document.getElementById('networkSectionsContainer');
+  container.innerHTML = '';
+  const cfg = BRANCH_CONFIG[currentSource];
+  if (!cfg) return;
+  const toRender = [];
+  if (cfg.catalogs.includes('legumes')) toRender.push({ cat:CATALOG_LEGUMES, source:'modiin' });
+  if (cfg.catalogs.includes('herz'))    toRender.push({ cat:CATALOG_HERZ,    source:'herz'   });
+  toRender.forEach(({ cat, source }) => {
+    Object.entries(cat).forEach(([category, items]) => {
+      const section = document.createElement('div');
+      section.className = 'section';
+      const badge = source==='modiin'
+        ? '<span class="section-badge badge-modiin">מודיעין שופרסל</span>'
+        : '<span class="section-badge badge-herz">הרצליה צומת כדורי</span>';
+      section.innerHTML = `<div class="section-title">${category}${badge}</div><div class="items-grid"></div>`;
+      const grid = section.querySelector('.items-grid');
+      items.forEach(item => {
+        if (!(item in networkQty)) networkQty[item]=0;
+        const sid = 'nqty_'+item.replace(/[^א-תa-zA-Z0-9]/g,'_');
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `<span class="item-name">${item}</span>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="nChangeQty('${item}',-1)">−</button>
+            <input class="qty-input${networkQty[item]>0?' active':''}" id="${sid}" type="number" min="0" value="${networkQty[item]||0}" onchange="nSetQty('${item}',this.value)">
+            <button class="qty-btn" onclick="nChangeQty('${item}',1)">+</button>
+          </div>`;
+        grid.appendChild(row);
+      });
+      container.appendChild(section);
+    });
+  });
+  networkUpdateTotal();
+}
+function nSafeId(item){ return 'nqty_'+item.replace(/[^א-תa-zA-Z0-9]/g,'_'); }
+function nChangeQty(item,delta){ networkQty[item]=Math.max(0,(networkQty[item]||0)+delta); const inp=document.getElementById(nSafeId(item)); if(inp){inp.value=networkQty[item];inp.className='qty-input'+(networkQty[item]>0?' active':'');} networkUpdateTotal(); }
+function nSetQty(item,val){ networkQty[item]=Math.max(0,parseInt(val)||0); const inp=document.getElementById(nSafeId(item)); if(inp) inp.className='qty-input'+(networkQty[item]>0?' active':''); networkUpdateTotal(); }
+function networkUpdateTotal(){ let t=Object.values(networkQty).filter(v=>v>0).length; document.querySelectorAll('#networkMiscSection .misc-row').forEach(r=>{ if(r.querySelector('.misc-input').value.trim()&&parseInt(r.querySelector('.misc-qty').value)>0) t++; }); document.getElementById('networkTotalCount').textContent=t; }
+function networkAddMiscRow(){ const s=document.getElementById('networkMiscSection'); const r=document.createElement('div'); r.className='misc-row'; r.innerHTML=`<input class="misc-input" placeholder="שם פריט..." oninput="networkUpdateTotal()"/><input class="misc-qty" type="number" min="0" placeholder="כמות" oninput="networkUpdateTotal()"/><button class="remove-btn" onclick="this.parentElement.remove();networkUpdateTotal()">✕</button>`; s.appendChild(r); }
+function networkBuildText(sourceName,destName,items,inclMisc){
+  const now=new Date().toLocaleDateString('he-IL',{day:'2-digit',month:'2-digit',year:'2-digit'});
+  let text=`הזמנה פנימית\n*מסניף: ${sourceName}*\n*ליעד: ${destName}*\n${now}\n${'─'.repeat(24)}\n`;
+  let has=false, tot=0;
+  Object.entries(items).forEach(([cat,list])=>{
+    const cleanCat=cat.replace(/[\u{1F300}-\u{1FFFF}]/gu,'').trim();
+    const sel=list.filter(i=>networkQty[i]>0);
+    if(sel.length){has=true;text+=`${cleanCat}:\n`;sel.forEach(i=>{text+=`• ${i} ×${networkQty[i]}\n`;tot++;});}
+  });
+  if(inclMisc){
+    const ml=[]; document.querySelectorAll('#networkMiscSection .misc-row').forEach(r=>{ const n=r.querySelector('.misc-input').value.trim(); const q=parseInt(r.querySelector('.misc-qty').value)||0; if(n&&q>0){ml.push(`• ${n} ×${q}`);tot++;} });
+    if(ml.length){has=true;text+=`שונות:\n`+ml.join('\n')+'\n';}
+  }
+  if(!has) return null;
+  text+=`${'─'.repeat(24)}\nסה"כ ${tot} פריטים`;
+  return text;
+}
+function networkShowPreview(){
+  if(!currentSource){alert('בחר סניף מזמין תחילה');return;}
+  const cfg=BRANCH_CONFIG[currentSource];
+  const tM=cfg.catalogs.includes('legumes')?networkBuildText(cfg.name,'מודיעין מתחם שופרסל',CATALOG_LEGUMES,false):null;
+  const tH=cfg.catalogs.includes('herz')?networkBuildText(cfg.name,'הרצליה צומת כדורי',CATALOG_HERZ,true):null;
+  document.getElementById('networkPreviewModiin').textContent=tM||'⚠️ אין פריטי קטניות';
+  document.getElementById('networkPreviewHerz').textContent=tH||'⚠️ אין פריטים מהרצליה';
+  document.getElementById('networkModalTabs').classList.remove('hidden');
+  networkSwitchTab('modiin');
+  document.getElementById('networkModal').classList.add('open');
+}
+function networkSwitchTab(tab){ networkActiveTab=tab; ['modiin','herz'].forEach(t=>{ document.getElementById('ntab-'+t).classList.toggle('active',t===tab); const p=document.getElementById('npane-'+t); p.classList.toggle('active',t===tab); }); }
+function networkGetActiveText(){ return networkActiveTab==='modiin'?document.getElementById('networkPreviewModiin').textContent:document.getElementById('networkPreviewHerz').textContent; }
+function networkCopyText(){ navigator.clipboard.writeText(networkGetActiveText()).then(()=>{closeModal('networkModal');alert('הועתק! 📋');}); }
+function networkSendWhatsApp(){
+  const cfg = BRANCH_CONFIG[currentSource];
+  if (!cfg) return;
+  const parts = [];
+  if (cfg.catalogs.includes('legumes')) {
+    const t = networkBuildText(cfg.name, 'מודיעין מתחם שופרסל', CATALOG_LEGUMES, false);
+    if (t) parts.push(t);
+  }
+  if (cfg.catalogs.includes('herz')) {
+    const t = networkBuildText(cfg.name, 'הרצליה צומת כדורי', CATALOG_HERZ, true);
+    if (t) parts.push(t);
+  }
+  if (parts.length === 0) { alert('אין פריטים בהזמנה'); return; }
+  const fullText = parts.join('\n---\n');
+  window.open('https://wa.me/97297733273?text='+encodeURIComponent(fullText),'_blank');
+}
+
+// ══════════════════════════════════════
+// IMPORTERS DATA (נטען מ-products.json)
+// ══════════════════════════════════════
+const importersQty = {};
+function importersBuildSections(){
+  const container=document.getElementById('importersSectionsContainer');
+  container.innerHTML='';
+  Object.entries(CATALOG_IMPORTERS).forEach(([category,items])=>{
+    const section=document.createElement('div'); section.className='section';
+    section.innerHTML=`<div class="section-title">${category}</div><div class="items-grid"></div>`;
+    const grid=section.querySelector('.items-grid');
+    items.forEach(item=>{
+      if(!(item in importersQty)) importersQty[item]=0;
+      const sid='iqty_'+item.replace(/[^א-תa-zA-Z0-9]/g,'_');
+      const row=document.createElement('div'); row.className='item-row';
+      row.innerHTML=`<span class="item-name">${item}</span>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="iChangeQty('${item}',-1)">−</button>
+          <input class="qty-input" id="${sid}" type="number" min="0" value="0" onchange="iSetQty('${item}',this.value)">
+          <button class="qty-btn" onclick="iChangeQty('${item}',1)">+</button>
+        </div>`;
+      grid.appendChild(row);
+    });
+    container.appendChild(section);
+  });
+  importersUpdateTotal();
+}
+function iSafeId(item){ return 'iqty_'+item.replace(/[^א-תa-zA-Z0-9]/g,'_'); }
+function iChangeQty(item,delta){ importersQty[item]=Math.max(0,(importersQty[item]||0)+delta); const inp=document.getElementById(iSafeId(item)); if(inp){inp.value=importersQty[item];inp.className='qty-input'+(importersQty[item]>0?' active':'');} importersUpdateTotal(); }
+function iSetQty(item,val){ importersQty[item]=Math.max(0,parseInt(val)||0); const inp=document.getElementById(iSafeId(item)); if(inp) inp.className='qty-input'+(importersQty[item]>0?' active':''); importersUpdateTotal(); }
+function importersUpdateTotal(){ let t=Object.values(importersQty).filter(v=>v>0).length; document.querySelectorAll('#importersMiscSection .misc-row').forEach(r=>{ if(r.querySelector('.misc-input').value.trim()&&parseInt(r.querySelector('.misc-qty').value)>0) t++; }); document.getElementById('importersTotalCount').textContent=t; }
+function importersAddMiscRow(){ const s=document.getElementById('importersMiscSection'); const r=document.createElement('div'); r.className='misc-row'; r.innerHTML=`<input class="misc-input" placeholder="שם פריט..." oninput="importersUpdateTotal()"/><input class="misc-qty" type="number" min="0" placeholder="כמות" oninput="importersUpdateTotal()"/><button class="remove-btn" onclick="this.parentElement.remove();importersUpdateTotal()">✕</button>`; s.appendChild(r); }
+function importersShowPreview(){
+  const branch = document.getElementById('importersBranch')?.value;
+  if (!branch) { alert('בחר סניף מזמין תחילה'); return; }
+  const now=new Date().toLocaleDateString('he-IL',{day:'2-digit',month:'2-digit',year:'2-digit'});
+  let text=`יבואנים | ${branch} | ${now}\n${'─'.repeat(24)}\n`;
+  let tot=0;
+  Object.entries(CATALOG_IMPORTERS).forEach(([cat,items])=>{
+    const cleanCat=cat.replace(/[\u{1F300}-\u{1FFFF}]/gu,'').trim();
+    const sel=items.filter(i=>importersQty[i]>0);
+    if(sel.length){text+=`${cleanCat}:\n`;sel.forEach(i=>{text+=`• ${i} ×${importersQty[i]}\n`;tot++;});}
+  });
+  const ml=[]; document.querySelectorAll('#importersMiscSection .misc-row').forEach(r=>{ const n=r.querySelector('.misc-input').value.trim(); const q=parseInt(r.querySelector('.misc-qty').value)||0; if(n&&q>0){ml.push(`• ${n} ×${q}`);tot++;} });
+  if(ml.length){ text+=`שונות:\n`+ml.join('\n')+'\n'; }
+  text+=`${'─'.repeat(24)}\nסה"כ ${tot} פריטים`;
+  document.getElementById('importersPreviewText').textContent=text;
+  document.getElementById('importersModal').classList.add('open');
+}
+function importersCopyText(){ navigator.clipboard.writeText(document.getElementById('importersPreviewText').textContent).then(()=>{closeModal('importersModal');alert('הועתק! 📋');}); }
+function importersSendWhatsApp(){ window.open('https://wa.me/972524371919?text='+encodeURIComponent(document.getElementById('importersPreviewText').textContent),'_blank'); }
+</script>
+</body>
+</html>
