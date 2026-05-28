@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>שיבוץ משמרות — גרעיני עפולה חממה</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --black:#111111;--black2:#1a1a1a;--card:#1e1e1e;
+  --gold:#c9a84c;--gold2:#e8c96a;
+  --gold-dim:rgba(201,168,76,0.15);--gold-border:rgba(201,168,76,0.35);
+  --text:#f0f0f0;--muted:#888;--border:#2e2e2e;--dark2:#2a2a2a;--border2:#3a3a3a;
+  --morning:#3d8ef0;--evening:#9b59b6;--double:#e74c3c;
+  --r:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Heebo',sans-serif;background:var(--black);color:var(--text);min-height:100vh;}
+
+/* Header */
+header{background:linear-gradient(135deg,#222218,#1a1a14);border-bottom:2px solid var(--gold-border);padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo h1{font-size:16px;font-weight:800;color:var(--gold);}
+.logo p{font-size:10px;color:var(--muted);}
+
+/* Action bar */
+.action-bar{background:var(--black2);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;gap:8px;overflow-x:auto;flex-shrink:0;}
+.act-btn{flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-size:12px;font-weight:700;font-family:'Heebo',sans-serif;cursor:pointer;transition:.2s;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.act-btn:hover{border-color:var(--gold-border);color:var(--gold);}
+.act-btn.primary{background:var(--gold);color:#000;border-color:var(--gold);}
+.act-btn.primary:hover{background:var(--gold2);}
+
+/* Branch bar */
+.branch-bar{background:var(--card);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;gap:6px;overflow-x:auto;}
+.bb{background:var(--black2);border:1px solid var(--border);border-radius:16px;padding:5px 12px;color:var(--muted);font-size:11px;font-family:'Heebo',sans-serif;cursor:pointer;transition:.2s;white-space:nowrap;}
+.bb:hover{border-color:var(--gold-border);color:var(--gold);}
+.bb.active{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold);font-weight:700;}
+
+/* Info bar */
+.info-bar{background:var(--black2);border-bottom:1px solid var(--border);padding:8px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:11px;}
+.ii{color:var(--muted);}.ii strong{color:var(--gold);}
+.deadline{background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);border-radius:5px;padding:3px 8px;font-size:11px;color:#e74c3c;font-weight:700;}
+.legend{display:flex;gap:8px;margin-right:auto;}
+.li{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);}
+.ld{width:7px;height:7px;border-radius:50%;}
+
+.main{padding:12px 16px;display:flex;flex-direction:column;gap:16px;}
+
+/* Section */
+.sec-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.sec-head{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.sec-head h3{font-size:12px;font-weight:700;color:var(--gold);}
+.sec-head span{font-size:10px;color:var(--muted);}
+.tscroll{overflow-x:auto;}
+
+/* Table */
+table{width:100%;border-collapse:collapse;min-width:620px;}
+thead th{background:var(--black2);padding:8px 8px;font-size:10px;font-weight:700;color:var(--muted);text-align:center;border-bottom:1px solid var(--border);}
+thead th:first-child{text-align:right;min-width:70px;width:70px;}
+.th-day{font-weight:700;color:var(--text);font-size:11px;}
+.th-date{font-size:9px;color:var(--muted);margin-top:1px;}
+tbody td{padding:4px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);vertical-align:top;}
+tbody td:first-child{background:var(--black2);font-size:10px;font-weight:700;color:var(--muted);padding:8px 10px;white-space:nowrap;}
+.row-morning td:first-child{border-right:3px solid var(--morning);}
+.row-evening td:first-child{border-right:3px solid var(--evening);}
+.row-double td:first-child{border-right:3px solid var(--double);}
+tbody tr:last-child td{border-bottom:none;}
+
+/* Availability cell */
+.av-cell{min-height:44px;padding:2px;}
+.av-chip{display:inline-flex;align-items:center;background:var(--dark2);border-radius:3px;padding:3px 7px;margin:1px;font-size:10px;font-weight:600;cursor:grab;border-right:3px solid var(--morning);transition:.15s;user-select:none;}
+.av-chip.evening{border-right-color:var(--evening);}
+.av-chip.double{border-right-color:var(--double);}
+.av-chip:hover{background:var(--gold-dim);}
+.av-chip.dragging{opacity:.3;}
+.av-chip.used{opacity:.35;text-decoration:line-through;cursor:default;}
+
+/* Shift cell */
+.sc{min-height:52px;border-radius:4px;border:2px dashed var(--border2);padding:3px;transition:.15s;position:relative;}
+.sc.drag-over{border-color:var(--gold);background:var(--gold-dim);}
+.sc.has-emp{border-style:solid;border-color:var(--border);}
+.sc.disabled{border-color:transparent;background:rgba(0,0,0,.2);pointer-events:none;}
+.sc-chip{display:flex;align-items:center;justify-content:space-between;background:var(--dark2);border-radius:3px;padding:3px 5px;margin-bottom:2px;font-size:10px;font-weight:600;border-right:3px solid var(--morning);}
+.sc-chip.evening{border-right-color:var(--evening);}
+.sc-chip.double{border-right-color:var(--double);}
+.sc-chip .rm{background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:0 1px;line-height:1;}
+.sc-chip .rm:hover{color:var(--double);}
+.add-btn{width:100%;background:none;border:1px dashed var(--border2);border-radius:3px;padding:2px;color:var(--muted);font-size:9px;cursor:pointer;font-family:'Heebo',sans-serif;margin-top:2px;}
+.add-btn:hover{border-color:var(--gold-border);color:var(--gold);}
+.notes-inp{width:100%;background:transparent;border:none;color:var(--muted);font-size:10px;font-family:'Heebo',sans-serif;outline:none;padding:3px;}
+.notes-inp::placeholder{color:var(--border2);}
+
+/* Empty state */
+.empty-state{padding:20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.8;}
+.empty-state button{background:var(--gold);border:none;border-radius:8px;padding:10px 20px;color:#000;font-weight:800;font-family:'Heebo',sans-serif;cursor:pointer;margin-top:10px;font-size:13px;}
+
+/* Dropdown */
+.overlay{position:fixed;inset:0;z-index:200;display:none;}.overlay.on{display:block;}
+.dd{position:fixed;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:8px;min-width:180px;z-index:201;box-shadow:0 8px 32px rgba(0,0,0,.6);}
+.dd-search{width:100%;background:var(--black2);border:1px solid var(--border);border-radius:5px;padding:6px 10px;color:var(--text);font-size:12px;font-family:'Heebo',sans-serif;outline:none;margin-bottom:6px;}
+.dd-item{padding:7px 10px;border-radius:4px;cursor:pointer;font-size:12px;display:flex;align-items:center;gap:7px;transition:.15s;}
+.dd-item:hover{background:var(--dark2);}
+.dd-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.dd-sep{height:1px;background:var(--border);margin:3px 0;}
+.dd-lbl{font-size:10px;color:var(--muted);padding:2px 10px;}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:500;display:none;overflow-y:auto;padding:16px;}
+.modal-overlay.on{display:block;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--r);max-width:860px;margin:0 auto;}
+.modal-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:1;}
+.modal-head h3{font-size:13px;font-weight:700;color:var(--gold);}
+.modal-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;}
+.modal-body{padding:14px;overflow-x:auto;}
+.modal-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
+
+/* Share loading */
+.share-loading{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-size:14px;color:var(--gold);}
+.share-loading.on{display:flex;}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--gold-border);border-radius:8px;padding:10px 20px;font-size:13px;transition:.3s;z-index:400;color:var(--gold);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <h1>🌾 גרעיני עפולה חממה</h1>
+    <p>שיבוץ משמרות</p>
+  </div>
+</header>
+
+<div class="action-bar">
+  <button class="act-btn" onclick="loadFromGitHub()">🔄 רענן</button>
+  <button class="act-btn" onclick="clearFilled()">🗑️ נקה</button>
+  <button class="act-btn" onclick="saveAll()">💾 שמור</button>
+  <button class="act-btn" onclick="showPreview()">👁️ תצוגה מקדימה</button>
+  <button class="act-btn primary" onclick="shareToWhatsApp()">📤 שתף בוואטסאפ</button>
+</div>
+
+<div class="branch-bar" id="branchBar"></div>
+
+<div class="info-bar">
+  <div class="ii">סניף: <strong id="branchLbl">—</strong></div>
+  <div class="ii">שבוע: <strong id="weekLbl">—</strong></div>
+  <div class="deadline">⏰ הגשה עד חמישי 12:00</div>
+  <div class="legend">
+    <div class="li"><div class="ld" style="background:var(--morning)"></div>בוקר</div>
+    <div class="li"><div class="ld" style="background:var(--evening)"></div>ערב</div>
+    <div class="li"><div class="ld" style="background:var(--double)"></div>⚡ כפולה = בוקר+ערב</div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- Availability table -->
+  <div class="sec-box" id="availSection">
+    <div class="sec-head">
+      <h3>👥 זמינויות שהתקבלו</h3>
+      <span>גרור שם למשמרת הרצויה ↓</span>
+    </div>
+    <div class="tscroll"><table id="availTable"></table></div>
+  </div>
+
+  <!-- Shift assignment table -->
+  <div class="sec-box" id="filledSection">
+    <div class="sec-head">
+      <h3>📋 שיבוץ סופי</h3>
+      <span>גרור מלמעלה או לחץ +</span>
+    </div>
+    <div class="tscroll"><table id="filledTable"></table></div>
+  </div>
+</div>
+
+<!-- Dropdown -->
+<div class="overlay" id="overlay" onclick="closeDD()"></div>
+<div class="dd" id="ddMenu" style="display:none"></div>
+
+<!-- Preview Modal -->
+<div class="modal-overlay" id="previewModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="previewTitle">תצוגה מקדימה</h3>
+      <button class="modal-close" onclick="closePreview()">×</button>
+    </div>
+    <div class="modal-body" id="previewBody"></div>
+    <div class="modal-footer">
+      <button class="act-btn" onclick="closePreview()">סגור</button>
+      <button class="act-btn primary" onclick="shareToWhatsApp();closePreview()">📤 שתף בוואטסאפ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Share loading overlay -->
+<div class="share-loading" id="shareLoading">
+  <div class="spinner"></div>
+  <div>מכין תמונה לשיתוף...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BRANCHES=['הרצליה סוקולוב 16','הרצליה סוקולוב 27','הרצליה צומת כדורי','גבעת שמואל','מודיעין מתחם שופרסל','מודיעין מתחם רמי לוי','מודיעין דם המכבים','פתח תקווה'];
+const DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי'];
+const TYPES=['morning','evening','double'];
+const TL={morning:'בוקר',evening:'ערב',double:'כפולה'};
+
+let curBranch=BRANCHES[0];
+let shifts={},avails={};
+let dragName=null,pending=null;
+
+try{shifts=JSON.parse(localStorage.getItem('garn_shifts')||'{}');}catch(e){}
+try{avails=JSON.parse(localStorage.getItem('garn_avails')||'{}');}catch(e){}
+
+// ── Week dates ──
+function getWeekDates(){
+  const now=new Date(),day=now.getDay();
+  const sun=new Date(now);
+  sun.setDate(now.getDate()+(day===0?7:7-day));
+  return DAYS.map((_,i)=>{const d=new Date(sun);d.setDate(sun.getDate()+i);return d.getDate()+'.'+(d.getMonth()+1);});
+}
+
+function updateLabels(){
+  const dates=getWeekDates();
+  document.getElementById('branchLbl').textContent=curBranch;
+  document.getElementById('weekLbl').textContent=dates[0]+'—'+dates[5]+'.'+new Date().getFullYear();
+}
+
+// ── Sorted employees (by submission order) ──
+function getSortedEmployees(){
+  return Object.entries(avails)
+    .sort((a,b)=>{
+      const ta=a[1].timestamp||'';const tb=b[1].timestamp||'';
+      if(ta&&tb)return ta.localeCompare(tb);
+      return a[0].localeCompare(b[0],'he');
+    })
+    .map(([name])=>name);
+}
+
+// ── Branches ──
+function initBranches(){
+  const bar=document.getElementById('branchBar');
+  BRANCHES.forEach(b=>{
+    const btn=document.createElement('button');
+    btn.className='bb'+(b===curBranch?' active':'');
+    btn.textContent=b;
+    btn.onclick=()=>selectBranch(b);
+    bar.appendChild(btn);
+  });
+}
+function selectBranch(b){
+  curBranch=b;
+  document.querySelectorAll('.bb').forEach(btn=>btn.classList.toggle('active',btn.textContent===b));
+  updateLabels();renderAll();
+}
+
+// ── Data ──
+function getCell(day,type){
+  if(!shifts[curBranch])shifts[curBranch]={};
+  if(!shifts[curBranch][day])shifts[curBranch][day]={morning:[],evening:[],double:[],notes:''};
+  return shifts[curBranch][day];
+}
+
+function buildHeader(dates){
+  let h='<thead><tr><th>משמרת</th>';
+  DAYS.forEach((d,i)=>h+=`<th><div class="th-day">יום ${d}</div><div class="th-date">${dates[i]}</div></th>`);
+  return h+'</tr></thead>';
+}
+
+// ── Render all ──
+function renderAll(){renderAvailTable();renderFilledTable();}
+
+// ── TABLE 1: Availability ──
+function renderAvailTable(){
+  const dates=getWeekDates();
+  const names=getSortedEmployees();
+  const t=document.getElementById('availTable');
+  if(!names.length){
+    t.innerHTML=`<tbody><tr><td colspan="7"><div class="empty-state">
+      טרם התקבלו זמינויות<br>
+      <button onclick="addDemo()">🔧 טען דוגמה</button>
+    </div></td></tr></tbody>`;
+    return;
+  }
+  let html=buildHeader(dates)+'<tbody>';
+  ['morning','evening'].forEach(type=>{
+    html+=`<tr class="row-${type}"><td>${TL[type]}</td>`;
+    DAYS.forEach((day,di)=>{
+      const isFri=di===5;
+      if(isFri&&type!=='morning'){html+=`<td style="background:rgba(0,0,0,.15)"></td>`;return;}
+      const assigned=(getCell(day,type)[type]||[]);
+      const chips=names.filter(n=>{
+        const t=avails[n]&&avails[n][day];
+        return t===type||t==='double';
+      }).map(n=>{
+        const used=assigned.includes(n);
+        const isDouble=avails[n]&&avails[n][day]==='double';
+        return('<div class="av-chip '+type+(used?' used':'')+'" '
+          +(used?'':'draggable="true" ondragstart="startDrag(event,\'' +n+ '\',\''+type+'\');" ondragend="endDrag(event)"')
+          +' title="'+(isDouble?'כפולה — יוכנס לבוקר וערב':'')+'">'+n+(isDouble?' ⚡':'')+'</div>');
+      }).join('');
+      html+=`<td><div class="av-cell">${chips||'<span style="font-size:9px;color:var(--border2)">—</span>'}</div></td>`;
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  t.innerHTML=html;
+}
+
+// ── TABLE 2: Filled shifts ──
+function renderFilledTable(){
+  const dates=getWeekDates();
+  const t=document.getElementById('filledTable');
+  let html=buildHeader(dates)+'<tbody>';
+  ['morning','evening'].forEach(type=>{
+    html+=`<tr class="row-${type}"><td>${TL[type]}</td>`;
+    DAYS.forEach((day,di)=>{
+      const isFri=di===5;
+      if(isFri&&type!=='morning'){html+=`<td><div class="sc disabled"></div></td>`;return;}
+      const emps=(getCell(day,type)[type]||[]);
+      let sc=`<div class="sc${emps.length?' has-emp':''}" data-day="${day}" data-type="${type}">`;
+      emps.forEach((emp,ei)=>sc+=`<div class="sc-chip ${type}">${emp}<button class="rm" onclick="removeEmp('${day}','${type}',${ei},event)">×</button></div>`);
+      sc+=`<button class="add-btn" onclick="openDD('${day}','${type}',event)">+ הוסף</button></div>`;
+      html+=`<td>${sc}</td>`;
+    });
+    html+='</tr>';
+  });
+  html+='<tr><td style="font-size:9px">הערות</td>';
+  DAYS.forEach(day=>{
+    const n=(getCell(day,'notes').notes||'').replace(/"/g,'&quot;');
+    html+=`<td><input class="notes-inp" placeholder="הערה..." value="${n}" onchange="setNote('${day}',this.value)"></td>`;
+  });
+  html+='</tr></tbody>';
+  t.innerHTML=html;
+
+  // Drop events
+  document.querySelectorAll('#filledTable .sc:not(.disabled)').forEach(el=>{
+    el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('drag-over');});
+    el.addEventListener('dragleave',()=>el.classList.remove('drag-over'));
+    el.addEventListener('drop',e=>{
+      e.preventDefault();el.classList.remove('drag-over');
+      if(!dragName)return;
+      addEmpToCell(el.dataset.day,el.dataset.type,dragName);
+      renderAll();saveAll();
+    });
+  });
+}
+
+function setNote(day,val){getCell(day,'notes').notes=val;}
+
+// ── Drag ──
+function startDrag(e,name,type){
+  dragName=name;
+  e.dataTransfer.effectAllowed='copy';
+  setTimeout(()=>e.target.classList.add('dragging'),0);
+}
+function endDrag(e){
+  e.target.classList.remove('dragging');dragName=null;
+  document.querySelectorAll('.sc').forEach(el=>el.classList.remove('drag-over'));
+}
+
+// ── Dropdown ──
+function openDD(day,type,e){
+  e.stopPropagation();pending={day,type};
+  const avNames=getSortedEmployees().filter(n=>{const t=avails[n]&&avails[n][day];return t===type||t==='double';});
+  const saved=getSavedEmps();
+  const menu=document.getElementById('ddMenu');
+  let html=`<input class="dd-search" id="ddS" placeholder="חפש שם..." oninput="filterDD()">`;
+  if(avNames.length){html+=`<div class="dd-lbl">זמינים</div>`;avNames.forEach(n=>html+=`<div class="dd-item" onclick="addEmpDD('${n}')"><div class="dd-dot" style="background:var(--off)"></div>${n}</div>`);html+='<div class="dd-sep"></div>';}
+  saved.filter(n=>!avNames.includes(n)).forEach(n=>html+=`<div class="dd-item" onclick="addEmpDD('${n}')"><div class="dd-dot" style="background:var(--muted)"></div>${n}</div>`);
+  html+=`<div class="dd-sep"></div><div class="dd-item" onclick="addCustomDD()"><div class="dd-dot" style="background:var(--gold)"></div>➕ שם חדש...</div>`;
+  menu.innerHTML=html;menu.style.display='block';
+  const rect=e.target.getBoundingClientRect();
+  menu.style.top=(rect.bottom+4)+'px';menu.style.right=(window.innerWidth-rect.right)+'px';menu.style.left='auto';
+  document.getElementById('overlay').classList.add('on');
+  setTimeout(()=>document.getElementById('ddS')?.focus(),50);
+}
+function filterDD(){const q=document.getElementById('ddS')?.value.toLowerCase()||'';document.querySelectorAll('.dd-item').forEach(el=>el.style.display=el.textContent.toLowerCase().includes(q)?'':'none');}
+function addEmpToCell(day,type,name){
+  // If employee submitted 'double', add to both morning and evening
+  const empAvail=avails[name]&&avails[name][day];
+  if(empAvail==='double'){
+    const mCell=getCell(day,'morning');
+    const eCell=getCell(day,'evening');
+    if(!mCell.morning.includes(name))mCell.morning.push(name);
+    if(!eCell.evening.includes(name))eCell.evening.push(name);
+  } else {
+    const cell=getCell(day,type);
+    if(!cell[type].includes(name))cell[type].push(name);
+  }
+  rememberEmp(name);
+}
+
+function addEmpDD(name){if(!pending)return;addEmpToCell(pending.day,pending.type,name);closeDD();renderAll();saveAll();}
+function addCustomDD(){const name=prompt('שם העובד:');if(name&&name.trim())addEmpDD(name.trim());else closeDD();}
+function removeEmp(day,type,idx,e){e.stopPropagation();getCell(day,type)[type].splice(idx,1);renderAll();saveAll();}
+function closeDD(){document.getElementById('ddMenu').style.display='none';document.getElementById('overlay').classList.remove('on');pending=null;}
+
+function rememberEmp(name){let s=getSavedEmps();if(!s.includes(name)){s.push(name);localStorage.setItem('garn_emps',JSON.stringify(s));}}
+function getSavedEmps(){try{return JSON.parse(localStorage.getItem('garn_emps')||'[]');}catch(e){return[];}}
+
+// ── Preview Modal ──
+function showPreview(){
+  const dates=getWeekDates();
+  document.getElementById('previewTitle').textContent='תצוגה מקדימה — '+curBranch+' | שבוע '+dates[0]+'—'+dates[5];
+  const body=document.getElementById('previewBody');
+
+  let html=`<table style="width:100%;border-collapse:collapse;min-width:600px;font-family:Heebo,sans-serif;font-size:12px;">
+  <thead><tr style="background:#1a1a1a;">
+    <th style="padding:8px;text-align:right;color:#888;border-bottom:1px solid #2e2e2e;width:70px">משמרת</th>`;
+  DAYS.forEach((d,i)=>html+=`<th style="padding:8px;text-align:center;color:#f0f0f0;border-bottom:1px solid #2e2e2e;">יום ${d}<br><span style="font-size:9px;color:#888">${dates[i]}</span></th>`);
+  html+='</tr></thead><tbody>';
+
+  ['morning','evening'].forEach(type=>{
+    const colors={morning:'#3d8ef0',evening:'#9b59b6',double:'#e74c3c'};
+    html+=`<tr>
+      <td style="padding:8px;background:#1a1a1a;font-weight:700;color:#888;border-right:3px solid ${colors[type]};border-bottom:1px solid #2e2e2e;">${TL[type]}</td>`;
+    DAYS.forEach((day,di)=>{
+      const isFri=di===5;
+      if(isFri&&type!=='morning'){html+=`<td style="background:rgba(0,0,0,.3);border-bottom:1px solid #2e2e2e;border-left:1px solid #2e2e2e;"></td>`;return;}
+      const emps=(getCell(day,type)[type]||[]);
+      const names=emps.map(n=>`<div style="background:#2a2a2a;border-radius:3px;padding:2px 6px;margin:1px 0;font-size:11px;border-right:2px solid ${colors[type]}">${n}</div>`).join('');
+      html+=`<td style="padding:4px;border-bottom:1px solid #2e2e2e;border-left:1px solid #2e2e2e;vertical-align:top;min-height:40px;">${names||'<span style="color:#3a3a3a;font-size:10px">—</span>'}</td>`;
+    });
+    html+='</tr>';
+  });
+
+  // Notes
+  html+='<tr><td style="padding:8px;background:#1a1a1a;font-size:10px;color:#888;border-right:1px solid #2e2e2e;">הערות</td>';
+  DAYS.forEach(day=>{
+    const note=getCell(day,'notes').notes||'';
+    html+=`<td style="padding:6px;font-size:10px;color:#888;border-left:1px solid #2e2e2e;">${note}</td>`;
+  });
+  html+='</tr></tbody></table>';
+
+  body.innerHTML=html;
+  document.getElementById('previewModal').classList.add('on');
+}
+function closePreview(){document.getElementById('previewModal').classList.remove('on');}
+
+// ── Share to WhatsApp ──
+async function shareToWhatsApp(){
+  document.getElementById('shareLoading').classList.add('on');
+  try{
+    // Build a clean printable table element
+    const dates=getWeekDates();
+    const el=document.createElement('div');
+    el.style.cssText='background:#111;padding:16px;font-family:Heebo,sans-serif;direction:rtl;width:750px;';
+    
+    // Title
+    el.innerHTML=`<div style="margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #c9a84c;">
+      <div style="font-size:18px;font-weight:800;color:#c9a84c;">🌾 גרעיני עפולה חממה</div>
+      <div style="font-size:13px;color:#888;margin-top:3px;">שיבוץ משמרות — ${curBranch} | שבוע ${dates[0]}—${dates[5]}.${new Date().getFullYear()}</div>
+    </div>`;
+
+    // Table
+    let tbl=`<table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead><tr style="background:#1a1a1a;">
+        <th style="padding:8px;text-align:right;color:#888;border:1px solid #2e2e2e;width:60px">משמרת</th>`;
+    DAYS.forEach((d,i)=>tbl+=`<th style="padding:8px;text-align:center;color:#f0f0f0;border:1px solid #2e2e2e;">יום ${d}<br><span style="font-size:9px;color:#888">${dates[i]}</span></th>`);
+    tbl+='</tr></thead><tbody>';
+
+    const colors={morning:'#3d8ef0',evening:'#9b59b6',double:'#e74c3c'};
+    ['morning','evening'].forEach(type=>{
+      tbl+=`<tr><td style="padding:8px;background:#1a1a1a;font-weight:700;color:${colors[type]};border:1px solid #2e2e2e;border-right:3px solid ${colors[type]};">${TL[type]}</td>`;
+      DAYS.forEach((day,di)=>{
+        const isFri=di===5;
+        if(isFri&&type!=='morning'){tbl+=`<td style="background:#0d0d0d;border:1px solid #2e2e2e;"></td>`;return;}
+        const emps=(getCell(day,type)[type]||[]);
+        const names=emps.map(n=>`<div style="background:#2a2a2a;border-radius:3px;padding:3px 7px;margin:2px 0;color:#f0f0f0;font-size:11px;border-right:2px solid ${colors[type]}">${n}</div>`).join('');
+        tbl+=`<td style="padding:4px;border:1px solid #2e2e2e;vertical-align:top;min-height:40px;">${names||''}</td>`;
+      });
+      tbl+='</tr>';
+    });
+    tbl+='</tbody></table>';
+    el.innerHTML+=tbl;
+
+    document.body.appendChild(el);
+    const canvas=await html2canvas(el,{backgroundColor:'#111111',scale:2,useCORS:true});
+    document.body.removeChild(el);
+
+    canvas.toBlob(async blob=>{
+      document.getElementById('shareLoading').classList.remove('on');
+      // Save image and open WhatsApp
+      const url=URL.createObjectURL(blob);
+      // Try native share first (mobile)
+      const file=new File([blob],'שיבוץ.png',{type:'image/png'});
+      // Web Share API - opens native share sheet
+      if(navigator.share){
+        try{
+          await navigator.share({files:[file],title:'שיבוץ משמרות — '+curBranch});
+          showToast('✅ נשלח!');
+        }catch(err){
+          if(err.name!=='AbortError'){
+            const a=document.createElement('a');a.href=url;a.download='שיבוץ.png';
+            document.body.appendChild(a);a.click();document.body.removeChild(a);
+            showToast('📥 הורד — שתף מהגלריה');
+          }
+        }
+      } else {
+        const a=document.createElement('a');a.href=url;a.download='שיבוץ_'+curBranch+'.png';
+        document.body.appendChild(a);a.click();document.body.removeChild(a);
+        showToast('📥 התמונה הורדה');
+      }
+      URL.revokeObjectURL(url);
+    },'image/png');
+  }catch(e){
+    document.getElementById('shareLoading').classList.remove('on');
+    console.error(e);
+    showToast('❌ שגיאה: '+e.message);
+  }
+}
+
+// ── Demo ──
+function addDemo(){
+  const names=['יובל כהן','שירה לוי','נועה מזרחי','אביב פרץ','רון דוד','מיכל אברהם','עידן חיים','ליאור בן-דוד'];
+  const types=['morning','evening','double','morning','morning','evening','off'];
+  let t=Date.now();
+  names.forEach((n,i)=>{
+    avails[n]={timestamp:new Date(t-i*60000).toISOString()};
+    DAYS.forEach(d=>{avails[n][d]=types[Math.floor(Math.random()*types.length)];});
+  });
+  localStorage.setItem('garn_avails',JSON.stringify(avails));
+  renderAll();showToast('✅ נטענו 8 עובדים לדוגמה');
+}
+
+// ── Save/Clear ──
+function saveAll(){
+  localStorage.setItem('garn_shifts',JSON.stringify(shifts));
+  saveShiftsToGitHub();
+  showToast('💾 נשמר');
+}
+
+async function saveShiftsToGitHub(){
+  try{
+    const TOKEN='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';
+    const REPO='097733273iapp/hamamaorders';
+    const FILE='shifts.json';
+    const API='https://api.github.com/repos/'+REPO+'/contents/'+FILE;
+    let sha='';
+    try{const r=await fetch(API,{headers:{'Authorization':'token '+TOKEN}});if(r.ok){const d=await r.json();sha=d.sha;}}catch(e){}
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(shifts,null,2))));
+    const body={message:'שיבוץ עודכן',content};
+    if(sha)body.sha=sha;
+    await fetch(API,{method:'PUT',headers:{'Authorization':'token '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  }catch(e){console.log('GitHub shifts save:',e);}
+}
+function clearFilled(){
+  if(!confirm('למחוק שיבוץ של '+curBranch+'?'))return;
+  delete shifts[curBranch];
+  localStorage.setItem('garn_shifts',JSON.stringify(shifts));
+  saveShiftsToGitHub();
+  renderAll();showToast('🗑️ נוקה');
+}
+
+// ── GitHub ──
+async function loadFromGitHub(){
+  try{
+    // Load availabilities
+    const r1=await fetch('https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/availability.json?t='+Date.now());
+    if(r1.ok){const data=await r1.json();Object.assign(avails,data);localStorage.setItem('garn_avails',JSON.stringify(avails));}
+    // Load saved shifts
+    const r2=await fetch('https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/shifts.json?t='+Date.now());
+    if(r2.ok){const data=await r2.json();Object.assign(shifts,data);localStorage.setItem('garn_shifts',JSON.stringify(shifts));}
+    renderAll();showToast('✅ עודכן מ-GitHub');
+  }catch(e){console.log('GitHub load:',e);}
+}
+
+function loadFromURL(){
+  const p=new URLSearchParams(window.location.search);
+  if(p.get('avail')){try{const d=JSON.parse(atob(p.get('avail')));avails[d.name]=d;localStorage.setItem('garn_avails',JSON.stringify(avails));showToast('✅ זמינות של '+d.name+' נשמרה!');renderAll();}catch(e){}}
+}
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// ── Init ──
+initBranches();updateLabels();renderAll();loadFromURL();loadFromGitHub();
+</script>
+</body>
+</html>
