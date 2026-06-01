@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>זמינות משמרות — גרעיני עפולה חממה</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:#111111;--black2:#1a1a1a;--card:#1e1e1e;
+  --gold:#c9a84c;--gold2:#e8c96a;
+  --gold-dim:rgba(201,168,76,0.15);--gold-border:rgba(201,168,76,0.35);
+  --text:#f0f0f0;--muted:#888;--border:#2e2e2e;--dark2:#2a2a2a;
+  --morning:#3d8ef0;--evening:#9b59b6;--double:#e74c3c;--off:#555;
+  --r:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Heebo','Segoe UI',sans-serif;background:var(--black);color:var(--text);min-height:100vh;padding-bottom:100px;}
+
+/* Header */
+header{
+  background:linear-gradient(135deg,#222218,#1a1a14);
+  border-bottom:2px solid var(--gold-border);
+  padding:16px 20px;text-align:center;
+}
+header h1{font-size:18px;font-weight:800;color:var(--gold);}
+header p{font-size:12px;color:var(--muted);margin-top:3px;}
+
+/* Name screen */
+.name-screen{
+  max-width:400px;margin:60px auto;padding:0 20px;text-align:center;
+}
+.name-screen h2{font-size:22px;font-weight:800;margin-bottom:8px;}
+.name-screen p{font-size:14px;color:var(--muted);margin-bottom:28px;}
+.name-input{
+  width:100%;background:var(--card);border:2px solid var(--border);
+  border-radius:var(--r);padding:14px 18px;color:var(--text);
+  font-size:16px;font-family:'Heebo',sans-serif;outline:none;
+  text-align:center;transition:.2s;
+}
+.name-input:focus{border-color:var(--gold-border);}
+.name-btn{
+  width:100%;margin-top:14px;padding:14px;
+  background:var(--gold);color:#000;border:none;
+  border-radius:var(--r);font-size:16px;font-weight:800;
+  font-family:'Heebo',sans-serif;cursor:pointer;transition:.2s;
+}
+.name-btn:hover{background:var(--gold2);}
+
+/* Main form */
+.form-screen{max-width:500px;margin:0 auto;padding:20px;}
+.greeting{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px 20px;margin-bottom:20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.greeting span{font-size:16px;font-weight:700;}
+.greeting span strong{color:var(--gold);}
+.change-name{background:none;border:none;color:var(--muted);font-size:12px;font-family:'Heebo',sans-serif;cursor:pointer;text-decoration:underline;}
+
+.deadline-card{
+  background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.3);
+  border-radius:var(--r);padding:12px 16px;margin-bottom:20px;
+  font-size:13px;color:#e74c3c;font-weight:600;text-align:center;
+}
+
+/* Day card */
+.day-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);margin-bottom:12px;overflow:hidden;
+  transition:.2s;
+}
+.day-card.done{border-color:var(--gold-border);}
+.day-header{
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+}
+.day-name{font-size:16px;font-weight:700;}
+.day-date{font-size:12px;color:var(--muted);}
+.day-selected{font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;}
+
+.shift-options{
+  padding:0 12px 14px;
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+}
+.shift-btn{
+  padding:12px 8px;border-radius:8px;border:2px solid var(--border);
+  background:var(--dark2);color:var(--muted);
+  font-size:13px;font-weight:700;font-family:'Heebo',sans-serif;
+  cursor:pointer;transition:.2s;text-align:center;
+}
+.shift-btn:hover{border-color:var(--gold-border);}
+.shift-btn.sel-morning{border-color:var(--morning);background:rgba(61,142,240,.15);color:var(--morning);}
+.shift-btn.sel-evening{border-color:var(--evening);background:rgba(155,89,182,.15);color:var(--evening);}
+.shift-btn.sel-double{border-color:var(--double);background:rgba(231,76,60,.15);color:var(--double);}
+.shift-btn.sel-off{border-color:#555;background:rgba(85,85,85,.15);color:#999;}
+
+/* Submit */
+.submit-wrap{
+  position:fixed;bottom:0;right:0;left:0;
+  padding:16px 20px;
+  background:linear-gradient(to top,#111 60%,transparent);
+}
+.submit-btn{
+  width:100%;max-width:500px;margin:0 auto;display:block;
+  padding:16px;background:var(--gold);color:#000;border:none;
+  border-radius:var(--r);font-size:16px;font-weight:800;
+  font-family:'Heebo',sans-serif;cursor:pointer;transition:.2s;
+}
+.submit-btn:hover{background:var(--gold2);}
+.submit-btn:disabled{background:var(--border);color:var(--muted);cursor:default;}
+
+/* Success screen */
+.success-screen{
+  max-width:400px;margin:60px auto;padding:0 20px;text-align:center;
+}
+.success-icon{font-size:64px;margin-bottom:20px;}
+.success-screen h2{font-size:24px;font-weight:800;color:var(--gold);margin-bottom:10px;}
+.success-screen p{font-size:14px;color:var(--muted);line-height:1.6;}
+.summary-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;margin-top:24px;text-align:right;
+}
+.summary-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.summary-row:last-child{border-bottom:none;}
+.summary-type{font-weight:700;}
+.t-morning{color:var(--morning);}
+.t-evening{color:var(--evening);}
+.t-double{color:var(--double);}
+.t-off{color:var(--muted);}
+
+.note-wrap{padding:0 12px 14px;}
+.note-inp{width:100%;background:#2a2a2a;border:1px solid #444;border-radius:8px;padding:10px 14px;color:#f0f0f0;font-size:14px;font-family:'Heebo',sans-serif;outline:none;transition:.2s;direction:rtl;-webkit-text-fill-color:#f0f0f0;}
+.note-inp:focus{border-color:#c9a84c;outline:none;background:#333;}
+.note-inp::placeholder{color:#555;font-size:13px;-webkit-text-fill-color:#555;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌾 גרעיני עפולה חממה</h1>
+  <p id="headerSub">שליחת זמינות משמרות</p>
+</header>
+
+<!-- Name screen -->
+<div class="name-screen" id="nameScreen">
+  <h2>👋 שלום!</h2>
+  <p>לפני שנתחיל, מה שמך?</p>
+  <input class="name-input" id="nameInput" type="text" placeholder="שם מלא..." maxlength="30" onkeydown="if(event.key==='Enter')confirmName()">
+  <button class="name-btn" onclick="confirmName()">המשך ←</button>
+</div>
+
+<!-- Availability form -->
+<div class="form-screen" id="formScreen" style="display:none">
+  <div class="greeting">
+    <span>שלום, <strong id="greetName">—</strong> 👋</span>
+    <button class="change-name" onclick="changeName()">שנה שם</button>
+  </div>
+  <div class="deadline-card">⏰ יש לשלוח זמינות עד יום חמישי בשעה 12:00</div>
+  <div id="dayCards"></div>
+</div>
+
+<!-- Submit button -->
+<div class="submit-wrap" id="submitWrap" style="display:none">
+  <button class="submit-btn" id="submitBtn" onclick="submitAvailability()">שלח זמינות ✓</button>
+</div>
+
+<!-- Success screen -->
+<div class="success-screen" id="successScreen" style="display:none">
+  <div class="success-icon">✅</div>
+  <h2>נשלח בהצלחה!</h2>
+  <p>הזמינות שלך התקבלה.<br>המנהל יראה אותה בממשק השיבוץ.</p>
+  <div class="summary-card" id="summaryCard"></div>
+  <button class="name-btn" style="margin-top:16px" onclick="editAgain()">ערוך שוב</button>
+</div>
+
+<script>
+const DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי'];
+const SHIFTS=[
+  {id:'בוקר',label:'☀️ בוקר',cls:'sel-morning'},
+  {id:'ערב',label:'🌙 ערב',cls:'sel-evening'},
+  {id:'כפולה',label:'⚡ כפולה',cls:'sel-double'},
+  {id:'חופש',label:'🏖️ חופש',cls:'sel-off'},
+];
+const SHIFT_LABELS={בוקר:'בוקר',ערב:'ערב',כפולה:'כפולה',חופש:'חופש'};
+const SHIFT_CSS={בוקר:'morning',ערב:'evening',כפולה:'double',חופש:'off'};
+
+let empName='';
+let selections={}; // { day: type }
+let notes={}; // { day: note }
+
+// Load saved name
+try{
+  const saved=localStorage.getItem('garn_emp_name');
+  if(saved){empName=saved;showForm();}
+}catch(e){}
+
+function getWeekDates(){
+  const now=new Date();
+  const day=now.getDay();
+  const sun=new Date(now);
+  sun.setDate(now.getDate()+(day===0?7:7-day));
+  return DAYS.map((_,i)=>{
+    const d=new Date(sun);
+    d.setDate(sun.getDate()+i);
+    return d.getDate()+'.'+(d.getMonth()+1);
+  });
+}
+
+// Show branch in header
+(function(){
+  const b=new URLSearchParams(window.location.search).get('branch');
+  if(b){
+    const el=document.getElementById('headerSub');
+    if(el)el.textContent='סניף '+b+' | זמינות משמרות';
+  }
+})();
+
+async function loadMyDataFromGitHub(name){
+  try{
+    const r=await fetch('https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/availability.json?t='+Date.now());
+    if(!r.ok)return;
+    const data=await r.json();
+    if(data[name]){
+      const saved=data[name];
+      if(saved.days)Object.assign(selections,saved.days);
+      showToast('✅ נטענו הנתונים שלך');
+    }
+  }catch(e){console.log('load:',e);}
+}
+
+function confirmName(){
+  const val=document.getElementById('nameInput').value.trim();
+  if(!val){document.getElementById('nameInput').focus();return;}
+  empName=val;
+  localStorage.setItem('garn_emp_name',empName);
+  showForm();
+}
+
+function changeName(){
+  document.getElementById('nameScreen').style.display='block';
+  document.getElementById('formScreen').style.display='none';
+  document.getElementById('submitWrap').style.display='none';
+  document.getElementById('nameInput').value=empName;
+}
+
+function showForm(){
+  document.getElementById('nameScreen').style.display='none';
+  document.getElementById('formScreen').style.display='block';
+  document.getElementById('submitWrap').style.display='block';
+  document.getElementById('successScreen').style.display='none';
+  document.getElementById('greetName').textContent=empName;
+  // טען נתונים מ-GitHub
+  loadMyDataFromGitHub(empName).then(()=>{
+    renderDayCards();
+    updateSubmitBtn();
+  });
+}
+
+function renderDayCards(){
+  const dates=getWeekDates();
+  const container=document.getElementById('dayCards');
+  container.innerHTML=DAYS.map((day,di)=>{
+    const isFri=di===5;
+    const sel=selections[day];
+    const selLabel=sel?SHIFT_LABELS[sel]:'';
+    const selCls=sel?'t-'+(SHIFT_CSS[sel]||sel):'';
+    
+    // Friday only morning/off
+    const shifts=isFri?SHIFTS.filter(s=>s.id==='בוקר'||s.id==='חופש'):SHIFTS;
+    
+    const btns=shifts.map(s=>{
+      const isSelected=sel===s.id;
+      return`<button class="shift-btn${isSelected?' '+s.cls:''}" onclick="selectShift('${day}','${s.id}')">${s.label}</button>`;
+    }).join('');
+
+    return`<div class="day-card${sel?' done':''}" id="daycard_${di}">
+      <div class="day-header">
+        <div>
+          <div class="day-name">יום ${day}</div>
+          <div class="day-date">${dates[di]}${isFri?' (יום קצר)':''}</div>
+        </div>
+        ${sel?`<div class="day-selected ${selCls}">${selLabel} ✓</div>`:'<div class="day-selected" style="color:var(--muted)">לא נבחר</div>'}
+      </div>
+      <div class="shift-options">${btns}</div>
+      <div class="note-wrap">
+        <input class="note-inp" type="text" placeholder="הערה (אופציונלי)..." value="${note.replace(/"/g,'&quot;')}" oninput="setNote('${day}',this.value)">
+      </div>
+    </div>`;
+  }).join('');
+}
+
+
+function selectShift(day,type){
+  selections[day]=type;
+  renderDayCards();
+  updateSubmitBtn();
+}
+
+function updateSubmitBtn(){
+  const filled=Object.keys(selections).length;
+  const btn=document.getElementById('submitBtn');
+  if(filled===DAYS.length){
+    btn.disabled=false;
+    btn.textContent='שלח זמינות ✓ ('+filled+'/'+DAYS.length+' ימים)';
+  } else {
+    btn.disabled=false;
+    btn.textContent=`שלח זמינות (${filled}/${DAYS.length} ימים מולאו)`;
+    if(filled===0)btn.textContent='שלח זמינות ✓';
+  }
+}
+
+function submitAvailability(){
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;
+  btn.textContent='שולח...';
+  const branch=new URLSearchParams(window.location.search).get('branch')||'';
+
+  // Save locally
+  let avails={};
+  try{avails=JSON.parse(localStorage.getItem('garn_avails')||'{}');}catch(e){}
+  avails[empName]={days:selections,branch,timestamp:new Date().toISOString()};
+  localStorage.setItem('garn_avails',JSON.stringify(avails));
+
+  // Build WhatsApp message to bot
+  const DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי'];
+  const daysStr=DAYS.map(d=>d+':'+(selections[d]||'חופש')).join(',');
+  const BOT_NUMBER='97297733273';
+  const msg='הגשת משמרות|'+empName+'|'+branch+'|'+daysStr;
+  window.open('https://wa.me/'+BOT_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
+
+  showSuccess();
+}
+
+function showSuccess(){
+  document.getElementById('formScreen').style.display='none';
+  document.getElementById('submitWrap').style.display='none';
+  document.getElementById('successScreen').style.display='block';
+
+  const dates=getWeekDates();
+  const rows=DAYS.map((day,i)=>{
+    const t=selections[day]||'—';
+    const cls=t!=='—'?'t-'+(SHIFT_CSS[t]||t):'';
+    const n=notes[day]?` — ${notes[day]}`:'';
+    return`<div class="summary-row">
+      <span>יום ${day} ${dates[i]}${n}</span>
+      <span class="summary-type ${cls}">${t!=='—'?SHIFT_LABELS[t]:'לא מולא'}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('summaryCard').innerHTML=rows;
+}
+
+function editAgain(){
+  showForm();
+}
+
+function showToast(msg){
+  let t=document.getElementById('av-toast');
+  if(!t){t=document.createElement('div');t.id='av-toast';t.style.cssText='position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e1e1e;border:1px solid #c9a84c;border-radius:8px;padding:10px 20px;font-size:13px;transition:.3s;z-index:400;color:#c9a84c;';document.body.appendChild(t);}
+  t.textContent=msg;t.style.transform='translateX(-50%) translateY(0)';
+  setTimeout(()=>t.style.transform='translateX(-50%) translateY(80px)',2500);
+}
+</script>
+</body>
+</html>
