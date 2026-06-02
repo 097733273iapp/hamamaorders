@@ -112,7 +112,6 @@ tbody tr:last-child td{border-bottom:none;}
     <input id="pgPhone" type="tel" inputmode="numeric" placeholder="מספר טלפון" style="width:100%;padding:13px;border-radius:10px;border:1px solid var(--gold-border);background:var(--card);color:var(--text);font-size:16px;text-align:center;font-family:'Heebo',sans-serif;margin-bottom:12px;box-sizing:border-box;">
     <button onclick="pgSubmit()" style="width:100%;padding:13px;border-radius:10px;border:none;background:var(--gold);color:#000;font-size:15px;font-weight:800;font-family:'Heebo',sans-serif;cursor:pointer;">כניסה</button>
     <div id="pgErr" style="display:none;color:#e0607a;font-size:12px;margin-top:12px;"></div>
-    <div style="margin-top:20px;"><a onclick="pgMgmt()" style="color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer;">אני מההנהלה</a></div>
   </div>
 </div>
 
@@ -185,6 +184,7 @@ const PHONE_TO_BRANCH = {
   '0525254458':'גבעת שמואל',
   '0545981318':'מודיעין מתחם רמי לוי'
 };
+const PHONE_MGMT = ['0505921127','0506325063','0523271473','0544622055']; // עידן, רועי, סיגלית, אנגל — גישה מלאה
 function normalizePhone(p){
   let d = (p||'').replace(/\D/g,'');
   if (d.startsWith('972')) d = '0' + d.slice(3);
@@ -624,15 +624,15 @@ function showPhoneGate(){
 function pgSubmit(){
   const d = normalizePhone(document.getElementById('pgPhone').value);
   const branch = PHONE_TO_BRANCH[d];
-  if (!branch || !BRANCHES.includes(branch)){
-    const e=document.getElementById('pgErr'); e.textContent='מספר לא מזוהה. נסה שוב או פנה להנהלה.'; e.style.display='block'; return;
+  if (branch && BRANCHES.includes(branch)){
+    try{ localStorage.setItem('hm_mgr_branch',branch); localStorage.removeItem('hm_is_mgmt'); }catch(_){}
+    location.href = location.pathname;
+  } else if (PHONE_MGMT.includes(d)){
+    try{ localStorage.setItem('hm_is_mgmt','1'); localStorage.removeItem('hm_mgr_branch'); }catch(_){}
+    location.href = location.pathname;
+  } else {
+    const e=document.getElementById('pgErr'); e.textContent='מספר לא מזוהה. נסה שוב או פנה להנהלה.'; e.style.display='block';
   }
-  try{ localStorage.setItem('hm_mgr_branch',branch); localStorage.removeItem('hm_is_mgmt'); }catch(_){}
-  location.href = location.pathname;
-}
-function pgMgmt(){
-  try{ localStorage.setItem('hm_is_mgmt','1'); localStorage.removeItem('hm_mgr_branch'); }catch(_){}
-  location.href = location.pathname;
 }
 (function() {
   const params = new URLSearchParams(window.location.search);
