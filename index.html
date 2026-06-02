@@ -1253,7 +1253,8 @@ function refreshLastOrderButtons(){
 
 // ── משמרות ──
 function openShifts(){
-  const branch = document.body.dataset.branch || '';
+  let branch = document.body.dataset.branch || '';
+  if (!branch){ try{ branch = localStorage.getItem('hm_mgr_branch') || ''; }catch(e){} }
   const url = 'shifts.html' + (branch ? '?branch=' + encodeURIComponent(branch) : '');
   window.location.href = url;
 }
