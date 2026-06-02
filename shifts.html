@@ -356,9 +356,11 @@ function renderHoursTable() {
       const val = getHours(curBranch, day, type);
       const hh = val ? val.split(':')[0] : '';
       const mm = val ? val.split(':')[1] : '00';
+      // ביום שישי שעות הסגירה שונות (14–18)
+      const dayOpts = (type === 'close' && day === 'שישי') ? ['14','15','16','17','18'] : opts;
       let hSel = '<select class="hours-select" onchange="setHours(\'' + curBranch + '\',\'' + day + '\',\'' + type + '\',\'h\',this.value)">';
       hSel += '<option value="">--</option>';
-      opts.forEach(o => { hSel += '<option value="' + o + '"' + (hh === o ? ' selected' : '') + '>' + o + '</option>'; });
+      dayOpts.forEach(o => { hSel += '<option value="' + o + '"' + (hh === o ? ' selected' : '') + '>' + o + '</option>'; });
       hSel += '</select>';
       let mSel = '<select class="hours-select" onchange="setHours(\'' + curBranch + '\',\'' + day + '\',\'' + type + '\',\'m\',this.value)">';
       mSel += '<option value="00"' + (mm === '00' ? ' selected' : '') + '>00</option>';
