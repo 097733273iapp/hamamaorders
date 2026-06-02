@@ -549,6 +549,8 @@ const PHONE_TO_BRANCH = {
   '0525254458':'גבעת שמואל',
   '0545981318':'מודיעין מתחם רמי לוי'
 };
+// טלפוני הנהלה — גישה מלאה לכל הסניפים (ללא כפתור גלוי; רק מי שמקליד מספר מהרשימה)
+const PHONE_MGMT = ['0505921127','0506325063','0523271473','0544622055']; // עידן, רועי, סיגלית, אנגל
 function normalizePhone(p){
   let d = (p||'').replace(/\D/g,'');
   if (d.startsWith('972')) d = '0' + d.slice(3);
@@ -574,8 +576,13 @@ function phoneGateSubmit(){
   const branch = PHONE_TO_BRANCH[norm];
   if (branch){
     localStorage.setItem('hm_mgr_branch', branch);
+    localStorage.removeItem('hm_is_mgmt');
     document.getElementById('phoneGate').classList.remove('open');
     applyManagerLock(branch);
+  } else if (PHONE_MGMT.includes(norm)){
+    localStorage.setItem('hm_is_mgmt','1');
+    localStorage.removeItem('hm_mgr_branch');
+    location.href = location.pathname;   // טעינה נקייה → מסלול הנהלה (גישה מלאה)
   } else {
     document.getElementById('phoneGateError').textContent = 'מספר לא מזוהה. נסה שוב או פנה להנהלה.';
   }
@@ -587,6 +594,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   const branchParam = params.get('branch');
   const lockParam = params.get('lock');
   const savedMgrBranch = localStorage.getItem('hm_mgr_branch');
+  const isMgmt = localStorage.getItem('hm_is_mgmt');
 
   if (branchParam) {
     // לינק מהבוט — נעול תמיד לסניף שבלינק (אין מעבר לסניף אחר)
@@ -598,8 +606,19 @@ window.addEventListener('DOMContentLoaded', async () => {
   } else if (savedMgrBranch) {
     // מנהל שכבר זוהה → נעילה אוטומטית לסניף שלו (סופי)
     applyManagerLock(savedMgrBranch);
+  } else if (isMgmt) {
+    // הנהלה (זוהתה לפי טלפון) → גישה מלאה לכל הסניפים, בוררים פתוחים
+    const mem = loadBranchMemory();
+    if (mem) {
+      const sel = document.getElementById('sourceBranch');
+      if (sel) { sel.value = mem.key; if (sel.value === mem.key) onSourceChange(); }
+      ['importersBranch','supplierGenericBranch','achvaBranch','odephBranch'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = mem.full;
+      });
+    }
   } else {
-    // לא מזוהה → שער טלפון (מנהל בלבד; אין "הנהלה" במסך הראשי)
+    // לא מזוהה → שער טלפון (מנהל=נעילה, הנהלה=גישה מלאה, אחר=שגיאה)
     document.getElementById('phoneGate').classList.add('open');
   }
 
