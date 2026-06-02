@@ -330,6 +330,9 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
       <option value="פתח תקווה">פתח תקווה</option>
     </select>
   </div>
+  <div id="importersLastBtn" style="display:none;padding:10px 12px 0;">
+    <button onclick="loadLastImporters()" style="width:100%;padding:11px;background:transparent;border:1.5px solid var(--gold);border-radius:10px;color:var(--gold);font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;">📝 הצג/ערוך הזמנה אחרונה<span class="last-date"></span></button>
+  </div>
   <div id="importersSectionsContainer"></div>
   <div class="section">
     <div class="section-title">✏️ שונות — הוסף ידנית</div>
@@ -368,6 +371,9 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
       <option>מודיעין דם המכבים</option>
       <option>פתח תקווה</option>
     </select>
+  </div>
+  <div id="supplierLastBtn" style="display:none;padding:10px 12px 0;">
+    <button onclick="loadLastSupplier()" style="width:100%;padding:11px;background:transparent;border:1.5px solid var(--gold);border-radius:10px;color:var(--gold);font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;">📝 הצג/ערוך הזמנה אחרונה<span class="last-date"></span></button>
   </div>
   <div id="supplierGenericSections"></div>
   <div class="section">
@@ -553,13 +559,16 @@ function normalizePhone(p){
 function applyManagerLock(branchFull){
   showPage('page-main');
   const key = BRANCH_NAME_TO_KEY[branchFull] || branchFull;
+  // נועלים את כל בוררי הסניף קודם — לפני כל קריאה שעלולה לזרוק שגיאה ולדלג על הנעילה
   const sel = document.getElementById('sourceBranch');
-  if (sel){ sel.value = key; if (sel.value === key) onSourceChange(); sel.disabled = true; sel.classList.add('locked'); }
+  if (sel){ sel.value = key; sel.disabled = true; sel.classList.add('locked'); }
   ['importersBranch','supplierGenericBranch','achvaBranch','odephBranch'].forEach(id => {
     const el = document.getElementById(id);
     if (el){ el.value = branchFull; el.disabled = true; el.classList.add('locked'); }
   });
   saveBranchMemory(key, branchFull);
+  // רק עכשיו מפעילים את onSourceChange (אחרי שהנעילה כבר הוחלה)
+  try { if (sel && sel.value === key) onSourceChange(); } catch (e) {}
 }
 function phoneGateSubmit(){
   const norm = normalizePhone(document.getElementById('phoneGateInput').value);
@@ -851,7 +860,7 @@ function importersShowPreview(){
   document.getElementById('importersModal').classList.add('open');
 }
 function importersCopyText(){ navigator.clipboard.writeText(document.getElementById('importersPreviewText').textContent).then(()=>{closeModal('importersModal');alert('הועתק! 📋');}); }
-function importersSendWhatsApp(){ window.open('https://wa.me/972524371919?text='+encodeURIComponent(document.getElementById('importersPreviewText').textContent),'_blank'); }
+function importersSendWhatsApp(){ saveLastImporters(); window.open('https://wa.me/972524371919?text='+encodeURIComponent(document.getElementById('importersPreviewText').textContent),'_blank'); }
 
 // ══════════════════════════════════════
 // SUPPLIERS (ספקים — כל הספקים מ-products.json)
@@ -967,6 +976,7 @@ function supplierShowPreview() {
 }
 function supplierCopyText(){ navigator.clipboard.writeText(document.getElementById('supplierPreviewText').textContent).then(()=>{closeModal('supplierModal');alert('הועתק! 📋');}); }
 function supplierSendWhatsApp(){
+  saveLastSupplier();
   const text = document.getElementById('supplierPreviewText').textContent;
   if (currentSupplierKey === 'אחווה') {
     // אחווה — שלח לבוט שיעביר לקבוצה
@@ -1170,14 +1180,64 @@ function loadLastOdeph(){
   odephCalc();
 }
 
+// --- יבואנים ---
+function saveLastImporters(){
+  const branch=document.getElementById('importersBranch')?.value||'';
+  const qty={}; Object.entries(importersQty).forEach(([k,v])=>{ if(v>0) qty[k]=v; });
+  const misc=[]; document.querySelectorAll('#importersMiscSection .misc-row').forEach(r=>{ const n=r.querySelector('.misc-input').value.trim(); if(n) misc.push(n); });
+  if(Object.keys(qty).length===0 && misc.length===0) return;
+  hmSaveLast('hm_last_importers',{branch:branch, qty:qty, misc:misc});
+}
+function loadLastImporters(){
+  const s=hmLoadLast('hm_last_importers'); if(!s) return;
+  const sel=document.getElementById('importersBranch'); if(sel && s.branch) sel.value=s.branch;
+  importersBuildSections();
+  Object.keys(importersQty).forEach(k=>importersQty[k]=0);
+  Object.entries(s.qty||{}).forEach(([item,q])=>{ importersQty[item]=q; const inp=document.getElementById(iSafeId(item)); if(inp){ inp.value=q; inp.className='qty-input active'; } });
+  const sec=document.getElementById('importersMiscSection');
+  if(sec){ sec.innerHTML='<div class="misc-row"><input class="misc-input" placeholder="הוסף הערה / פריט חופשי..." oninput="importersUpdateTotal()"/></div>';
+    (s.misc||[]).forEach((n,i)=>{ if(i>0) importersAddMiscRow(); const rows=sec.querySelectorAll('.misc-row'); rows[rows.length-1].querySelector('.misc-input').value=n; }); }
+  importersUpdateTotal();
+}
+
+// --- ספקים (לפי הספק הנוכחי) ---
+function saveLastSupplier(){
+  if(!currentSupplierKey) return;
+  const branch=document.getElementById('supplierGenericBranch')?.value||'';
+  const src=supplierQty[currentSupplierKey]||{};
+  const qty={}; Object.entries(src).forEach(([k,v])=>{ if(v>0) qty[k]=v; });
+  const misc=[]; document.querySelectorAll('#supplierGenericMisc .misc-row').forEach(r=>{ const n=r.querySelector('.misc-input').value.trim(); if(n) misc.push(n); });
+  if(Object.keys(qty).length===0 && misc.length===0) return;
+  hmSaveLast('hm_last_supplier_'+currentSupplierKey,{branch:branch, qty:qty, misc:misc});
+}
+function loadLastSupplier(){
+  if(!currentSupplierKey) return;
+  const s=hmLoadLast('hm_last_supplier_'+currentSupplierKey); if(!s) return;
+  const sel=document.getElementById('supplierGenericBranch'); if(sel && s.branch) sel.value=s.branch;
+  if(!supplierQty[currentSupplierKey]) supplierQty[currentSupplierKey]={};
+  Object.keys(supplierQty[currentSupplierKey]).forEach(k=>supplierQty[currentSupplierKey][k]=0);
+  Object.entries(s.qty||{}).forEach(([item,q])=>{ supplierQty[currentSupplierKey][item]=q; const inp=document.getElementById('sqty_'+item.replace(/[^א-תa-zA-Z0-9]/g,'_')); if(inp){ inp.value=q; inp.className='qty-input active'; } });
+  const sec=document.getElementById('supplierGenericMisc');
+  if(sec){ sec.innerHTML='<div class="misc-row"><input class="misc-input" placeholder="הוסף הערה / פריט חופשי..." oninput="supplierUpdateTotal()"/></div>';
+    (s.misc||[]).forEach((n,i)=>{ if(i>0) supplierAddMiscRow(); const rows=sec.querySelectorAll('.misc-row'); rows[rows.length-1].querySelector('.misc-input').value=n; }); }
+  supplierUpdateTotal();
+}
+
 // --- הצגה/הסתרה של כפתורי "הזמנה אחרונה" לפי קיום שמירה ---
 function refreshLastOrderButtons(){
-  [['hm_last_network','networkLastBtn'],['hm_last_achva','achvaLastBtn'],['hm_last_odeph','odephLastBtn']].forEach(function(pair){
+  [['hm_last_network','networkLastBtn'],['hm_last_achva','achvaLastBtn'],['hm_last_odeph','odephLastBtn'],['hm_last_importers','importersLastBtn']].forEach(function(pair){
     const wrap=document.getElementById(pair[1]); if(!wrap) return;
     const s=hmLoadLast(pair[0]);
     if(s){ wrap.style.display='block'; const d=wrap.querySelector('.last-date'); if(d) d.textContent=s.ts?(' ('+hmFmtDate(s.ts)+')'):''; }
     else wrap.style.display='none';
   });
+  // ספקים — לפי הספק הנוכחי
+  const swrap=document.getElementById('supplierLastBtn');
+  if(swrap){
+    const ss = (typeof currentSupplierKey!=='undefined' && currentSupplierKey) ? hmLoadLast('hm_last_supplier_'+currentSupplierKey) : null;
+    if(ss){ swrap.style.display='block'; const d=swrap.querySelector('.last-date'); if(d) d.textContent=ss.ts?(' ('+hmFmtDate(ss.ts)+')'):''; }
+    else swrap.style.display='none';
+  }
 }
 
 // ── משמרות ──
