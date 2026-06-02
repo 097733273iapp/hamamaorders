@@ -105,6 +105,17 @@ tbody tr:last-child td{border-bottom:none;}
 </head>
 <body>
 
+<div id="phoneGate" style="display:none;position:fixed;inset:0;z-index:9999;background:var(--black);align-items:center;justify-content:center;padding:24px;">
+  <div style="max-width:340px;width:100%;text-align:center;">
+    <div style="font-size:20px;font-weight:800;color:var(--gold);margin-bottom:6px;">🌾 ניהול משמרות</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:22px;">הזדהה כדי להמשיך</div>
+    <input id="pgPhone" type="tel" inputmode="numeric" placeholder="מספר טלפון" style="width:100%;padding:13px;border-radius:10px;border:1px solid var(--gold-border);background:var(--card);color:var(--text);font-size:16px;text-align:center;font-family:'Heebo',sans-serif;margin-bottom:12px;box-sizing:border-box;">
+    <button onclick="pgSubmit()" style="width:100%;padding:13px;border-radius:10px;border:none;background:var(--gold);color:#000;font-size:15px;font-weight:800;font-family:'Heebo',sans-serif;cursor:pointer;">כניסה</button>
+    <div id="pgErr" style="display:none;color:#e0607a;font-size:12px;margin-top:12px;"></div>
+    <div style="margin-top:20px;"><a onclick="pgMgmt()" style="color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer;">אני מההנהלה</a></div>
+  </div>
+</div>
+
 <header>
   <div class="logo"><h1>🌾 גרעיני עפולה חממה</h1><p>שיבוץ משמרות</p></div>
 </header>
@@ -120,6 +131,7 @@ tbody tr:last-child td{border-bottom:none;}
 
 <div class="info-bar">
   <div class="ii">סניף: <strong id="branchLbl">—</strong></div>
+  <div class="ii" id="shiftResetBar" style="display:none;">🔒 <span id="shiftBranchLabel" style="color:var(--gold);font-weight:700;"></span> · <a onclick="resetMgrIdentity()" style="color:var(--gold);text-decoration:underline;cursor:pointer;">לא הסניף שלך?</a></div>
   <div class="ii">שבוע: <strong id="weekLbl">—</strong></div>
   <div class="deadline">⏰ הגשה עד חמישי 12:00</div>
   <div class="legend">
@@ -163,6 +175,23 @@ tbody tr:last-child td{border-bottom:none;}
 
 <script>
 const BRANCHES=['הרצליה סוקולוב 16','הרצליה סוקולוב 27','הרצליה צומת כדורי','גבעת שמואל','מודיעין מתחם שופרסל','מודיעין מתחם רמי לוי','מודיעין דם המכבים','פתח תקווה'];
+// זיהוי מנהל לפי טלפון — אותם מפתחות localStorage כמו index.html (אותו origin)
+const PHONE_TO_BRANCH = {
+  '0587114090':'הרצליה סוקולוב 27',
+  '0505709444':'הרצליה סוקולוב 16',
+  '0545424844':'הרצליה צומת כדורי',
+  '0508423208':'פתח תקווה',
+  '0506520926':'מודיעין מתחם שופרסל',
+  '0523234344':'מודיעין דם המכבים',
+  '0525254458':'גבעת שמואל',
+  '0545981318':'מודיעין מתחם רמי לוי'
+};
+function normalizePhone(p){
+  let d = (p||'').replace(/\D/g,'');
+  if (d.startsWith('972')) d = '0' + d.slice(3);
+  if (!d.startsWith('0')) d = '0' + d;
+  return d;
+}
 const DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי'];
 const TL={בוקר:'בוקר',ערב:'ערב'};
 const BOT_NUM='97297733273';
@@ -582,13 +611,52 @@ function showToast(msg) {
 }
 
 // ── Init ──
+function lockToBranch(b){
+  curBranch = b;
+  const bar = document.getElementById('branchBar');
+  if (bar) bar.style.display = 'none';
+  window.__lockedBranch = true;
+  const rb = document.getElementById('shiftResetBar');
+  if (rb){ const lbl=document.getElementById('shiftBranchLabel'); if(lbl) lbl.textContent=b; rb.style.display='inline'; }
+}
+function showPhoneGate(){
+  const g=document.getElementById('phoneGate'); if(g) g.style.display='flex';
+  const inp=document.getElementById('pgPhone');
+  if(inp){ inp.focus(); inp.addEventListener('keydown',e=>{ if(e.key==='Enter') pgSubmit(); }); }
+}
+function pgSubmit(){
+  const d = normalizePhone(document.getElementById('pgPhone').value);
+  const branch = PHONE_TO_BRANCH[d];
+  if (!branch || !BRANCHES.includes(branch)){
+    const e=document.getElementById('pgErr'); e.textContent='מספר לא מזוהה. נסה שוב או פנה להנהלה.'; e.style.display='block'; return;
+  }
+  try{ localStorage.setItem('hm_mgr_branch',branch); localStorage.removeItem('hm_is_mgmt'); }catch(_){}
+  location.href = location.pathname;
+}
+function pgMgmt(){
+  try{ localStorage.setItem('hm_is_mgmt','1'); localStorage.removeItem('hm_mgr_branch'); }catch(_){}
+  location.href = location.pathname;
+}
+function resetMgrIdentity(){
+  try{ localStorage.removeItem('hm_mgr_branch'); localStorage.removeItem('hm_is_mgmt'); }catch(_){}
+  location.href = location.pathname;
+}
 (function() {
-  const b = new URLSearchParams(window.location.search).get('branch');
+  const params = new URLSearchParams(window.location.search);
+  const b = params.get('branch');
+  const lock = params.get('lock');
+  let savedBranch=null, isMgmt=false;
+  try{ savedBranch = localStorage.getItem('hm_mgr_branch'); isMgmt = localStorage.getItem('hm_is_mgmt')==='1'; }catch(_){}
+
   if (b && BRANCHES.includes(b)) {
-    curBranch = b;
-    const bar = document.getElementById('branchBar');
-    if (bar) bar.style.display = 'none';
-    window.__lockedBranch = true;
+    lockToBranch(b);
+    if (lock === '1'){ try{ localStorage.setItem('hm_mgr_branch',b); localStorage.removeItem('hm_is_mgmt'); }catch(_){} }
+  } else if (savedBranch && BRANCHES.includes(savedBranch)) {
+    lockToBranch(savedBranch);          // מנהל שזוהה (גם ב-index) — נעול אוטומטית
+  } else if (isMgmt) {
+    /* הנהלה — גישה מלאה, בורר הסניפים נשאר גלוי */
+  } else {
+    showPhoneGate();                    // לא מזוהה — שער טלפון
   }
 })();
 initBranches();
