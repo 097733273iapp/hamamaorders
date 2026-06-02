@@ -219,6 +219,10 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
   <div class="hero">
     <div class="hero-title">מרכז הפעולות</div>
     <div class="hero-sub">בחר פעולה</div>
+    <div id="mgrResetBar" style="display:none;margin-top:8px;font-size:12px;color:var(--muted);">
+      🔒 נעול לסניף <span id="mgrBranchLabel" style="color:var(--gold);font-weight:700;"></span>
+      · <a onclick="resetMgrIdentity()" style="color:var(--gold);text-decoration:underline;cursor:pointer;">לא הסניף שלך? לחץ כאן</a>
+    </div>
   </div>
   <div class="menu-grid">
     <div class="menu-card primary" onclick="showPage('page-network')">
@@ -567,8 +571,15 @@ function applyManagerLock(branchFull){
     if (el){ el.value = branchFull; el.disabled = true; el.classList.add('locked'); }
   });
   saveBranchMemory(key, branchFull);
+  // הצג שורת "נעול לסניף X · החלף" כדי שמי שננעל בטעות יוכל לאפס
+  const bar=document.getElementById('mgrResetBar'); if(bar){ const lbl=document.getElementById('mgrBranchLabel'); if(lbl) lbl.textContent=branchFull; bar.style.display='block'; }
   // רק עכשיו מפעילים את onSourceChange (אחרי שהנעילה כבר הוחלה)
   try { if (sel && sel.value === key) onSourceChange(); } catch (e) {}
+}
+// איפוס זהות מנהל — מנקה את הנעילה השמורה וחוזר לשער הזיהוי (מנהל יזדהה שוב וייּנעל; הנהלה תבחר "אני מההנהלה")
+function resetMgrIdentity(){
+  try{ localStorage.removeItem('hm_mgr_branch'); localStorage.removeItem('hm_is_mgmt'); }catch(e){}
+  location.href = location.pathname;
 }
 function phoneGateSubmit(){
   const norm = normalizePhone(document.getElementById('phoneGateInput').value);
