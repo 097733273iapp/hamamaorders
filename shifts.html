@@ -131,7 +131,6 @@ tbody tr:last-child td{border-bottom:none;}
 
 <div class="info-bar">
   <div class="ii">סניף: <strong id="branchLbl">—</strong></div>
-  <div class="ii" id="shiftResetBar" style="display:none;">🔒 <span id="shiftBranchLabel" style="color:var(--gold);font-weight:700;"></span> · <a onclick="resetMgrIdentity()" style="color:var(--gold);text-decoration:underline;cursor:pointer;">לא הסניף שלך?</a></div>
   <div class="ii">שבוע: <strong id="weekLbl">—</strong></div>
   <div class="deadline">⏰ הגשה עד חמישי 12:00</div>
   <div class="legend">
@@ -616,8 +615,6 @@ function lockToBranch(b){
   const bar = document.getElementById('branchBar');
   if (bar) bar.style.display = 'none';
   window.__lockedBranch = true;
-  const rb = document.getElementById('shiftResetBar');
-  if (rb){ const lbl=document.getElementById('shiftBranchLabel'); if(lbl) lbl.textContent=b; rb.style.display='inline'; }
 }
 function showPhoneGate(){
   const g=document.getElementById('phoneGate'); if(g) g.style.display='flex';
@@ -635,10 +632,6 @@ function pgSubmit(){
 }
 function pgMgmt(){
   try{ localStorage.setItem('hm_is_mgmt','1'); localStorage.removeItem('hm_mgr_branch'); }catch(_){}
-  location.href = location.pathname;
-}
-function resetMgrIdentity(){
-  try{ localStorage.removeItem('hm_mgr_branch'); localStorage.removeItem('hm_is_mgmt'); }catch(_){}
   location.href = location.pathname;
 }
 (function() {
