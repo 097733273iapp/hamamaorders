@@ -16,6 +16,26 @@
 }
 body { font-family:'Heebo','Segoe UI',sans-serif; background:var(--black); color:var(--text); min-height:100vh; }
 
+/* ══ PHONE GATE ══ */
+.phone-gate { display:none; position:fixed; inset:0; z-index:9999; background:rgba(10,10,10,0.97);
+  align-items:center; justify-content:center; padding:24px; }
+.phone-gate.open { display:flex; }
+.phone-gate-box { background:var(--card); border:1px solid var(--gold-border); border-radius:18px;
+  padding:32px 24px; max-width:380px; width:100%; text-align:center; box-shadow:0 8px 40px rgba(0,0,0,0.6); }
+.phone-gate-box .pg-emoji { font-size:40px; margin-bottom:8px; }
+.phone-gate-box h2 { font-size:20px; font-weight:800; color:#fff; margin-bottom:4px; }
+.phone-gate-box .pg-sub { font-size:13px; color:var(--gold); margin-bottom:22px; letter-spacing:0.3px; }
+.phone-gate-box input { width:100%; padding:14px 16px; font-size:17px; text-align:center;
+  background:var(--black2); border:1px solid var(--border2); border-radius:12px; color:#fff;
+  margin-bottom:14px; direction:ltr; letter-spacing:1px; }
+.phone-gate-box input:focus { outline:none; border-color:var(--gold); }
+.phone-gate-box .pg-btn { width:100%; padding:14px; font-size:16px; font-weight:700; cursor:pointer;
+  background:linear-gradient(135deg,var(--gold),var(--gold2)); color:#111; border:none; border-radius:12px; }
+.phone-gate-box .pg-error { color:#e88; font-size:13px; min-height:18px; margin-top:10px; }
+.phone-gate-box .pg-mgmt { background:none; border:none; color:var(--muted); font-size:12px;
+  margin-top:18px; cursor:pointer; text-decoration:underline; }
+.source-select.locked { opacity:0.85; cursor:not-allowed; border-color:var(--gold-border); }
+
 /* ══ PAGES ══ */
 .page { display:none; flex-direction:column; min-height:100vh; }
 .page.active { display:flex; }
@@ -174,6 +194,20 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
 </style>
 </head>
 <body>
+
+<!-- ══ PHONE GATE (manager identification) ══ -->
+<div class="phone-gate" id="phoneGate">
+  <div class="phone-gate-box">
+    <div class="pg-emoji">🌾</div>
+    <h2>גרעיני עפולה חממה</h2>
+    <div class="pg-sub">הזדהות מנהל סניף</div>
+    <input id="phoneGateInput" type="tel" inputmode="numeric" autocomplete="tel"
+           placeholder="05X-XXXXXXX" onkeydown="if(event.key==='Enter')phoneGateSubmit()">
+    <button class="pg-btn" onclick="phoneGateSubmit()">כניסה</button>
+    <div class="pg-error" id="phoneGateError"></div>
+    <button class="pg-mgmt" onclick="phoneGateMgmt()">אני מההנהלה — גישה לכל הסניפים</button>
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════
      PAGE: MAIN MENU
@@ -499,11 +533,62 @@ function loadBranchMemory() {
   return { key: localStorage.getItem('hm_branch_key'), full: localStorage.getItem('hm_branch_full') };
 }
 
+// ══ PHONE GATE — זיהוי מנהל (רק מנהלים ננעלים; הנהלה מקבלת גישה מלאה) ══
+const PHONE_TO_BRANCH = {
+  '0587114090':'הרצליה סוקולוב 27',
+  '0505709444':'הרצליה סוקולוב 16',
+  '0545424844':'הרצליה צומת כדורי',
+  '0508423208':'פתח תקווה',
+  '0506520926':'מודיעין מתחם שופרסל',
+  '0523234344':'מודיעין דם המכבים',
+  '0525254458':'גבעת שמואל',
+  '0545981318':'מודיעין מתחם רמי לוי'
+};
+function normalizePhone(p){
+  let d = (p||'').replace(/\D/g,'');
+  if (d.startsWith('972')) d = '0' + d.slice(3);
+  if (!d.startsWith('0')) d = '0' + d;
+  return d;
+}
+function applyManagerLock(branchFull){
+  showPage('page-main');
+  const key = BRANCH_NAME_TO_KEY[branchFull] || branchFull;
+  const sel = document.getElementById('sourceBranch');
+  if (sel){ sel.value = key; if (sel.value === key) onSourceChange(); sel.disabled = true; sel.classList.add('locked'); }
+  ['importersBranch','supplierGenericBranch','achvaBranch','odephBranch'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el){ el.value = branchFull; el.disabled = true; el.classList.add('locked'); }
+  });
+  saveBranchMemory(key, branchFull);
+}
+function phoneGateSubmit(){
+  const norm = normalizePhone(document.getElementById('phoneGateInput').value);
+  const branch = PHONE_TO_BRANCH[norm];
+  if (branch){
+    localStorage.setItem('hm_mgr_branch', branch);
+    localStorage.removeItem('hm_is_mgmt');
+    document.getElementById('phoneGate').classList.remove('open');
+    applyManagerLock(branch);
+  } else {
+    document.getElementById('phoneGateError').textContent = 'מספר לא מזוהה. בדוק שוב, או המשך כהנהלה.';
+  }
+}
+function phoneGateMgmt(){
+  localStorage.setItem('hm_is_mgmt','1');
+  localStorage.removeItem('hm_mgr_branch');
+  document.getElementById('phoneGate').classList.remove('open');
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
   await loadProducts();
   const params = new URLSearchParams(window.location.search);
   const branchParam = params.get('branch');
+  const lockParam = params.get('lock');
+  const savedMgrBranch = localStorage.getItem('hm_mgr_branch');
+  const isMgmt = localStorage.getItem('hm_is_mgmt');
+
   if (branchParam) {
+    // לינק ישיר מהבוט
     showPage('page-main');
     const key = BRANCH_NAME_TO_KEY[branchParam] || branchParam;
     const sel = document.getElementById('sourceBranch');
@@ -513,8 +598,16 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (el) el.value = branchParam;
     });
     saveBranchMemory(key, branchParam);
-  } else {
-    // Restore from memory if within 5 minutes
+    if (lockParam === '1') {            // לינק מנהל מהבוט → נעילה + זכירה קבועה
+      localStorage.setItem('hm_mgr_branch', branchParam);
+      localStorage.removeItem('hm_is_mgmt');
+      applyManagerLock(branchParam);
+    }
+  } else if (savedMgrBranch) {
+    // מנהל שכבר זוהה → נעילה אוטומטית לסניף שלו
+    applyManagerLock(savedMgrBranch);
+  } else if (isMgmt) {
+    // הנהלה — גישה מלאה; שחזור זיכרון 5 דקות אם קיים
     const mem = loadBranchMemory();
     if (mem) {
       const sel = document.getElementById('sourceBranch');
@@ -524,7 +617,11 @@ window.addEventListener('DOMContentLoaded', async () => {
         if (el) el.value = mem.full;
       });
     }
+  } else {
+    // כניסה ראשונה דרך הלינק האחיד → בקשת טלפון
+    document.getElementById('phoneGate').classList.add('open');
   }
+
   networkBuildSections();
   importersBuildSections();
   achvaBuildSections();
