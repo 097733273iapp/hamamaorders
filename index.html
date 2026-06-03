@@ -593,6 +593,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
   const branchParam = params.get('branch');
   const lockParam = params.get('lock');
+  // מצב הנהלה מהפלטפורמה: ?mgmt=1 → גישה מלאה, וניקוי נעילת סניף ישנה (שלא תידבק מבדיקה קודמת)
+  if (params.get('mgmt') === '1') {
+    localStorage.setItem('hm_is_mgmt','1');
+    localStorage.removeItem('hm_mgr_branch');
+  }
   const savedMgrBranch = localStorage.getItem('hm_mgr_branch');
   const isMgmt = localStorage.getItem('hm_is_mgmt');
 
@@ -608,6 +613,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     applyManagerLock(savedMgrBranch);
   } else if (isMgmt) {
     // הנהלה (זוהתה לפי טלפון) → גישה מלאה לכל הסניפים, בוררים פתוחים
+    showPage('page-main');
     const mem = loadBranchMemory();
     if (mem) {
       const sel = document.getElementById('sourceBranch');
