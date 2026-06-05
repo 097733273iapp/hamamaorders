@@ -123,6 +123,7 @@ tbody tr:last-child td{border-bottom:none;}
   <button class="abt" onclick="loadFromGitHub()">🔄 רענן</button>
   <button class="abt" onclick="clearFilled()">🗑️ נקה שיבוץ</button>
   <button class="abt" onclick="showPreview()">👁️ תצוגה מקדימה</button>
+  <button class="abt" onclick="saveShifts()">💾 שמור</button>
   <button class="abt gold" onclick="sendToGroup()">📲 שלח לקבוצה</button>
 </div>
 
@@ -517,6 +518,20 @@ function sendToGroup() {
     data[day] = { 'בוקר': c['בוקר'] || [], 'ערב': c['ערב'] || [], 'notes': c.notes || '', 'open': h.open || '', 'close': h.close || '' };
   });
   const msg = 'שלח לקבוצה|' + curBranch + '|' + JSON.stringify(data);
+  window.open('https://wa.me/' + BOT_NUM + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// שמירה שקטה — שולח לבוט שישמור ל-GitHub בלי תמונה לקבוצה
+function saveShifts() {
+  if (!curBranch) { showToast('בחר סניף קודם'); return; }
+  const data = {};
+  DAYS.forEach(day => {
+    const c = getCell(day, 'בוקר');
+    const h = (hours[curBranch] && hours[curBranch][day]) || { open: '', close: '' };
+    data[day] = { 'בוקר': c['בוקר'] || [], 'ערב': c['ערב'] || [], 'notes': c.notes || '', 'open': h.open || '', 'close': h.close || '' };
+  });
+  saveLocal();
+  const msg = 'שמור שיבוץ|' + curBranch + '|' + JSON.stringify(data);
   window.open('https://wa.me/' + BOT_NUM + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
