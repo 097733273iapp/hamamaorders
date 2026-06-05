@@ -1117,6 +1117,20 @@ function odephSendWA() {
 // ══════════════════════════════════════
 function hmSaveLast(key, data){ try{ localStorage.setItem(key, JSON.stringify(Object.assign({}, data, {ts:Date.now()}))); }catch(e){} }
 function hmLoadLast(key){ try{ return JSON.parse(localStorage.getItem(key)||'null'); }catch(e){ return null; } }
+// קריאת "הזמנה אחרונה" מרכזית מ-GitHub (רשת/אחווה/עודף). מחזיר את אובייקט הסניף+סוג או null.
+async function hmLoadLastRemote(type){
+  try{
+    const mem = getBranchMemory && getBranchMemory();
+    const branchFull = (mem && mem.full) || localStorage.getItem('hm_mgr_branch') || localStorage.getItem('hm_branch_full');
+    if(!branchFull) return null;
+    const url = 'https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/last_orders.json?t='+Date.now();
+    const r = await fetch(url);
+    if(!r.ok) return null;
+    const all = await r.json();
+    const b = all[branchFull]; if(!b) return null;
+    return b[type] || null;
+  }catch(e){ return null; }
+}
 function hmFmtDate(ts){ try{ return new Date(ts).toLocaleDateString('he-IL',{day:'2-digit',month:'2-digit'}); }catch(e){ return ''; } }
 
 // --- שמירה בעת שליחה ---
@@ -1141,8 +1155,17 @@ function saveLastOdeph(){
 }
 
 // --- שחזור בלחיצה על "הצג/ערוך הזמנה אחרונה" ---
-function loadLastNetwork(){
-  const s=hmLoadLast('hm_last_network'); if(!s) return;
+async function loadLastNetwork(){
+  let s=hmLoadLast('hm_last_network');
+  const remote=await hmLoadLastRemote('network');
+  if(remote && remote.dests){
+    const qty={};
+    Object.values(remote.dests).forEach(items=>{
+      if(Array.isArray(items)) items.forEach(it=>{ if(it&&it.name) qty[it.name]=(qty[it.name]||0)+(it.qty||0); });
+    });
+    if(Object.keys(qty).length) s={ branch:(getBranchMemory&&getBranchMemory().key)||(s&&s.branch)||'', qty:qty, misc:[] };
+  }
+  if(!s) return;
   const sel=document.getElementById('sourceBranch');
   if(sel && s.branch){ sel.value=s.branch; onSourceChange(); }
   Object.keys(networkQty).forEach(k=>networkQty[k]=0);
@@ -1156,8 +1179,14 @@ function loadLastNetwork(){
   });
   networkUpdateTotal();
 }
-function loadLastAchva(){
-  const s=hmLoadLast('hm_last_achva'); if(!s) return;
+async function loadLastAchva(){
+  let s=hmLoadLast('hm_last_achva');
+  const remote=await hmLoadLastRemote('achva');
+  if(remote && Array.isArray(remote.items)){
+    const qty={}; remote.items.forEach(it=>{ if(it&&it.name) qty[it.name]=it.qty; });
+    s={ branch:(getBranchMemory&&getBranchMemory().full)||'', qty:qty, misc:[] };
+  }
+  if(!s) return;
   const sel=document.getElementById('achvaBranch'); if(sel && s.branch) sel.value=s.branch;
   achvaBuildSections();
   Object.keys(achvaQty).forEach(k=>achvaQty[k]=0);
@@ -1171,6 +1200,8 @@ function loadLastAchva(){
   achvaUpdateTotal();
 }
 function loadLastOdeph(){
+  // עודף: הטעינה לעריכה נשמרת מקומית (מבנה המטבעות לפי id). השמירה המרכזית ב-GitHub
+  // משמשת למעקב/דוחות בבוט, לא לטעינה חזרה לטופס (אין מיפוי שם→id אמין).
   const s=hmLoadLast('hm_last_odeph'); if(!s) return;
   const sel=document.getElementById('odephBranch'); if(sel && s.branch) sel.value=s.branch;
   ODEPH_IDS.forEach(id=>{ const inp=document.getElementById('odeph-'+id); if(inp) inp.value=(s.vals && s.vals[id])?s.vals[id]:0; });
