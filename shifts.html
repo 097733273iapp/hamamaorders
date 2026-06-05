@@ -580,7 +580,8 @@ async function shareWA() {
 
 // ── Clear ──
 function clearFilled() {
-  if (!confirm('למחוק שיבוץ של ' + curBranch + '?')) return;
+  const b = curBranch || 'הסניף';
+  if (!confirm('⚠️ למחוק את כל השיבוץ של ' + b + '?\nפעולה זו אינה הפיכה.')) return;
   delete shifts[curBranch];
   saveLocal();
   renderAll();
