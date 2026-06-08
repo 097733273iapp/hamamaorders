@@ -225,7 +225,7 @@
       "פתח תקווה"
     ]
   },
-  "botUpdateRequest": 1780557482618,
+  "botUpdateRequest": 1780933139794,
   "messageTemplates": {
     "weekly": {
       "openers": [
@@ -409,17 +409,42 @@
     {
       "id": "network",
       "title": "רשת",
-      "builtin": true
+      "builtin": true,
+      "hasProducts": true,
+      "routing": {
+        "mode": "bot",
+        "botTarget": "managers"
+      }
     },
     {
       "id": "importers",
       "title": "יבואנים",
-      "builtin": true
+      "builtin": true,
+      "hasProducts": true,
+      "routing": {
+        "mode": "bot",
+        "botTarget": "importer"
+      }
     },
     {
       "id": "suppliers",
       "title": "ספקים",
-      "builtin": true
+      "builtin": true,
+      "hasProducts": true,
+      "routing": {
+        "mode": "manual",
+        "manualTarget": "self"
+      }
+    },
+    {
+      "id": "odeph",
+      "title": "עודף",
+      "builtin": true,
+      "hasProducts": false,
+      "routing": {
+        "mode": "bot",
+        "botTarget": "phone:0523271473"
+      }
     }
   ],
   "customReports": [],
