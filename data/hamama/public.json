@@ -277,7 +277,8 @@
       "when": "שלישי הראשון של מאי ונובמבר · 08:00",
       "where": "קבוצת מנהלים",
       "enabled": true,
-      "order": 0
+      "order": 0,
+      "kind": "schedule"
     },
     {
       "id": "zd",
@@ -286,7 +287,8 @@
       "when": "יום אחרון בחודש · 12:00",
       "where": "קבוצת מנהלים",
       "enabled": true,
-      "order": 1
+      "order": 1,
+      "kind": "schedule"
     },
     {
       "id": "sundaypdf",
@@ -295,16 +297,20 @@
       "when": "יום ראשון · 09:00",
       "where": "קבוצת מנהלים",
       "enabled": true,
-      "order": 2
+      "order": 2,
+      "kind": "process",
+      "does": "מייצר PDF מרוכז של הזמנות הרשת ושולח."
     },
     {
       "id": "odephpdf",
-      "title": "💰 דוח עודף שבועי",
+      "title": "ייצור דוח PDF לעודף ",
       "text": "",
       "when": "יום ראשון · 12:00",
       "where": "קבוצת מנהלים",
       "enabled": true,
-      "order": 3
+      "order": 3,
+      "kind": "process",
+      "does": "מייצר PDF של דיווחי עודף מהסניפים ושולח."
     },
     {
       "id": "achva",
@@ -313,7 +319,8 @@
       "when": "יום אחרון בחודש · 10:00 (שישי/שבת — יום לפני)",
       "where": "קבוצת אחווה",
       "enabled": true,
-      "order": 4
+      "order": 4,
+      "kind": "schedule"
     },
     {
       "id": "shiftwed",
@@ -322,7 +329,8 @@
       "when": "רביעי · 10:00",
       "where": "קבוצת כל סניף",
       "enabled": true,
-      "order": 5
+      "order": 5,
+      "kind": "schedule"
     },
     {
       "id": "shiftthu",
@@ -331,7 +339,8 @@
       "when": "חמישי · 10:00",
       "where": "קבוצת כל סניף",
       "enabled": true,
-      "order": 6
+      "order": 6,
+      "kind": "schedule"
     },
     {
       "id": "shiftmgr",
@@ -340,7 +349,8 @@
       "when": "חמישי · 12:05",
       "where": "פרטי למנהל הסניף",
       "enabled": true,
-      "order": 7
+      "order": 7,
+      "kind": "schedule"
     }
   ]
 }
