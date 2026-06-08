@@ -225,7 +225,7 @@
       "פתח תקווה"
     ]
   },
-  "botUpdateRequest": 1780933139794,
+  "botUpdateRequest": 1780933946946,
   "messageTemplates": {
     "weekly": {
       "openers": [
@@ -437,6 +437,17 @@
       }
     },
     {
+      "id": "achva",
+      "title": "אחווה",
+      "builtin": true,
+      "suppliersKey": "אחווה",
+      "hasProducts": true,
+      "routing": {
+        "mode": "bot",
+        "botTarget": "achva"
+      }
+    },
+    {
       "id": "odeph",
       "title": "עודף",
       "builtin": true,
@@ -444,6 +455,49 @@
       "routing": {
         "mode": "bot",
         "botTarget": "phone:0523271473"
+      }
+    },
+    {
+      "id": "availability",
+      "title": "זמינות עובדים",
+      "builtin": true,
+      "hasProducts": false,
+      "kind": "availability",
+      "shiftCfg": {
+        "days": [
+          "ראשון",
+          "שני",
+          "שלישי",
+          "רביעי",
+          "חמישי",
+          "שישי",
+          "שבת"
+        ],
+        "shiftTypes": [
+          "בוקר",
+          "ערב",
+          "כפולה",
+          "חופש"
+        ],
+        "fridayShifts": [
+          "בוקר",
+          "חופש"
+        ]
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "managers"
+      }
+    },
+    {
+      "id": "schedule",
+      "title": "סידור משמרות",
+      "builtin": true,
+      "hasProducts": false,
+      "kind": "schedule",
+      "routing": {
+        "mode": "bot",
+        "botTarget": "managers"
       }
     }
   ],
