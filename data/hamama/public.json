@@ -268,7 +268,26 @@
     }
   },
   "autoMessages": {},
-  "customAutomations": [],
+  "customAutomations": [
+    {
+      "id": "auto-1780924124848",
+      "name": "בדיקה",
+      "enabled": true,
+      "text": "בדיקה ההה",
+      "schedule": {
+        "freq": "daily",
+        "day": 5,
+        "hour": 16,
+        "minute": 11
+      },
+      "targets": {
+        "branches": [],
+        "groups": [
+          "owner"
+        ]
+      }
+    }
+  ],
   "systemAutomations": [
     {
       "id": "shiftAvail",
