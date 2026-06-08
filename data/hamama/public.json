@@ -385,5 +385,29 @@
       "does": "מאפס את מעקב הזמנות הרשת. פעמיים: סוף רביעי, ושוב ראשון אחרי ה-PDF.",
       "where": "—"
     }
+  ],
+  "productGroups": [
+    {
+      "id": "network",
+      "title": "רשת",
+      "builtin": true
+    },
+    {
+      "id": "importers",
+      "title": "יבואנים",
+      "builtin": true
+    },
+    {
+      "id": "suppliers",
+      "title": "ספקים",
+      "builtin": true
+    },
+    {
+      "id": "grp-1780921690917",
+      "title": "משה",
+      "kind": "orders",
+      "builtin": false,
+      "order": 3
+    }
   ]
 }
