@@ -401,13 +401,6 @@
       "id": "suppliers",
       "title": "ספקים",
       "builtin": true
-    },
-    {
-      "id": "grp-1780921690917",
-      "title": "משה",
-      "kind": "orders",
-      "builtin": false,
-      "order": 3
     }
   ]
 }
