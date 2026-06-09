@@ -511,10 +511,13 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
 
 // ══ NAVIGATION ══
 function showPage(id) {
+  try {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const pg = document.getElementById(id);
+  if (pg) pg.classList.add('active');
   window.scrollTo(0,0);
   if (typeof refreshLastOrderButtons === 'function') refreshLastOrderButtons();
+  } catch(e){ console.error('showPage error:', e); }
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
@@ -629,7 +632,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('phoneGate').classList.add('open');
   }
 
-  networkBuildSections();
   importersBuildSections();
   achvaBuildSections();
 });
