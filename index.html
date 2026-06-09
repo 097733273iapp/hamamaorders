@@ -1199,8 +1199,7 @@ async function loadLastNetwork(){
     if(Object.keys(qty).length) s={ branch:(getBranchMemory&&getBranchMemory().key)||(s&&s.branch)||'', qty:qty, misc:[] };
   }
   if(!s) return;
-  const sel=document.getElementById('sourceBranch');
-  if(sel && s.branch){ sel.value=s.branch; onSourceChange(); }
+  // נשארים על הסניף הנבחר ב-dropdown (לא קופצים לסניף מתוך הנתונים)
   Object.keys(networkQty).forEach(k=>networkQty[k]=0);
   Object.entries(s.qty||{}).forEach(([item,q])=>{ networkQty[item]=q; });
   networkBuildSections();
@@ -1220,7 +1219,6 @@ async function loadLastAchva(){
     s={ branch:(getBranchMemory&&getBranchMemory().full)||'', qty:qty, misc:[] };
   }
   if(!s) return;
-  const sel=document.getElementById('achvaBranch'); if(sel && s.branch) sel.value=s.branch;
   achvaBuildSections();
   Object.keys(achvaQty).forEach(k=>achvaQty[k]=0);
   Object.entries(s.qty||{}).forEach(([item,q])=>{ achvaQty[item]=q; const inp=document.getElementById(aSafeId(item)); if(inp){ inp.value=q; inp.className='qty-input active'; } });
@@ -1254,7 +1252,6 @@ async function loadLastImporters(){
   const remote=await hmLoadLastImportersRemote();
   if(remote && Object.keys(remote.qty).length){ s={ branch:remote.branch, qty:remote.qty, misc:[] }; }
   if(!s) return;
-  const sel=document.getElementById('importersBranch'); if(sel && s.branch) sel.value=s.branch;
   importersBuildSections();
   Object.keys(importersQty).forEach(k=>importersQty[k]=0);
   Object.entries(s.qty||{}).forEach(([item,q])=>{ importersQty[item]=q; const inp=document.getElementById(iSafeId(item)); if(inp){ inp.value=q; inp.className='qty-input active'; } });
