@@ -500,7 +500,19 @@
       }
     }
   ],
-  "customReports": [],
+  "customReports": [
+    {
+      "id": "test-revenue",
+      "name": "פדיון מצטבר לכל סניף מכספית, חודש קודם, ",
+      "brief": "פדיון מצטבר לכל סניף מכספית, חודש קודם, מפוצל לפי סניף",
+      "enabled": true,
+      "source": "caspit",
+      "format": "excel",
+      "script": "reports/test-revenue.py",
+      "status": "live",
+      "builtAt": "2026-06-09T10:38:53.185Z"
+    }
+  ],
   "systemReports": [
     {
       "id": "daily",
