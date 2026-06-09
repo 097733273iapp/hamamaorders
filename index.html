@@ -748,19 +748,19 @@ function networkBuildSections() {
   });
   networkUpdateTotal();
 }
-function nSafeId(item){ return 'nqty_'+item.replace(/[^א-תa-zA-Z0-9]/g,'_'); }
-function nChangeQty(item,delta){ networkQty[item]=Math.max(0,(networkQty[item]||0)+delta); const inp=document.getElementById(nSafeId(item)); if(inp){inp.value=networkQty[item];inp.className='qty-input'+(networkQty[item]>0?' active':'');} networkUpdateTotal(); }
-function nSetQty(item,val){ networkQty[item]=Math.max(0,parseInt(val)||0); const inp=document.getElementById(nSafeId(item)); if(inp) inp.className='qty-input'+(networkQty[item]>0?' active':''); networkUpdateTotal(); }
+function nSafeId(key){ return 'nqty_'+key.replace(/[^א-תa-zA-Z0-9]/g,'_'); }
+function nChangeQty(key,delta){ networkQty[key]=Math.max(0,(networkQty[key]||0)+delta); const inp=document.getElementById(nSafeId(key)); if(inp){inp.value=networkQty[key];inp.className='qty-input'+(networkQty[key]>0?' active':'');} networkUpdateTotal(); }
+function nSetQty(key,val){ networkQty[key]=Math.max(0,parseInt(val)||0); const inp=document.getElementById(nSafeId(key)); if(inp) inp.className='qty-input'+(networkQty[key]>0?' active':''); networkUpdateTotal(); }
 function networkUpdateTotal(){ let t=Object.values(networkQty).filter(v=>v>0).length; document.querySelectorAll('#networkMiscSection .misc-row').forEach(r=>{ if(r.querySelector('.misc-input').value.trim()) t++; }); document.getElementById('networkTotalCount').textContent=t; }
 function networkAddMiscRow(){ const s=document.getElementById('networkMiscSection'); const r=document.createElement('div'); r.className='misc-row'; r.innerHTML=`<input class="misc-input" placeholder="הוסף הערה / פריט חופשי..." oninput="networkUpdateTotal()"/><button class="remove-btn" onclick="this.parentElement.remove();networkUpdateTotal()">✕</button>`; s.appendChild(r); }
-function networkBuildText(sourceName,destName,items,inclMisc){
+function networkBuildText(sourceName,destName,items,inclMisc,source){
   const now=new Date().toLocaleDateString('he-IL',{day:'2-digit',month:'2-digit',year:'2-digit'});
   let text=`*רשת | ${sourceName} | ${now}*\n*מ${destName}*\n${'─'.repeat(24)}\n`;
   let has=false, tot=0;
   Object.entries(items).forEach(([cat,list])=>{
     const cleanCat=cat.replace(/[\u{1F300}-\u{1FFFF}]/gu,'').trim();
-    const sel=list.filter(i=>networkQty[i]>0);
-    if(sel.length){has=true;text+=`*${cleanCat}:*\n`;sel.forEach(i=>{text+=`• ${i} ×${networkQty[i]}\n`;tot++;});}
+    const sel=list.filter(i=>networkQty[source+'|'+i]>0);
+    if(sel.length){has=true;text+=`*${cleanCat}:*\n`;sel.forEach(i=>{text+=`• ${i} ×${networkQty[source+'|'+i]}\n`;tot++;});}
   });
   if(inclMisc){
     const ml=[]; document.querySelectorAll('#networkMiscSection .misc-row').forEach(r=>{ const n=r.querySelector('.misc-input').value.trim(); if(n){ml.push(`• ${n}`);tot++;} });
@@ -773,8 +773,8 @@ function networkBuildText(sourceName,destName,items,inclMisc){
 function networkShowPreview(){
   if(!currentSource){alert('בחר סניף מזמין תחילה');return;}
   const cfg=BRANCH_CONFIG[currentSource];
-  const tM=cfg.catalogs.includes('legumes')?networkBuildText(cfg.name,'מודיעין מתחם שופרסל',CATALOG_LEGUMES,false):null;
-  const tH=cfg.catalogs.includes('herz')?networkBuildText(cfg.name,'הרצליה צומת כדורי',CATALOG_HERZ,true):null;
+  const tM=cfg.catalogs.includes('legumes')?networkBuildText(cfg.name,'מודיעין מתחם שופרסל',CATALOG_LEGUMES,false,'modiin'):null;
+  const tH=cfg.catalogs.includes('herz')?networkBuildText(cfg.name,'הרצליה צומת כדורי',CATALOG_HERZ,true,'herz'):null;
   document.getElementById('networkPreviewModiin').textContent=tM||'⚠️ אין פריטי קטניות';
   document.getElementById('networkPreviewHerz').textContent=tH||'⚠️ אין פריטים מהרצליה';
   document.getElementById('networkModalTabs').classList.remove('hidden');
