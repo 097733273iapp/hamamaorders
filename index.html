@@ -708,6 +708,8 @@ function onSourceChange() {
 function networkBuildSections() {
   const container = document.getElementById('networkSectionsContainer');
   container.innerHTML = '';
+  // Reset quantities when switching branches to avoid cross-branch contamination
+  Object.keys(networkQty).forEach(k => networkQty[k] = 0);
   const cfg = BRANCH_CONFIG[currentSource];
   if (!cfg) return;
   const toRender = [];
