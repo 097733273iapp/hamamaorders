@@ -287,7 +287,10 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
     </div>
   </div>
   <div id="networkLastBtn" style="display:none;padding:10px 12px 0;">
-    <button onclick="loadLastNetwork()" style="width:100%;padding:11px;background:transparent;border:1.5px solid var(--gold);border-radius:10px;color:var(--gold);font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;">📝 הצג/ערוך הזמנה אחרונה<span class="last-date"></span></button>
+    <div style="display:flex;gap:8px;">
+      <button onclick="loadLastNetwork()" style="flex:1;padding:11px;background:transparent;border:1.5px solid var(--gold);border-radius:10px;color:var(--gold);font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;">📝 הזמנה אחרונה<span class="last-date"></span></button>
+      <button onclick="clearNetwork()" style="padding:11px 14px;background:transparent;border:1.5px solid #888;border-radius:10px;color:#aaa;font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;white-space:nowrap;">🆕 חדשה</button>
+    </div>
   </div>
   <div class="split-notice" id="splitNotice">⚡ <strong>הזמנה מפוצלת:</strong> קטניות ודגנים → מודיעין שופרסל | פיצוחים / גרנולות / ציוד → הרצליה צומת כדורי</div>
   <div id="networkSectionsContainer"></div>
@@ -318,7 +321,7 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
   </header>
   <div class="source-bar">
     <label id="importersBranchLabel">📍 בחר סניף מזמין</label>
-    <select class="source-select" id="importersBranch" onchange="saveBranchMemory('', this.value)">
+    <select class="source-select" id="importersBranch" onchange="saveBranchMemory('', this.value);refreshLastOrderButtons()">
       <option value="">— בחר סניף —</option>
       <option value="הרצליה צומת כדורי">הרצליה צומת כדורי</option>
       <option value="מודיעין מתחם שופרסל">מודיעין מתחם שופרסל</option>
@@ -331,7 +334,10 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
     </select>
   </div>
   <div id="importersLastBtn" style="display:none;padding:10px 12px 0;">
-    <button onclick="loadLastImporters()" style="width:100%;padding:11px;background:transparent;border:1.5px solid var(--gold);border-radius:10px;color:var(--gold);font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;">📝 הצג/ערוך הזמנה אחרונה<span class="last-date"></span></button>
+    <div style="display:flex;gap:8px;">
+      <button onclick="loadLastImporters()" style="flex:1;padding:11px;background:transparent;border:1.5px solid var(--gold);border-radius:10px;color:var(--gold);font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;">📝 הזמנה אחרונה<span class="last-date"></span></button>
+      <button onclick="clearImporters()" style="padding:11px 14px;background:transparent;border:1.5px solid #888;border-radius:10px;color:#aaa;font-weight:700;font-size:14px;font-family:inherit;cursor:pointer;white-space:nowrap;">🆕 חדשה</button>
+    </div>
   </div>
   <div id="importersSectionsContainer"></div>
   <div class="section">
@@ -400,7 +406,7 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
   </header>
   <div class="source-bar">
     <label>📍 בחר סניף מזמין</label>
-    <select class="source-select" id="achvaBranch">
+    <select class="source-select" id="achvaBranch" onchange="refreshLastOrderButtons()">
       <option value="">— בחר סניף —</option>
       <option>הרצליה צומת כדורי</option>
       <option>מודיעין מתחם שופרסל</option>
@@ -705,6 +711,7 @@ function onSourceChange() {
     if (odephSection) odephSection.style.display='none';
   }
   networkBuildSections();
+  if(typeof refreshLastOrderButtons==='function') refreshLastOrderButtons();
 }
 
 function networkBuildSections() {
@@ -1124,10 +1131,17 @@ function odephSendWA() {
 function hmSaveLast(key, data){ try{ localStorage.setItem(key, JSON.stringify(Object.assign({}, data, {ts:Date.now()}))); }catch(e){} }
 function hmLoadLast(key){ try{ return JSON.parse(localStorage.getItem(key)||'null'); }catch(e){ return null; } }
 // קריאת "הזמנה אחרונה" מרכזית מ-GitHub (רשת/אחווה/עודף). מחזיר את אובייקט הסניף+סוג או null.
+// שם הסניף המלא לפי ה-dropdown של הסוג (network=מפתח→שם; השאר=שם מלא)
+function hmSelFull(type){
+  if(type==='network'){ var el=document.getElementById('sourceBranch'); var v=el?el.value:''; return (v && BRANCH_CONFIG[v]) ? BRANCH_CONFIG[v].name : ''; }
+  var ids={achva:'achvaBranch',odeph:'odephBranch',importers:'importersBranch',supplier:'supplierGenericBranch'};
+  var e=document.getElementById(ids[type]); return e ? (e.value||'') : '';
+}
 async function hmLoadLastRemote(type){
   try{
     const mem = getBranchMemory && getBranchMemory();
-    const branchFull = (mem && mem.full) || localStorage.getItem('hm_mgr_branch') || localStorage.getItem('hm_branch_full');
+    // לפי הסניף הנבחר ב-dropdown תחילה — כך ההזמנה האחרונה לפי סניף ולא לפי המשתמש
+    const branchFull = hmSelFull(type) || (mem && mem.full) || localStorage.getItem('hm_mgr_branch') || localStorage.getItem('hm_branch_full');
     if(!branchFull) return null;
     const url = 'https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/last_orders.json?t='+Date.now();
     const r = await fetch(url);
@@ -1135,6 +1149,19 @@ async function hmLoadLastRemote(type){
     const all = await r.json();
     const b = all[branchFull]; if(!b) return null;
     return b[type] || null;
+  }catch(e){ return null; }
+}
+// יבואנים: קריאת ההזמנה האחרונה מהשרת (importer_orders.json) לפי הסניף הנבחר
+async function hmLoadLastImportersRemote(){
+  try{
+    const b = hmSelFull('importers'); if(!b) return null;
+    const r = await fetch('https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/importer_orders.json?t='+Date.now());
+    if(!r.ok) return null;
+    const all = await r.json();
+    const e = all.branches && all.branches[b];
+    if(!e || !Array.isArray(e.items) || !e.items.length) return null;
+    const qty={}; e.items.forEach(it=>{ if(it&&it.name) qty[it.name]=it.qty; });
+    return { branch:b, qty:qty, ts:e.ts };
   }catch(e){ return null; }
 }
 function hmFmtDate(ts){ try{ return new Date(ts).toLocaleDateString('he-IL',{day:'2-digit',month:'2-digit'}); }catch(e){ return ''; } }
@@ -1222,8 +1249,11 @@ function saveLastImporters(){
   if(Object.keys(qty).length===0 && misc.length===0) return;
   hmSaveLast('hm_last_importers',{branch:branch, qty:qty, misc:misc});
 }
-function loadLastImporters(){
-  const s=hmLoadLast('hm_last_importers'); if(!s) return;
+async function loadLastImporters(){
+  let s=hmLoadLast('hm_last_importers');
+  const remote=await hmLoadLastImportersRemote();
+  if(remote && Object.keys(remote.qty).length){ s={ branch:remote.branch, qty:remote.qty, misc:[] }; }
+  if(!s) return;
   const sel=document.getElementById('importersBranch'); if(sel && s.branch) sel.value=s.branch;
   importersBuildSections();
   Object.keys(importersQty).forEach(k=>importersQty[k]=0);
@@ -1257,12 +1287,35 @@ function loadLastSupplier(){
   supplierUpdateTotal();
 }
 
+// --- ניקוי טופס ("הזמנה חדשה") ---
+function clearNetwork(){
+  if(typeof networkQty==='object') Object.keys(networkQty).forEach(k=>networkQty[k]=0);
+  if(typeof networkBuildSections==='function') networkBuildSections();
+  const sec=document.getElementById('networkMiscSection');
+  if(sec) sec.innerHTML='<div class="misc-row"><input class="misc-input" placeholder="הוסף הערה / פריט חופשי..." oninput="networkUpdateTotal()"/></div>';
+  if(typeof networkUpdateTotal==='function') networkUpdateTotal();
+}
+function clearImporters(){
+  if(typeof importersQty==='object') Object.keys(importersQty).forEach(k=>importersQty[k]=0);
+  if(typeof importersBuildSections==='function') importersBuildSections();
+  const sec=document.getElementById('importersMiscSection');
+  if(sec) sec.innerHTML='<div class="misc-row"><input class="misc-input" placeholder="הוסף הערה / פריט חופשי..." oninput="importersUpdateTotal()"/></div>';
+  if(typeof importersUpdateTotal==='function') importersUpdateTotal();
+}
 // --- הצגה/הסתרה של כפתורי "הזמנה אחרונה" לפי קיום שמירה ---
 function refreshLastOrderButtons(){
-  [['hm_last_network','networkLastBtn'],['hm_last_achva','achvaLastBtn'],['hm_last_odeph','odephLastBtn'],['hm_last_importers','importersLastBtn']].forEach(function(pair){
-    const wrap=document.getElementById(pair[1]); if(!wrap) return;
-    const s=hmLoadLast(pair[0]);
-    if(s){ wrap.style.display='block'; const d=wrap.querySelector('.last-date'); if(d) d.textContent=s.ts?(' ('+hmFmtDate(s.ts)+')'):''; }
+  const rows=[
+    ['hm_last_network','networkLastBtn','sourceBranch'],
+    ['hm_last_achva','achvaLastBtn','achvaBranch'],
+    ['hm_last_odeph','odephLastBtn',null],
+    ['hm_last_importers','importersLastBtn','importersBranch'],
+  ];
+  rows.forEach(function(row){
+    const wrap=document.getElementById(row[1]); if(!wrap) return;
+    const s=hmLoadLast(row[0]);
+    const selEl=row[2]?document.getElementById(row[2]):null;
+    const branchSel = selEl && selEl.value;   // כשנבחר סניף — הכפתור זמין (הזמנה אחרונה לפי סניף מהשרת)
+    if(s || branchSel){ wrap.style.display='block'; const d=wrap.querySelector('.last-date'); if(d) d.textContent=(s&&s.ts)?(' ('+hmFmtDate(s.ts)+')'):''; }
     else wrap.style.display='none';
   });
   // ספקים — לפי הספק הנוכחי
