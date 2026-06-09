@@ -321,7 +321,7 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
   </header>
   <div class="source-bar">
     <label id="importersBranchLabel">📍 בחר סניף מזמין</label>
-    <select class="source-select" id="importersBranch" onchange="saveBranchMemory('', this.value);refreshLastOrderButtons()">
+    <select class="source-select" id="importersBranch" onchange="saveBranchMemory('', this.value);clearImporters();refreshLastOrderButtons()">
       <option value="">— בחר סניף —</option>
       <option value="הרצליה צומת כדורי">הרצליה צומת כדורי</option>
       <option value="מודיעין מתחם שופרסל">מודיעין מתחם שופרסל</option>
@@ -710,7 +710,12 @@ function onSourceChange() {
     destInfo.style.display='none';
     if (odephSection) odephSection.style.display='none';
   }
+  // ניקוי הטופס בשינוי סניף — לא נשארת הזמנה מסניף קודם
+  if(typeof networkQty==='object') Object.keys(networkQty).forEach(k=>networkQty[k]=0);
+  const _nm=document.getElementById('networkMiscSection');
+  if(_nm) _nm.innerHTML='<div class="misc-row"><input class="misc-input" placeholder="הוסף הערה / פריט חופשי..." oninput="networkUpdateTotal()"/></div>';
   networkBuildSections();
+  if(typeof networkUpdateTotal==='function') networkUpdateTotal();
   if(typeof refreshLastOrderButtons==='function') refreshLastOrderButtons();
 }
 
