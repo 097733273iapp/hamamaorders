@@ -510,7 +510,10 @@
       "format": "excel",
       "script": "reports/test-revenue.py",
       "status": "live",
-      "builtAt": "2026-06-09T10:38:53.185Z"
+      "builtAt": "2026-06-09T10:38:53.185Z",
+      "schedule": {},
+      "targets": {},
+      "desc": "הוא צריך להכנס לאתר של כספיט למשוך את הנתנוים מהמסך הראשי לחודש קודם \nלהכניס את זה לאקסל דוחות E:\\האחסון שלי (097733273i@gmail.com)\\חנות\\דוחות\\פידיון חודשי \nכל סניף בעמודה שלו - גם בסך הכסף וגם במספר הלקוחות. \nיש לשים לב לבחור 2 סוגי מסמך 1 ו2 "
     }
   ],
   "systemReports": [
@@ -521,7 +524,12 @@
       "when": "כל יום · 23:00",
       "where": "מייל + וואטסאפ לעידן",
       "enabled": true,
-      "order": 0
+      "order": 0,
+      "sched": {
+        "type": "daily",
+        "hour": 23,
+        "minute": 0
+      }
     },
     {
       "id": "monthly",
@@ -530,7 +538,13 @@
       "when": "1 לכל חודש · 13:00 (אם חל בשישי/שבת — נדחה ליום העסקים הבא)",
       "where": "מייל לרו״ח + עידן",
       "enabled": true,
-      "order": 1
+      "order": 1,
+      "sched": {
+        "type": "monthly-day",
+        "dayOfMonth": 1,
+        "hour": 13,
+        "minute": 0
+      }
     },
     {
       "id": "shiftCheck",
@@ -539,7 +553,12 @@
       "when": "כל יום · 23:30",
       "where": "פרטי לכל מנהל סניף",
       "enabled": true,
-      "order": 2
+      "order": 2,
+      "sched": {
+        "type": "daily",
+        "hour": 23,
+        "minute": 30
+      }
     },
     {
       "id": "weeklyMotivation",
@@ -548,7 +567,13 @@
       "when": "כל יום שישי · 08:00",
       "where": "קבוצת כל סניף",
       "enabled": true,
-      "order": 3
+      "order": 3,
+      "sched": {
+        "type": "weekly",
+        "day": 5,
+        "hour": 8,
+        "minute": 0
+      }
     }
   ]
 }
