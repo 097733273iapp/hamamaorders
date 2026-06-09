@@ -725,20 +725,21 @@ function networkBuildSections() {
       section.innerHTML = `<div class="section-title">${category}${badge}</div><div class="items-grid"></div>`;
       const grid = section.querySelector('.items-grid');
       items.forEach(item => {
-        if (!(item in networkQty)) networkQty[item]=0;
-        const sid = 'nqty_'+item.replace(/[^א-תa-zA-Z0-9]/g,'_');
+        const key = source+'|'+item;
+        if (!(key in networkQty)) networkQty[key]=0;
+        const sid = 'nqty_'+key.replace(/[^א-תa-zA-Z0-9]/g,'_');
         const row = document.createElement('div');
         row.className = 'item-row';
         // Use DOM methods — avoids quote-escaping bugs with names like בד"ץ
         const nameSpan=document.createElement('span'); nameSpan.className='item-name'; nameSpan.textContent=item;
         const ctrl=document.createElement('div'); ctrl.className='qty-control';
         const btnMinus=document.createElement('button'); btnMinus.className='qty-btn'; btnMinus.textContent='−';
-        btnMinus.addEventListener('click',()=>nChangeQty(item,-1));
-        const inp=document.createElement('input'); inp.className='qty-input'+(networkQty[item]>0?' active':'');
-        inp.id=sid; inp.type='number'; inp.min='0'; inp.value=networkQty[item]||0;
-        inp.addEventListener('change',()=>nSetQty(item,inp.value));
+        btnMinus.addEventListener('click',()=>nChangeQty(key,-1));
+        const inp=document.createElement('input'); inp.className='qty-input'+(networkQty[key]>0?' active':'');
+        inp.id=sid; inp.type='number'; inp.min='0'; inp.value=networkQty[key]||0;
+        inp.addEventListener('change',()=>nSetQty(key,inp.value));
         const btnPlus=document.createElement('button'); btnPlus.className='qty-btn'; btnPlus.textContent='+';
-        btnPlus.addEventListener('click',()=>nChangeQty(item,1));
+        btnPlus.addEventListener('click',()=>nChangeQty(key,1));
         ctrl.appendChild(btnMinus); ctrl.appendChild(inp); ctrl.appendChild(btnPlus);
         row.appendChild(nameSpan); row.appendChild(ctrl);
         grid.appendChild(row);
