@@ -203,6 +203,29 @@ let curBranch = BRANCHES[0];
 let shifts = {}, avails = {}, hours = {};
 let pending = null;
 
+// ── איפוס שבועי אוטומטי של המטמון המקומי ──
+// מקור האמת לאיפוס: רביעי 08:00 (תואם ל-shiftReset בבוט). אם המטמון נשמר לפני
+// האיפוס השבועי האחרון — מנקים אותו אוטומטית, בלי פעולה ידנית.
+(function autoWeeklyReset() {
+  try {
+    const now = new Date();
+    const last = new Date(now);
+    // יום היעד: רביעי (3), שעה 8:00
+    const RESET_DAY = 3, RESET_HOUR = 8;
+    let diff = (now.getDay() - RESET_DAY + 7) % 7;
+    last.setDate(now.getDate() - diff);
+    last.setHours(RESET_HOUR, 0, 0, 0);
+    if (last > now) last.setDate(last.getDate() - 7); // עוד לא הגענו לרביעי 8:00 השבוע
+    const stamp = Number(localStorage.getItem('garn_local_stamp') || 0);
+    if (!stamp || stamp < last.getTime()) {
+      // המטמון ישן מהאיפוס השבועי האחרון — מנקים שיבוץ + זמינות מקומיים
+      localStorage.removeItem('garn_shifts');
+      localStorage.removeItem('garn_avails');
+      localStorage.setItem('garn_local_stamp', String(now.getTime()));
+    }
+  } catch(e) {}
+})();
+
 // Load from storage
 try { shifts = JSON.parse(localStorage.getItem('garn_shifts') || '{}'); } catch(e) {}
 try { avails = JSON.parse(localStorage.getItem('garn_avails') || '{}'); } catch(e) {}
@@ -254,6 +277,7 @@ function getCell(day, type) {
 
 function saveLocal() {
   localStorage.setItem('garn_shifts', JSON.stringify(shifts));
+  localStorage.setItem('garn_local_stamp', String(Date.now()));
 }
 
 // ── Sorted employees (by submission time) ──
