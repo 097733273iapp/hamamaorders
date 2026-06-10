@@ -126,7 +126,9 @@
   "whatsapp": {
     "achvaGroup": "120363161554785891@g.us",
     "odephForward": "972523271473@c.us",
-    "networkGroup": "972505921127-1483215420@g.us"
+    "networkGroup": "972505921127-1483215420@g.us",
+    "importerForward": "972524371919@c.us",
+    "importerName": "אבי"
   },
   "reports": {
     "dailyTo": [
