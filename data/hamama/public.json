@@ -492,6 +492,32 @@
       "desc": "הזמנות פנימיות בין סניפים. מתאפסות ברביעי 23:00 וראשון."
     },
     {
+      "id": "importers",
+      "title": "יבואנים",
+      "builtin": true,
+      "hasProducts": true,
+      "routing": {
+        "mode": "bot",
+        "botTarget": "importer"
+      },
+      "order": 1,
+      "kind": "orders",
+      "desc": "הזמנות מיבואנים. נמחקות אוטומטית יומיים אחרי שליחה."
+    },
+    {
+      "id": "suppliers",
+      "title": "ספקים",
+      "builtin": true,
+      "hasProducts": true,
+      "routing": {
+        "mode": "manual",
+        "manualTarget": "self"
+      },
+      "order": 2,
+      "kind": "suppliers",
+      "desc": "הזמנות מספקים חיצוניים (כולל אחווה)."
+    },
+    {
       "id": "achva",
       "title": "אחווה",
       "builtin": true,
@@ -536,7 +562,8 @@
         "fridayShifts": [
           "בוקר",
           "חופש"
-        ]
+        ],
+        "noteLabel": "לרשום מ-10 או עד 15 (ללא מלל ארוך )"
       },
       "routing": {
         "mode": "bot",
@@ -553,32 +580,6 @@
         "mode": "bot",
         "botTarget": "branch-group"
       }
-    },
-    {
-      "id": "importers",
-      "title": "יבואנים",
-      "builtin": true,
-      "hasProducts": true,
-      "routing": {
-        "mode": "bot",
-        "botTarget": "importer"
-      },
-      "order": 1,
-      "kind": "orders",
-      "desc": "הזמנות מיבואנים. נמחקות אוטומטית יומיים אחרי שליחה."
-    },
-    {
-      "id": "suppliers",
-      "title": "ספקים",
-      "builtin": true,
-      "hasProducts": true,
-      "routing": {
-        "mode": "manual",
-        "manualTarget": "self"
-      },
-      "order": 2,
-      "kind": "suppliers",
-      "desc": "הזמנות מספקים חיצוניים (כולל אחווה)."
     }
   ],
   "customReports": [
@@ -693,5 +694,6 @@
       "wa": "#25d366",
       "off": "#9aa0ab"
     }
-  }
+  },
+  "configRefreshRequest": 1781116347982
 }
