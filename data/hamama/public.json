@@ -695,5 +695,8 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781116347982
+  "configRefreshRequest": 1781119258777,
+  "importerSuppliers": [
+    "אגמ"
+  ]
 }
