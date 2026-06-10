@@ -272,7 +272,7 @@
     {
       "id": "auto-1780924124848",
       "name": "בדיקה",
-      "enabled": true,
+      "enabled": false,
       "text": "בדיקה ההה",
       "schedule": {
         "freq": "daily",
@@ -297,7 +297,13 @@
       "where": "קבוצת כל סניף",
       "enabled": true,
       "order": 0,
-      "kind": "schedule"
+      "kind": "schedule",
+      "sched": {
+        "type": "weekly",
+        "day": 3,
+        "hour": 10,
+        "minute": 0
+      }
     },
     {
       "id": "shiftRemind",
@@ -307,7 +313,13 @@
       "where": "קבוצת כל סניף",
       "enabled": true,
       "order": 1,
-      "kind": "schedule"
+      "kind": "schedule",
+      "sched": {
+        "type": "weekly",
+        "day": 4,
+        "hour": 10,
+        "minute": 0
+      }
     },
     {
       "id": "sundaypdf",
@@ -318,7 +330,13 @@
       "enabled": true,
       "order": 2,
       "kind": "process",
-      "does": "מייצר PDF מרוכז של הזמנות הרשת ושולח."
+      "does": "מייצר PDF מרוכז של הזמנות הרשת ושולח.",
+      "sched": {
+        "type": "weekly",
+        "day": 0,
+        "hour": 9,
+        "minute": 0
+      }
     },
     {
       "id": "odephpdf",
@@ -329,7 +347,13 @@
       "enabled": true,
       "order": 3,
       "kind": "process",
-      "does": "מייצר PDF של דיווחי עודף מהסניפים ושולח."
+      "does": "מייצר PDF של דיווחי עודף מהסניפים ושולח.",
+      "sched": {
+        "type": "weekly",
+        "day": 0,
+        "hour": 12,
+        "minute": 0
+      }
     },
     {
       "id": "shiftMgrLink",
@@ -339,7 +363,13 @@
       "where": "פרטי למנהל הסניף",
       "enabled": true,
       "order": 4,
-      "kind": "schedule"
+      "kind": "schedule",
+      "sched": {
+        "type": "weekly",
+        "day": 4,
+        "hour": 12,
+        "minute": 5
+      }
     },
     {
       "id": "achva",
@@ -349,7 +379,13 @@
       "where": "קבוצת אחווה",
       "enabled": true,
       "order": 5,
-      "kind": "schedule"
+      "kind": "schedule",
+      "sched": {
+        "type": "monthly-last",
+        "hour": 10,
+        "minute": 0,
+        "fridayShift": true
+      }
     },
     {
       "id": "zd",
@@ -359,7 +395,12 @@
       "where": "קבוצת מנהלים",
       "enabled": true,
       "order": 6,
-      "kind": "schedule"
+      "kind": "schedule",
+      "sched": {
+        "type": "monthly-last",
+        "hour": 12,
+        "minute": 0
+      }
     },
     {
       "id": "accleaning",
@@ -369,7 +410,18 @@
       "where": "קבוצת מנהלים",
       "enabled": true,
       "order": 7,
-      "kind": "schedule"
+      "kind": "schedule",
+      "sched": {
+        "type": "nth-weekday-of-months",
+        "nth": 1,
+        "weekday": 2,
+        "months": [
+          5,
+          11
+        ],
+        "hour": 8,
+        "minute": 0
+      }
     },
     {
       "id": "shiftReset",
@@ -380,7 +432,13 @@
       "order": 8,
       "when": "רביעי · 08:00",
       "does": "מאפס את נתוני המשמרות והזמינות ב-GitHub לקראת שבוע חדש.",
-      "where": "—"
+      "where": "—",
+      "sched": {
+        "type": "weekly",
+        "day": 3,
+        "hour": 8,
+        "minute": 0
+      }
     },
     {
       "id": "motivation",
@@ -391,7 +449,13 @@
       "order": 9,
       "when": "שישי · 08:00",
       "does": "מושך פדיון מ-Caspit מול היעד, מעדכן אקסל ושולח הודעת עידוד לכל סניף.",
-      "where": "קבוצת כל סניף"
+      "where": "קבוצת כל סניף",
+      "sched": {
+        "type": "weekly",
+        "day": 5,
+        "hour": 8,
+        "minute": 0
+      }
     },
     {
       "id": "netReset",
@@ -402,7 +466,13 @@
       "order": 10,
       "when": "רביעי · 23:00 · ראשון · 09:00 (אחרי PDF)",
       "does": "מאפס את מעקב הזמנות הרשת. פעמיים: סוף רביעי, ושוב ראשון אחרי ה-PDF.",
-      "where": "—"
+      "where": "—",
+      "sched": {
+        "type": "weekly",
+        "day": 3,
+        "hour": 23,
+        "minute": 0
+      }
     }
   ],
   "productGroups": [
@@ -414,27 +484,10 @@
       "routing": {
         "mode": "bot",
         "botTarget": "managers"
-      }
-    },
-    {
-      "id": "importers",
-      "title": "יבואנים",
-      "builtin": true,
-      "hasProducts": true,
-      "routing": {
-        "mode": "bot",
-        "botTarget": "importer"
-      }
-    },
-    {
-      "id": "suppliers",
-      "title": "ספקים",
-      "builtin": true,
-      "hasProducts": true,
-      "routing": {
-        "mode": "manual",
-        "manualTarget": "self"
-      }
+      },
+      "order": 0,
+      "kind": "orders",
+      "desc": "הזמנות פנימיות בין סניפים. מתאפסות ברביעי 23:00 וראשון."
     },
     {
       "id": "achva",
@@ -498,6 +551,32 @@
         "mode": "bot",
         "botTarget": "branch-group"
       }
+    },
+    {
+      "id": "importers",
+      "title": "יבואנים",
+      "builtin": true,
+      "hasProducts": true,
+      "routing": {
+        "mode": "bot",
+        "botTarget": "importer"
+      },
+      "order": 1,
+      "kind": "orders",
+      "desc": "הזמנות מיבואנים. נמחקות אוטומטית יומיים אחרי שליחה."
+    },
+    {
+      "id": "suppliers",
+      "title": "ספקים",
+      "builtin": true,
+      "hasProducts": true,
+      "routing": {
+        "mode": "manual",
+        "manualTarget": "self"
+      },
+      "order": 2,
+      "kind": "suppliers",
+      "desc": "הזמנות מספקים חיצוניים (כולל אחווה)."
     }
   ],
   "customReports": [
