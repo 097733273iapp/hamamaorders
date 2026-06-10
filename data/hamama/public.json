@@ -654,5 +654,42 @@
         "minute": 0
       }
     }
-  ]
+  ],
+  "theme": {
+    "fontFamily": "'Heebo', 'Segoe UI', sans-serif",
+    "dark": {
+      "bg": "#111",
+      "card": "#1b1b1b",
+      "card2": "#232323",
+      "text": "#f0f0f0",
+      "muted": "#8a8a8a",
+      "border": "#333",
+      "border2": "#3a3a3a",
+      "gold": "#c9a84c",
+      "gold2": "#e8c96a",
+      "goldDim": "rgba(201,168,76,0.13)",
+      "goldBorder": "rgba(201,168,76,0.42)",
+      "green": "#4caf7d",
+      "red": "#e0685a",
+      "wa": "#25d366",
+      "off": "#9aa0ab"
+    },
+    "light": {
+      "bg": "#f4f5f7",
+      "card": "#ffffff",
+      "card2": "#eceef1",
+      "text": "#1d2330",
+      "muted": "#6b7280",
+      "border": "#e3e5ea",
+      "border2": "#d3d7df",
+      "gold": "#b08a2c",
+      "gold2": "#8a6c1f",
+      "goldDim": "rgba(176,138,44,0.13)",
+      "goldBorder": "rgba(176,138,44,0.42)",
+      "green": "#2f9e6b",
+      "red": "#d24b4b",
+      "wa": "#25d366",
+      "off": "#9aa0ab"
+    }
+  }
 }
