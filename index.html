@@ -142,17 +142,19 @@ footer { width:100%; text-align:center; padding:16px; font-size:11px; color:#444
 .qty-btn:active { background:var(--gold); color:var(--black); }
 .qty-input {
   width:40px; text-align:center; border:1px solid var(--border2); border-radius:6px;
-  padding:4px 6px; font-size:14px; background:var(--card); color:var(--gold); font-family:inherit; font-weight:800;
+  padding:4px 6px; font-size:14px; background:var(--card); color:var(--text); font-family:inherit; font-weight:800;
 }
-.qty-input:focus { outline:none; border-color:var(--gold); background:var(--card); color:var(--gold); }
-.qty-input.active { background:var(--card); color:var(--gold); font-weight:800; }
-.qty-input::-webkit-outer-spin-button,
-.qty-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.qty-input:focus { outline:none; border-color:var(--gold); background:var(--card); color:var(--text); }
+.qty-input.active { background:var(--card); color:var(--text); font-weight:800; }
+/* Properly hide spinner arrows */
+input[type="number"].qty-input::-webkit-outer-spin-button,
+input[type="number"].qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+  display: none !important;
 }
-.qty-input[type="number"] {
-  -moz-appearance: textfield;
+input[type="number"].qty-input {
+  -moz-appearance: textfield !important;
 }
 .misc-section { padding:10px 14px; }
 .misc-row { display:flex; gap:7px; margin-bottom:7px; align-items:center; }
