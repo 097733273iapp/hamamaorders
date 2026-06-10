@@ -695,7 +695,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781119258777,
+  "configRefreshRequest": 1781121022302,
   "importerSuppliers": [
     "אחווה",
     "וקסמן",
@@ -705,5 +705,8 @@
     "מכוורת נגוהות",
     "אורנת - ג'ומו",
     "מעדני עופר"
-  ]
+  ],
+  "supplierPhones": {
+    "אגמ": "111"
+  }
 }
