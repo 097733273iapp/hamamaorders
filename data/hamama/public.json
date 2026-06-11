@@ -371,7 +371,7 @@
       },
       "routing": {
         "mode": "bot",
-        "botTarget": "branch-group"
+        "botTarget": "manager-private"
       }
     },
     {
@@ -715,7 +715,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781166131431,
+  "configRefreshRequest": 1781196517421,
   "importerSuppliers": [
     "אחווה",
     "וקסמן",
@@ -732,5 +732,74 @@
   "runRequest": null,
   "scheduleState": {},
   "deletedSysReports": [],
-  "deletedSysAutos": []
+  "deletedSysAutos": [],
+  "botMenu": {
+    "main": [
+      {
+        "id": "operations",
+        "label": "מרכז הפעולות",
+        "enabled": true,
+        "order": 1,
+        "roles": [
+          "all"
+        ],
+        "desc": "שולח לינק למרכז הניהול (admin.hamamaltd.com). המשתמש מתחבר ורואה את הממשק שלו."
+      },
+      {
+        "id": "time_update",
+        "label": "עדכון שעות",
+        "enabled": true,
+        "order": 2,
+        "roles": [
+          "all"
+        ],
+        "desc": "עדכון שעות כניסה/יציאה של עובד ב-Caspit. המנהל מזהה עובד לפי שם ומעדכן שעה."
+      },
+      {
+        "id": "create_employee",
+        "label": "הקמת עובד חדש",
+        "enabled": true,
+        "order": 3,
+        "roles": [
+          "all"
+        ],
+        "desc": "יצירת עובד-קופאי חדש ב-Caspit. מגדיר שם, כרטיס מגנטי וסניף."
+      },
+      {
+        "id": "delete_order",
+        "label": "מחיקת הזמנה",
+        "enabled": true,
+        "order": 4,
+        "roles": [
+          "all"
+        ],
+        "desc": "מחיקת הזמנה שנשלחה (רשת/אחווה/עודף/יבואנים). בוחר סניף וסוג הזמנה."
+      },
+      {
+        "id": "orders_report",
+        "label": "בקשת דוח הזמנוי",
+        "enabled": true,
+        "order": 5,
+        "roles": [
+          "mgmt",
+          "pdf"
+        ],
+        "desc": "בקשת דוח הזמנות כ-PDF. מייצר ושולח לשולח."
+      },
+      {
+        "id": "management",
+        "label": "פעולות הנהלה",
+        "enabled": true,
+        "order": 6,
+        "roles": [
+          "mgmt"
+        ],
+        "desc": "תפריט פעולות הנהלה (הקמת מוצר, ניהול מוצרים, החלפת מנהל ועוד).",
+        "routing": {
+          "mode": "bot",
+          "botTarget": "managers"
+        }
+      }
+    ]
+  }
 }
