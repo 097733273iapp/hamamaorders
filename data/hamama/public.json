@@ -777,7 +777,7 @@
       },
       {
         "id": "orders_report",
-        "label": "בקשת דוח הזמנוי",
+        "label": "בקשת דוח הזמנות",
         "enabled": true,
         "order": 5,
         "roles": [
