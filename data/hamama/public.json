@@ -739,7 +739,7 @@
         "id": "operations",
         "label": "מרכז הפעולות",
         "enabled": true,
-        "order": 2,
+        "order": 1,
         "roles": [
           "all"
         ],
@@ -749,7 +749,7 @@
         "id": "time_update",
         "label": "עדכון שעות",
         "enabled": true,
-        "order": 1,
+        "order": 2,
         "roles": [
           "all"
         ],
