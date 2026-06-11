@@ -287,6 +287,10 @@
         "groups": [
           "owner"
         ]
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     }
   ],
@@ -305,6 +309,10 @@
         "day": 3,
         "hour": 10,
         "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
@@ -321,6 +329,10 @@
         "day": 4,
         "hour": 10,
         "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
@@ -338,6 +350,10 @@
         "day": 0,
         "hour": 9,
         "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
@@ -355,6 +371,10 @@
         "day": 0,
         "hour": 12,
         "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
@@ -371,6 +391,10 @@
         "day": 4,
         "hour": 12,
         "minute": 5
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
@@ -387,12 +411,16 @@
         "hour": 10,
         "minute": 0,
         "fridayShift": true
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
       "id": "zd",
       "title": "⏰ תזכורת זד (סוף חודש)",
-      "text": "אל תשכחו לסגור זד (Z) בקופה בסוף המשמרת היום.\n עידן בדיקה ",
+      "text": "אל תשכחו לסגור זד (Z) בקופה בסוף המשמרת היום.\n ",
       "when": "יום אחרון בחודש · 12:00",
       "where": "קבוצת מנהלים",
       "enabled": true,
@@ -402,6 +430,10 @@
         "type": "monthly-last",
         "hour": 12,
         "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
@@ -423,6 +455,10 @@
         ],
         "hour": 8,
         "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
@@ -440,6 +476,10 @@
         "day": 3,
         "hour": 8,
         "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
@@ -457,6 +497,10 @@
         "day": 5,
         "hour": 8,
         "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     },
     {
@@ -474,6 +518,10 @@
         "day": 3,
         "hour": 23,
         "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
       }
     }
   ],
@@ -695,7 +743,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781122254438,
+  "configRefreshRequest": 1781156266025,
   "importerSuppliers": [
     "אחווה",
     "וקסמן",
