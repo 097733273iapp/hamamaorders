@@ -142,12 +142,12 @@
       "097733273i@gmail.com"
     ],
     "motivationBranches": [
-      "הרצליה סוקולוב 16",
-      "הרצליה סוקולוב 27",
       "הרצליה צומת כדורי",
-      "גבעת שמואל",
       "מודיעין מתחם שופרסל",
-      "מודיעין מתחם רמי לוי"
+      "מודיעין מתחם רמי לוי",
+      "גבעת שמואל",
+      "הרצליה סוקולוב 27",
+      "הרצליה סוקולוב 16"
     ]
   },
   "caspitDefaults": {
@@ -227,7 +227,7 @@
       "פתח תקווה"
     ]
   },
-  "botUpdateRequest": 1780933946946,
+  "botUpdateRequest": 1781202230546,
   "messageTemplates": {
     "weekly": {
       "openers": [
@@ -487,6 +487,42 @@
           "minute": 0
         }
       ]
+    },
+    {
+      "id": "timeUpdate",
+      "kind": "manual",
+      "title": "🕐 עדכון שעות עובד",
+      "text": "",
+      "when": "ידני — מהתפריט",
+      "where": "—",
+      "does": "מעדכן שעון נוכחות (כניסה/יציאה) ב-Caspit לפי בחירת המנהל.",
+      "script": "caspit_api.py",
+      "enabled": true,
+      "order": 10
+    },
+    {
+      "id": "employeeCreate",
+      "kind": "manual",
+      "title": "👤 הקמת עובד חדש",
+      "text": "",
+      "when": "ידני — מהתפריט",
+      "where": "—",
+      "does": "יוצר עובד-קופאי חדש ב-Caspit (שם, כרטיס מגנטי, סניף).",
+      "script": "employee_creator.py",
+      "enabled": true,
+      "order": 11
+    },
+    {
+      "id": "itemCreate",
+      "kind": "manual",
+      "title": "📦 הקמת מוצר חדש",
+      "text": "",
+      "when": "ידני — מהתפריט",
+      "where": "—",
+      "does": "מחלץ פרטי מוצר מתמונת חשבונית ויוצר אותו ב-Caspit.",
+      "script": "item_creator.py",
+      "enabled": true,
+      "order": 12
     }
   ],
   "productGroups": [
@@ -715,7 +751,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781196828481,
+  "configRefreshRequest": 1781242226028,
   "importerSuppliers": [
     "אחווה",
     "וקסמן",
@@ -743,7 +779,11 @@
         "roles": [
           "all"
         ],
-        "desc": "שולח לינק למרכז הניהול (admin.hamamaltd.com). המשתמש מתחבר ורואה את הממשק שלו."
+        "desc": "שולח לינק למרכז הניהול (admin.hamamaltd.com). המשתמש מתחבר ורואה את הממשק שלו.",
+        "steps": [
+          "הבוט שולח לינק למרכז הניהול (admin.hamamaltd.com)",
+          "שלב חדש"
+        ]
       },
       {
         "id": "time_update",
@@ -800,6 +840,105 @@
           "botTarget": "managers"
         }
       }
+    ],
+    "mgmt": [
+      {
+        "id": "new_product",
+        "label": "הקמת מוצר חדש",
+        "enabled": true,
+        "order": 1,
+        "roles": [
+          "mgmt"
+        ]
+      },
+      {
+        "id": "add_product",
+        "label": "הוספת מוצר לדף הזמנות",
+        "enabled": true,
+        "order": 2,
+        "roles": [
+          "mgmt"
+        ]
+      },
+      {
+        "id": "del_product",
+        "label": "מחיקת מוצר מדף הזמנות",
+        "enabled": true,
+        "order": 3,
+        "roles": [
+          "mgmt"
+        ]
+      },
+      {
+        "id": "admin_ui",
+        "label": "ממשק ניהול מוצרים",
+        "enabled": true,
+        "order": 4,
+        "roles": [
+          "mgmt"
+        ]
+      },
+      {
+        "id": "replace_mgr",
+        "label": "החלפת מנהל סניף",
+        "enabled": true,
+        "order": 5,
+        "roles": [
+          "mgmt"
+        ]
+      },
+      {
+        "id": "automations",
+        "label": "הודעות אוטומציה",
+        "enabled": true,
+        "order": 6,
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "id": "reports",
+        "label": "דוחות",
+        "enabled": true,
+        "order": 7,
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "id": "system_upgrade",
+        "label": "הפעלת מערכת מחדש",
+        "enabled": true,
+        "order": 8,
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "id": "mgmt_1781242255611",
+        "label": "שלב חדש",
+        "type": "automation",
+        "message": "",
+        "enabled": true,
+        "order": 9,
+        "roles": [
+          "mgmt"
+        ]
+      }
     ]
-  }
+  },
+  "employeeForms": [
+    {
+      "id": "form-101",
+      "label": "טופס 101",
+      "type": "link",
+      "url": "https://tpz.link/9szr8"
+    },
+    {
+      "id": "form-contract",
+      "label": "הסכם עבודה",
+      "type": "link",
+      "url": "https://app.easydo.co.il/publicForm/6d6b8b07-44c2-4d73-8497-d2f41e216555"
+    }
+  ]
 }
