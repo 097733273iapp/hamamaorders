@@ -913,17 +913,6 @@
         "roles": [
           "owner"
         ]
-      },
-      {
-        "id": "mgmt_1781242255611",
-        "label": "שלב חדש",
-        "type": "automation",
-        "message": "",
-        "enabled": true,
-        "order": 9,
-        "roles": [
-          "mgmt"
-        ]
       }
     ]
   },
