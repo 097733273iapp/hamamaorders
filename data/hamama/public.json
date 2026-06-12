@@ -647,7 +647,15 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
-      }
+      },
+      "scheds": [
+        {
+          "type": "weekly",
+          "day": 5,
+          "hour": 18,
+          "minute": 15
+        }
+      ]
     },
     {
       "id": "monthly",
@@ -748,7 +756,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781274897403,
+  "configRefreshRequest": 1781275644846,
   "importerSuppliers": [
     "כרם",
     "אגמ"
