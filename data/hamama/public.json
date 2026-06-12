@@ -212,10 +212,7 @@
         ]
       }
     },
-    "wednesdayBranches": [
-      "הרצליה סוקולוב 16",
-      "הרצליה צומת כדורי"
-    ],
+    "wednesdayBranches": [],
     "achvaBranches": [
       "הרצליה צומת כדורי",
       "הרצליה סוקולוב 16",
@@ -751,7 +748,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781243934709,
+  "configRefreshRequest": 1781274332082,
   "importerSuppliers": [
     "אחווה",
     "וקסמן",
