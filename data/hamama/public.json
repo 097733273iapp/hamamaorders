@@ -6,7 +6,8 @@
     "botNumber": "97297733273",
     "webRepo": "097733273iapp/hamamaorders",
     "adminUrl": "https://admin.hamamaltd.com",
-    "nameEn": "Garinei Afula Hamama"
+    "nameEn": "Garinei Afula Hamama",
+    "botRepo": "097733273iapp/Hamamabot"
   },
   "branches": [
     {
@@ -110,13 +111,30 @@
       "name": "אנגל",
       "phone": "0544622055",
       "lid": "276342591516916"
+    },
+    {
+      "name": "ברניס",
+      "phone": "0505966644",
+      "lid": "97409992515611",
+      "tabs": [
+        "actions"
+      ]
+    },
+    {
+      "name": "רוני",
+      "phone": "05059200209",
+      "lid": "",
+      "tabs": [
+        "actions"
+      ]
     }
   ],
   "managementLids": [
     "240711442149470",
     "100412107554962",
     "276342591516916",
-    "155207350640796"
+    "155207350640796",
+    "97409992515611"
   ],
   "adminNotify": "972505921127",
   "managersGroup": "972505921127-1466933692@g.us",
@@ -761,7 +779,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781426546213,
+  "configRefreshRequest": 1781433878695,
   "importerSuppliers": [
     "כרם",
     "אגמ"
@@ -935,6 +953,12 @@
     }
   ],
   "tasks": [
+    {
+      "id": "t1781441684966",
+      "text": "בבוט - שיחה קולית שתקליט ותבצע",
+      "done": false,
+      "createdAt": "2026-06-14T12:54:44.966Z"
+    },
     {
       "id": "t1781427018813",
       "text": "שאני מסיים הכל מבחינת עיצוב לעבור טאב טאב לראות הגדרות אתר כן עולה כן נפתח ולדייק הכל",
