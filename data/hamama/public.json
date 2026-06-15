@@ -800,7 +800,7 @@
       "title": "דוח סיכום חודש - לרו\"ח",
       "desc": "ריכוז עסקאות ואמצעי תשלום חודשי, כקובץ Excel מעוצב, על החודש שהסתיים.",
       "enabled": true,
-      "order": 3,
+      "order": 4,
       "sched": {
         "type": "monthly-day",
         "dayOfMonth": 1,
@@ -894,7 +894,7 @@
         "botTarget": "owner"
       },
       "enabled": true,
-      "order": 4,
+      "order": 3,
       "delivery": {
         "whatsapp": [
           {
