@@ -254,7 +254,7 @@
       "פתח תקווה"
     ]
   },
-  "botUpdateRequest": 1781202230546,
+  "botUpdateRequest": 1781519595518,
   "messageTemplates": {
     "weekly": {
       "openers": [
@@ -909,6 +909,35 @@
         ],
         "email": []
       }
+    },
+    {
+      "id": "rep-mqf2zf5w",
+      "title": "",
+      "desc": "",
+      "text": "",
+      "spec": "",
+      "source": "caspit",
+      "format": "excel",
+      "script": "",
+      "sched": {
+        "type": "daily",
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "owner"
+      },
+      "enabled": true,
+      "order": 4,
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "owner"
+          }
+        ],
+        "email": []
+      }
     }
   ],
   "theme": {
@@ -948,7 +977,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781519293317,
+  "configRefreshRequest": 1781519848687,
   "importerSuppliers": [
     "כרם",
     "אגמ"
