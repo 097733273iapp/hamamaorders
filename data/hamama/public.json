@@ -912,7 +912,7 @@
       "spec": "הדוח צריך לקחת מצב נתון מכספיט - כבר יש לך את הגישה לזה דרך הדוח היומי. לבחור את סןג הלקוח 1ו2   ולייצא את הפידיון באותו נוסח של הדוח היומי. ",
       "source": "caspit",
       "format": "excel",
-      "script": "",
+      "script": "reports/rep-mqfguqsa.py",
       "sched": {
         "type": "daily",
         "hour": 8,
@@ -927,7 +927,9 @@
       "delivery": {
         "whatsapp": [],
         "email": []
-      }
+      },
+      "status": "live",
+      "builtAt": "2026-06-15T17:11:04.792Z"
     }
   ],
   "theme": {
