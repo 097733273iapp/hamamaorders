@@ -117,15 +117,16 @@
       "phone": "0505966644",
       "lid": "97409992515611",
       "tabs": [
-        "actions"
-      ]
+        "*"
+      ],
+      "botBlocked": false
     },
     {
       "name": "רוני",
       "phone": "0505200209",
       "lid": "",
       "tabs": [
-        "actions"
+        "*"
       ],
       "botBlocked": false
     },
