@@ -122,11 +122,22 @@
     },
     {
       "name": "רוני",
-      "phone": "05059200209",
+      "phone": "0505200209",
       "lid": "",
       "tabs": [
         "actions"
-      ]
+      ],
+      "botBlocked": false
+    },
+    {
+      "name": "אבי לוי",
+      "phone": "0526498029",
+      "lid": "",
+      "tabs": [
+        "actions",
+        "importers"
+      ],
+      "botBlocked": true
     }
   ],
   "managementLids": [
@@ -931,7 +942,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781510143918,
+  "configRefreshRequest": 1781510762395,
   "importerSuppliers": [
     "כרם",
     "אגמ"
