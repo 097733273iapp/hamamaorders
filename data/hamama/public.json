@@ -254,7 +254,7 @@
       "פתח תקווה"
     ]
   },
-  "botUpdateRequest": 1781520820985,
+  "botUpdateRequest": 1781539481411,
   "messageTemplates": {
     "weekly": {
       "openers": [
@@ -903,6 +903,31 @@
         ],
         "email": []
       }
+    },
+    {
+      "id": "rep-mqfguqsa",
+      "title": "דוח x עדכני",
+      "desc": "מייצר דוח x לרגע בקשת הדוח. ",
+      "text": "",
+      "spec": "הדוח צריך לקחת מצב נתון מכספיט - כבר יש לך את הגישה לזה דרך הדוח היומי. לבחור את סןג הלקוח 1ו2   ולייצא את הפידיון באותו נוסח של הדוח היומי. ",
+      "source": "caspit",
+      "format": "excel",
+      "script": "",
+      "sched": {
+        "type": "daily",
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "owner"
+      },
+      "enabled": true,
+      "order": 4,
+      "delivery": {
+        "whatsapp": [],
+        "email": []
+      }
     }
   ],
   "theme": {
@@ -942,7 +967,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781538416823,
+  "configRefreshRequest": 1781543005712,
   "importerSuppliers": [
     "כרם",
     "אגמ"
