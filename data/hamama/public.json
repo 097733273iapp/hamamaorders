@@ -254,7 +254,7 @@
       "פתח תקווה"
     ]
   },
-  "botUpdateRequest": 1781539481411,
+  "botUpdateRequest": 1781546552985,
   "messageTemplates": {
     "weekly": {
       "openers": [
@@ -911,7 +911,7 @@
       "text": "",
       "spec": "הדוח צריך לקחת מצב נתון מכספיט - כבר יש לך את הגישה לזה דרך הדוח היומי. לבחור את סןג הלקוח 1ו2   ולייצא את הפידיון באותו נוסח של הדוח היומי. ",
       "source": "caspit",
-      "format": "excel",
+      "format": "text",
       "script": "reports/rep-mqfguqsa.py",
       "sched": {
         "type": "daily",
@@ -969,7 +969,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781544301768,
+  "configRefreshRequest": 1781547606352,
   "importerSuppliers": [
     "כרם",
     "אגמ"
