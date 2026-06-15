@@ -254,7 +254,7 @@
       "פתח תקווה"
     ]
   },
-  "botUpdateRequest": 1781519595518,
+  "botUpdateRequest": 1781520820985,
   "messageTemplates": {
     "weekly": {
       "openers": [
@@ -909,35 +909,6 @@
         ],
         "email": []
       }
-    },
-    {
-      "id": "rep-mqf2zf5w",
-      "title": "",
-      "desc": "",
-      "text": "",
-      "spec": "",
-      "source": "caspit",
-      "format": "excel",
-      "script": "",
-      "sched": {
-        "type": "daily",
-        "hour": 8,
-        "minute": 0
-      },
-      "routing": {
-        "mode": "bot",
-        "botTarget": "owner"
-      },
-      "enabled": true,
-      "order": 4,
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "owner"
-          }
-        ],
-        "email": []
-      }
     }
   ],
   "theme": {
@@ -977,7 +948,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781519848687,
+  "configRefreshRequest": 1781533234793,
   "importerSuppliers": [
     "כרם",
     "אגמ"
@@ -987,7 +958,9 @@
   },
   "runRequest": null,
   "scheduleState": {},
-  "deletedSysReports": [],
+  "deletedSysReports": [
+    "rep-mqf2zf5w"
+  ],
   "deletedSysAutos": [],
   "botMenu": {
     "main": [
@@ -1108,28 +1081,10 @@
         ]
       },
       {
-        "id": "automations",
-        "label": "הודעות אוטומציה",
-        "enabled": true,
-        "order": 6,
-        "roles": [
-          "owner"
-        ]
-      },
-      {
-        "id": "reports",
-        "label": "דוחות",
-        "enabled": true,
-        "order": 7,
-        "roles": [
-          "owner"
-        ]
-      },
-      {
         "id": "system_upgrade",
         "label": "הפעלת מערכת מחדש",
         "enabled": true,
-        "order": 8,
+        "order": 6,
         "roles": [
           "owner"
         ]
@@ -1165,7 +1120,7 @@
     },
     {
       "id": "t1781441684966",
-      "text": "בבוט - שיחה קולית שתקליט ותבצע",
+      "text": "בבוט - שיחה קולית שתקליט ותבצע דברים דרך הווטסאפ למשימות שלי. אישיות. נקרא לזה אוטומצית קולית עוזר עידן",
       "done": false,
       "createdAt": "2026-06-14T12:54:44.966Z"
     },
