@@ -305,6 +305,15 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-group",
+            "branch": "*"
+          }
+        ],
+        "email": []
       }
     },
     {
@@ -325,6 +334,15 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-group",
+            "branch": "*"
+          }
+        ],
+        "email": []
       }
     },
     {
@@ -346,6 +364,15 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "managers"
+          }
+        ],
+        "email": []
       }
     },
     {
@@ -367,6 +394,15 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "managers"
+          }
+        ],
+        "email": []
       }
     },
     {
@@ -387,6 +423,15 @@
       "routing": {
         "mode": "bot",
         "botTarget": "manager-private"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-manager",
+            "branch": "*"
+          }
+        ],
+        "email": []
       }
     },
     {
@@ -407,6 +452,15 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "achva"
+          }
+        ],
+        "email": []
       }
     },
     {
@@ -426,6 +480,15 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "managers"
+          }
+        ],
+        "email": []
       }
     },
     {
@@ -451,6 +514,15 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "managers"
+          }
+        ],
+        "email": []
       }
     },
     {
@@ -472,6 +544,10 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [],
+        "email": []
       }
     },
     {
@@ -501,7 +577,16 @@
           "hour": 9,
           "minute": 0
         }
-      ]
+      ],
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "managers"
+          }
+        ],
+        "email": []
+      }
     },
     {
       "id": "timeUpdate",
@@ -677,7 +762,24 @@
           "hour": 18,
           "minute": 15
         }
-      ]
+      ],
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "person",
+            "ref": "ברניס"
+          },
+          {
+            "type": "person",
+            "ref": "עידן"
+          },
+          {
+            "type": "person",
+            "ref": "רוני"
+          }
+        ],
+        "email": []
+      }
     },
     {
       "id": "monthly",
@@ -698,6 +800,19 @@
       "routing": {
         "mode": "bot",
         "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [],
+        "email": [
+          {
+            "type": "email",
+            "value": "levicpa1@gmail.com"
+          },
+          {
+            "type": "email",
+            "value": "097733273i@gmail.com"
+          }
+        ]
       }
     },
     {
@@ -720,7 +835,36 @@
         "mode": "bot",
         "botTarget": "branch-group"
       },
-      "outputDir": "E:\\האחסון שלי (097733273i@gmail.com)\\חנות\\דוחות\\פדיון חנויות שבועי"
+      "outputDir": "E:\\האחסון שלי (097733273i@gmail.com)\\חנות\\דוחות\\פדיון חנויות שבועי",
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-group",
+            "branch": "הרצליה צומת כדורי"
+          },
+          {
+            "type": "branch-group",
+            "branch": "מודיעין מתחם שופרסל"
+          },
+          {
+            "type": "branch-group",
+            "branch": "מודיעין מתחם רמי לוי"
+          },
+          {
+            "type": "branch-group",
+            "branch": "הרצליה סוקולוב 16"
+          },
+          {
+            "type": "branch-group",
+            "branch": "הרצליה סוקולוב 27"
+          },
+          {
+            "type": "branch-group",
+            "branch": "גבעת שמואל"
+          }
+        ],
+        "email": []
+      }
     },
     {
       "id": "test-revenue",
@@ -739,7 +883,15 @@
         "botTarget": "owner"
       },
       "enabled": true,
-      "order": 3
+      "order": 3,
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "owner"
+          }
+        ],
+        "email": []
+      }
     }
   ],
   "theme": {
@@ -779,7 +931,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781433878695,
+  "configRefreshRequest": 1781510143918,
   "importerSuppliers": [
     "כרם",
     "אגמ"
