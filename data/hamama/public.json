@@ -826,6 +826,10 @@
           {
             "type": "person",
             "ref": "רוני"
+          },
+          {
+            "type": "person",
+            "ref": "רועי"
           }
         ],
         "email": []
