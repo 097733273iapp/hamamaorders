@@ -1034,8 +1034,7 @@
         "order": 1,
         "desc": "שולח לינק למרכז הניהול (admin.hamamaltd.com). המשתמש מתחבר ורואה את הממשק שלו.",
         "steps": [
-          "הבוט שולח לינק למרכז הניהול (admin.hamamaltd.com)",
-          "שלב חדש"
+          "הבוט שולח לינק למרכז הניהול (admin.hamamaltd.com)"
         ],
         "access": "manager"
       },
