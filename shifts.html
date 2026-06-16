@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>שיבוץ משמרות — גרעיני עפולה חממה</title>
+<title>שיבוץ משמרות — גרעיני עפולה חממה</title><!-- title set dynamically by applyCompanyName -->
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
@@ -117,7 +117,7 @@ tbody tr:last-child td{border-bottom:none;}
 </div>
 
 <header>
-  <div class="logo"><h1>🌾 גרעיני עפולה חממה</h1><p>שיבוץ משמרות</p></div>
+  <div class="logo"><h1 class="js-cmpname" data-prefix="🌾 ">🌾 גרעיני עפולה חממה</h1><p>שיבוץ משמרות</p></div>
 </header>
 
 <div class="action-bar">
@@ -190,16 +190,24 @@ function buildPhoneMaps(cfg){
   (cfg.branches||[]).forEach(b => { if (b && b.managerPhone) PHONE_TO_BRANCH[normalizePhone(b.managerPhone)] = b.name; });
   PHONE_MGMT = (cfg.management||[]).map(m => normalizePhone(m && m.phone || '')).filter(Boolean);
   if (cfg.company && cfg.company.botNumber) BOT_NUM = String(cfg.company.botNumber);
+  COMPANY_NAME = (cfg.company && (cfg.company.name||'').trim()) || COMPANY_NAME;
 }
 const CFG_READY = (async () => {
   try {
     const r = await fetch('data/'+encodeURIComponent(COMPANY_SLUG)+'/public.json?t='+Date.now());
     if (r.ok) buildPhoneMaps(await r.json());
   } catch(_){}
+  try { applyCompanyName(); } catch(_){}
 })();
 const DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי'];
 const TL={בוקר:'בוקר',ערב:'ערב'};
 let BOT_NUM='97297733273';   // נדרס מ-public.json (company.botNumber)
+let COMPANY_NAME='גרעיני עפולה חממה';   // נדרס מ-public.json (company.name)
+function applyCompanyName(){
+  try { document.title = 'שיבוץ משמרות — ' + COMPANY_NAME; } catch(_){}
+  try { document.querySelectorAll('.js-cmpname').forEach(e=>{ e.textContent = (e.dataset.prefix||'') + COMPANY_NAME + (e.dataset.suffix||''); }); } catch(_){}
+}
+try { applyCompanyName(); } catch(_){}
 
 
 // State
@@ -570,7 +578,7 @@ async function shareWA() {
     const dates = getWeekDates();
     const el = document.createElement('div');
     el.style.cssText = 'background:#111;padding:16px;font-family:Heebo,sans-serif;direction:rtl;width:750px;position:fixed;top:-9999px;';
-    el.innerHTML = '<div style="margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #c9a84c"><div style="font-size:18px;font-weight:800;color:#c9a84c">🌾 גרעיני עפולה חממה</div><div style="font-size:13px;color:#888;margin-top:3px">שיבוץ משמרות — ' + curBranch + ' | שבוע ' + dates[0] + '—' + dates[5] + '.' + new Date().getFullYear() + '</div></div><div id="shareTableWrap"></div>';
+    el.innerHTML = '<div style="margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #c9a84c"><div style="font-size:18px;font-weight:800;color:#c9a84c">' + '🌾 '+COMPANY_NAME + '</div><div style="font-size:13px;color:#888;margin-top:3px">שיבוץ משמרות — ' + curBranch + ' | שבוע ' + dates[0] + '—' + dates[5] + '.' + new Date().getFullYear() + '</div></div><div id="shareTableWrap"></div>';
     document.body.appendChild(el);
     const wrap = el.querySelector('#shareTableWrap');
     // Build simple table

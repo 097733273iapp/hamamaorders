@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>זמינות משמרות — גרעיני עפולה חממה</title>
+<title>זמינות משמרות — גרעיני עפולה חממה</title><!-- title set dynamically by applyCompanyName -->
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -137,7 +137,7 @@ header p{font-size:12px;color:var(--muted);margin-top:3px;}
 <body>
 
 <header>
-  <h1>🌾 גרעיני עפולה חממה</h1>
+  <h1 class="js-cmpname" data-prefix="🌾 ">🌾 גרעיני עפולה חממה</h1>
   <p id="headerSub">שליחת זמינות משמרות</p>
 </header>
 
@@ -188,13 +188,20 @@ let empName='';
 let selections={}; // { day: type }
 let notes={}; // { day: note }
 let BOT_NUMBER='97297733273';   // נדרס מ-public.json (company.botNumber)
+let COMPANY_NAME='גרעיני עפולה חממה';   // נדרס מ-public.json (company.name)
 const COMPANY_SLUG = new URLSearchParams(location.search).get('company') || 'hamama';
+function applyCompanyName(){
+  try { document.title = 'זמינות משמרות — ' + COMPANY_NAME; } catch(_){}
+  try { document.querySelectorAll('.js-cmpname').forEach(e=>{ e.textContent = (e.dataset.prefix||'') + COMPANY_NAME + (e.dataset.suffix||''); }); } catch(_){}
+}
+try { applyCompanyName(); } catch(_){}
 // מושך botNumber מ-public.json הציבורי (יחסית — מקור-אמת)
 (async () => {
   try {
     const r = await fetch('data/'+encodeURIComponent(COMPANY_SLUG)+'/public.json?t='+Date.now());
-    if (r.ok) { const cfg = await r.json(); if (cfg.company && cfg.company.botNumber) BOT_NUMBER = String(cfg.company.botNumber); }
+    if (r.ok) { const cfg = await r.json(); if (cfg.company && cfg.company.botNumber) BOT_NUMBER = String(cfg.company.botNumber); COMPANY_NAME = (cfg.company && (cfg.company.name||'').trim()) || COMPANY_NAME; }
   } catch(_){}
+  try { applyCompanyName(); } catch(_){}
 })();
 
 // Load saved name

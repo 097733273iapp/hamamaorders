@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>גרעיני עפולה חממה</title>
+<title>גרעיני עפולה חממה</title><!-- title set dynamically by applyCompanyName -->
 <link rel="stylesheet" href="tokens.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800&display=swap');
@@ -215,7 +215,7 @@ input[type="number"].qty-input {
 <div class="phone-gate" id="phoneGate">
   <div class="phone-gate-box">
     <div class="pg-emoji">🌾</div>
-    <h2>גרעיני עפולה חממה</h2>
+    <h2 class="js-cmpname">גרעיני עפולה חממה</h2>
     <div class="pg-sub">הזדהות מנהל סניף</div>
     <input id="phoneGateInput" type="tel" inputmode="numeric" autocomplete="tel"
            placeholder="05X-XXXXXXX" onkeydown="if(event.key==='Enter')phoneGateSubmit()">
@@ -229,7 +229,7 @@ input[type="number"].qty-input {
 ══════════════════════════════════════ -->
 <div class="page active" id="page-main">
   <header>
-    <div class="header-text"><h1>גרעיני עפולה חממה</h1></div>
+    <div class="header-text"><h1 class="js-cmpname">גרעיני עפולה חממה</h1></div>
   </header>
   <div class="hero">
     <div class="hero-title">מרכז הפעולות</div>
@@ -262,7 +262,7 @@ input[type="number"].qty-input {
       <div class="card-arrow">‹</div>
     </div>
   </div>
-  <footer>גרעיני עפולה חממה © 2025</footer>
+  <footer class="js-cmpname" data-suffix=" © 2025">גרעיני עפולה חממה © 2025</footer>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -282,7 +282,7 @@ input[type="number"].qty-input {
 <div class="page" id="page-network" style="padding-bottom:90px;">
   <header>
     <button class="back-btn" onclick="showPage('page-main')">‹</button>
-    <div class="header-text"><h1>גרעיני עפולה חממה</h1><p class="header-sub">הזמנה פנימית</p></div>
+    <div class="header-text"><h1 class="js-cmpname">גרעיני עפולה חממה</h1><p class="header-sub">הזמנה פנימית</p></div>
   </header>
   <div class="source-bar">
     <label id="networkBranchLabel">📍 בחר סניף מזמין</label>
@@ -332,7 +332,7 @@ input[type="number"].qty-input {
 <div class="page" id="page-importers" style="padding-bottom:90px;">
   <header>
     <button class="back-btn" onclick="showPage('page-main')">‹</button>
-    <div class="header-text"><h1>גרעיני עפולה חממה</h1><p class="header-sub">הזמנות יבואנים</p></div>
+    <div class="header-text"><h1 class="js-cmpname">גרעיני עפולה חממה</h1><p class="header-sub">הזמנות יבואנים</p></div>
   </header>
   <div class="source-bar">
     <label id="importersBranchLabel">📍 בחר סניף מזמין</label>
@@ -568,7 +568,12 @@ let PHONE_TO_BRANCH = {};   // טלפון מנהל → שם סניף (נבנה �
 let PHONE_MGMT = [];        // טלפוני הנהלה — גישה מלאה (נבנה מ-management[].phone)
 let PHONE_TO_TABS = {};     // טלפון הנהלה → tabs מותרים (נבנה מ-management[].tabs)
 let BOT_NUMBER = '97297733273';   // נדרס מ-public.json (company.botNumber)
+let COMPANY_NAME = 'גרעיני עפולה חממה';   // נדרס מ-public.json (company.name)
 const COMPANY_SLUG = new URLSearchParams(location.search).get('company') || 'hamama';
+function applyCompanyName(){
+  try { document.title = COMPANY_NAME; } catch(_){}
+  try { document.querySelectorAll('.js-cmpname').forEach(e=>{ e.textContent = (e.dataset.prefix||'') + COMPANY_NAME + (e.dataset.suffix||''); }); } catch(_){}
+}
 function normalizePhone(p){
   let d = (p||'').replace(/\D/g,'');
   if (d.startsWith('972')) d = '0' + d.slice(3);
@@ -581,6 +586,7 @@ function buildPhoneMaps(cfg){
   PHONE_MGMT = (cfg.management||[]).map(m => normalizePhone(m && m.phone || '')).filter(Boolean);
   (cfg.management||[]).forEach(m => { if (m && m.phone) PHONE_TO_TABS[normalizePhone(m.phone)] = Array.isArray(m.tabs) ? m.tabs : []; });
   if (cfg.company && cfg.company.botNumber) BOT_NUMBER = String(cfg.company.botNumber);
+  COMPANY_NAME = (cfg.company && (cfg.company.name||'').trim()) || COMPANY_NAME;
 }
 // ══ הרשאות tabs — אותה סמנטיקה כמו הקונסולה (ריק/'*' = הכל; actions = מפתח-על לכל הפעולות; משמרות תמיד) ══
 let MY_TABS = (function(){
@@ -606,6 +612,7 @@ const CFG_READY = (async () => {
     if (r.ok) buildPhoneMaps(await r.json());
   } catch(_){}
   try { applyTabPerms(); } catch(_){}
+  try { applyCompanyName(); } catch(_){}
 })();
 function applyManagerLock(branchFull){
   showPage('page-main');
@@ -641,6 +648,7 @@ async function phoneGateSubmit(){
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
+  try { applyCompanyName(); } catch(_){}
   await loadProducts();
   try { applyTabPerms(); } catch(_){}
   const params = new URLSearchParams(window.location.search);
@@ -1012,7 +1020,7 @@ function supplierShowPreview() {
   if (currentSupplierKey === 'אחווה') {
     text = `*אחווה | ${branch} | ${now}*\n${'─'.repeat(24)}\n`;
   } else {
-    text = 'ספק יקר,' + '\n' + 'הזמנה לגרעיני עפולה חממה' + '\n' + 'סניף ' + branch + '\n' + 'תאריך: ' + now + '\n' + '─'.repeat(24) + '\n';
+    text = 'ספק יקר,' + '\n' + 'הזמנה ל'+COMPANY_NAME + '\n' + 'סניף ' + branch + '\n' + 'תאריך: ' + now + '\n' + '─'.repeat(24) + '\n';
   }
   let tot = 0;
   Object.entries(supplierQty[currentSupplierKey]||{}).forEach(([item, qty]) => {
@@ -1384,7 +1392,7 @@ function openShifts(){
 <div class="page" id="page-odeph" style="padding-bottom:90px;">
   <header>
     <button class="back-btn" onclick="showPage('page-main')">‹</button>
-    <div class="header-text"><h1>גרעיני עפולה חממה</h1><p class="header-sub">הזמנת עודף</p></div>
+    <div class="header-text"><h1 class="js-cmpname">גרעיני עפולה חממה</h1><p class="header-sub">הזמנת עודף</p></div>
   </header>
   <div class="source-bar">
     <label>📍 בחר סניף מזמין</label>
