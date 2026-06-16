@@ -754,7 +754,7 @@
       "format": "text",
       "script": "reports/rep-mqfguqsa.py",
       "sched": {
-        "type": "on-demand",
+        "type": "daily",
         "hour": 8,
         "minute": 0
       },
@@ -765,16 +765,7 @@
       "enabled": true,
       "order": 0,
       "delivery": {
-        "whatsapp": [
-          {
-            "type": "person",
-            "ref": "עידן"
-          },
-          {
-            "type": "person",
-            "ref": "רועי"
-          }
-        ],
+        "whatsapp": [],
         "email": []
       },
       "status": "live",
@@ -826,10 +817,6 @@
           {
             "type": "person",
             "ref": "רוני"
-          },
-          {
-            "type": "person",
-            "ref": "רועי"
           }
         ],
         "email": []
@@ -982,7 +969,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781592758042,
+  "configRefreshRequest": 1781552025830,
   "importerSuppliers": [
     "כרם",
     "אגמ"
@@ -1115,6 +1102,12 @@
     }
   ],
   "tasks": [
+    {
+      "id": "t1781593542217",
+      "text": "עדיין הודעת ווטסאפ - לא מראה באתר",
+      "done": false,
+      "createdAt": "2026-06-16T07:05:42.217Z"
+    },
     {
       "id": "t1781584403592",
       "text": "מה צריך להשאר על המחשב ? ומה באתר?",
