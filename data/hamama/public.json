@@ -754,7 +754,7 @@
       "format": "text",
       "script": "reports/rep-mqfguqsa.py",
       "sched": {
-        "type": "daily",
+        "type": "on-demand",
         "hour": 8,
         "minute": 0
       },
@@ -982,7 +982,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781552025830,
+  "configRefreshRequest": 1781592758042,
   "importerSuppliers": [
     "כרם",
     "אגמ"
