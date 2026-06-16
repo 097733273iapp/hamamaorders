@@ -563,25 +563,28 @@ function loadBranchMemory() {
   return { key: localStorage.getItem('hm_branch_key'), full: localStorage.getItem('hm_branch_full') };
 }
 
-// ══ PHONE GATE — זיהוי מנהל (רק מנהלים ננעלים; הנהלה מקבלת גישה מלאה) ══
-const PHONE_TO_BRANCH = {
-  '0587114090':'הרצליה סוקולוב 27',
-  '0505709444':'הרצליה סוקולוב 16',
-  '0545424844':'הרצליה צומת כדורי',
-  '0508423208':'פתח תקווה',
-  '0506520926':'מודיעין מתחם שופרסל',
-  '0523234344':'מודיעין דם המכבים',
-  '0525254458':'גבעת שמואל',
-  '0545981318':'מודיעין מתחם רמי לוי'
-};
-// טלפוני הנהלה — גישה מלאה לכל הסניפים (ללא כפתור גלוי; רק מי שמקליד מספר מהרשימה)
-const PHONE_MGMT = ['0505921127','0506325063','0523271473','0544622055']; // עידן, רועי, סיגלית, אנגל
+// ══ PHONE GATE — זיהוי מנהל (נגזר מ-public.json; מקור-אמת יחיד: branches[]+management[]) ══
+let PHONE_TO_BRANCH = {};   // טלפון מנהל → שם סניף (נבנה מ-branches[].managerPhone)
+let PHONE_MGMT = [];        // טלפוני הנהלה — גישה מלאה (נבנה מ-management[].phone)
+const COMPANY_SLUG = new URLSearchParams(location.search).get('company') || 'hamama';
 function normalizePhone(p){
   let d = (p||'').replace(/\D/g,'');
   if (d.startsWith('972')) d = '0' + d.slice(3);
   if (!d.startsWith('0')) d = '0' + d;
   return d;
 }
+function buildPhoneMaps(cfg){
+  PHONE_TO_BRANCH = {};
+  (cfg.branches||[]).forEach(b => { if (b && b.managerPhone) PHONE_TO_BRANCH[normalizePhone(b.managerPhone)] = b.name; });
+  PHONE_MGMT = (cfg.management||[]).map(m => normalizePhone(m && m.phone || '')).filter(Boolean);
+}
+// טוען public.json (יחסית — מקור-אמת ציבורי) ובונה את מפות הזיהוי. נגיש דרך CFG_READY לפני שער הטלפון.
+const CFG_READY = (async () => {
+  try {
+    const r = await fetch('data/'+encodeURIComponent(COMPANY_SLUG)+'/public.json?t='+Date.now());
+    if (r.ok) buildPhoneMaps(await r.json());
+  } catch(_){}
+})();
 function applyManagerLock(branchFull){
   showPage('page-main');
   const key = BRANCH_NAME_TO_KEY[branchFull] || branchFull;
@@ -596,7 +599,8 @@ function applyManagerLock(branchFull){
   // רק עכשיו מפעילים את onSourceChange (אחרי שהנעילה כבר הוחלה)
   try { if (sel && sel.value === key) onSourceChange(); } catch (e) {}
 }
-function phoneGateSubmit(){
+async function phoneGateSubmit(){
+  await CFG_READY;
   const norm = normalizePhone(document.getElementById('phoneGateInput').value);
   const branch = PHONE_TO_BRANCH[norm];
   if (branch){
