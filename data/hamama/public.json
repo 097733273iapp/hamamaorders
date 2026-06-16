@@ -765,7 +765,16 @@
       "enabled": true,
       "order": 0,
       "delivery": {
-        "whatsapp": [],
+        "whatsapp": [
+          {
+            "type": "person",
+            "ref": "עידן"
+          },
+          {
+            "type": "person",
+            "ref": "רועי"
+          }
+        ],
         "email": []
       },
       "status": "live",
@@ -977,7 +986,11 @@
   "supplierPhones": {
     "אגמ": "111"
   },
-  "runRequest": null,
+  "runRequest": {
+    "id": "rep-mqfguqsa",
+    "type": "report",
+    "at": "2026-06-16T07:08:59.662Z"
+  },
   "scheduleState": {},
   "deletedSysReports": [
     "rep-mqf2zf5w"
