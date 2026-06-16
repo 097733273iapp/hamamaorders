@@ -236,27 +236,27 @@ input[type="number"].qty-input {
     <div class="hero-sub">בחר פעולה</div>
   </div>
   <div class="menu-grid">
-    <div class="menu-card primary" onclick="showPage('page-network')">
+    <div class="menu-card primary" data-tab="actions" onclick="showPage('page-network')">
       <div class="card-icon">🏪</div>
       <div class="card-body"><h2>הזמנות רשת</h2><p>הזמנה פנימית בין סניפי הרשת</p></div>
       <div class="card-arrow">‹</div>
     </div>
-    <div class="menu-card" onclick="showPage('page-importers')">
+    <div class="menu-card" data-tab="importers" onclick="showPage('page-importers')">
       <div class="card-icon">🚢</div>
       <div class="card-body"><h2>הזמנות יבואנים</h2><p>פיצוחים טבעיים ופירות יבשים</p></div>
       <div class="card-arrow">‹</div>
     </div>
-    <div class="menu-card" onclick="showPage('page-suppliers')">
+    <div class="menu-card" data-tab="actions" onclick="showPage('page-suppliers')">
       <div class="card-icon">🏭</div>
       <div class="card-body"><h2>הזמנות ספקים</h2><p>כרם, נווה, מנצס, אחווה ועוד</p></div>
       <div class="card-arrow">‹</div>
     </div>
-    <div class="menu-card" onclick="showPage('page-odeph')">
+    <div class="menu-card" data-tab="actions" onclick="showPage('page-odeph')">
       <div class="card-icon">💰</div>
       <div class="card-body"><h2>הזמנת עודף</h2><p>שליחה ישירה למשרד</p></div>
       <div class="card-arrow">‹</div>
     </div>
-    <div class="menu-card" onclick="openShifts()">
+    <div class="menu-card" data-tab="shifts" onclick="openShifts()">
       <div class="card-icon">📅</div>
       <div class="card-body"><h2>משמרות</h2><p>סידור וזמינות משמרות</p></div>
       <div class="card-arrow">‹</div>
@@ -566,6 +566,7 @@ function loadBranchMemory() {
 // ══ PHONE GATE — זיהוי מנהל (נגזר מ-public.json; מקור-אמת יחיד: branches[]+management[]) ══
 let PHONE_TO_BRANCH = {};   // טלפון מנהל → שם סניף (נבנה מ-branches[].managerPhone)
 let PHONE_MGMT = [];        // טלפוני הנהלה — גישה מלאה (נבנה מ-management[].phone)
+let PHONE_TO_TABS = {};     // טלפון הנהלה → tabs מותרים (נבנה מ-management[].tabs)
 const COMPANY_SLUG = new URLSearchParams(location.search).get('company') || 'hamama';
 function normalizePhone(p){
   let d = (p||'').replace(/\D/g,'');
@@ -574,9 +575,27 @@ function normalizePhone(p){
   return d;
 }
 function buildPhoneMaps(cfg){
-  PHONE_TO_BRANCH = {};
+  PHONE_TO_BRANCH = {}; PHONE_TO_TABS = {};
   (cfg.branches||[]).forEach(b => { if (b && b.managerPhone) PHONE_TO_BRANCH[normalizePhone(b.managerPhone)] = b.name; });
   PHONE_MGMT = (cfg.management||[]).map(m => normalizePhone(m && m.phone || '')).filter(Boolean);
+  (cfg.management||[]).forEach(m => { if (m && m.phone) PHONE_TO_TABS[normalizePhone(m.phone)] = Array.isArray(m.tabs) ? m.tabs : []; });
+}
+// ══ הרשאות tabs — אותה סמנטיקה כמו הקונסולה (ריק/'*' = הכל; actions = מפתח-על לכל הפעולות; משמרות תמיד) ══
+let MY_TABS = (function(){
+  const tp = new URLSearchParams(location.search).get('tabs');
+  if (tp !== null) return tp.split(',').map(s=>s.trim()).filter(Boolean);
+  try { const s = localStorage.getItem('hm_mgmt_tabs'); if (s) return JSON.parse(s)||[]; } catch(_){}
+  return null;   // לא ידוע — גישה מלאה (מנהל-סניף נעול / כניסה ישירה)
+})();
+function tabsAllowAll(t){ return !Array.isArray(t) || !t.length || t.includes('*'); }
+function applyTabPerms(){
+  const all = tabsAllowAll(MY_TABS);
+  const master = !all && MY_TABS.includes('actions');   // מרכז הפעולות = רואה הכל בפעולות
+  const can = t => all || master || MY_TABS.includes(t==='forms' ? 'products' : t);
+  document.querySelectorAll('.menu-card[data-tab]').forEach(c => {
+    const t = c.dataset.tab;
+    c.style.display = (t==='shifts' || can(t)) ? '' : 'none';   // משמרות תמיד גלוי
+  });
 }
 // טוען public.json (יחסית — מקור-אמת ציבורי) ובונה את מפות הזיהוי. נגיש דרך CFG_READY לפני שער הטלפון.
 const CFG_READY = (async () => {
@@ -584,6 +603,7 @@ const CFG_READY = (async () => {
     const r = await fetch('data/'+encodeURIComponent(COMPANY_SLUG)+'/public.json?t='+Date.now());
     if (r.ok) buildPhoneMaps(await r.json());
   } catch(_){}
+  try { applyTabPerms(); } catch(_){}
 })();
 function applyManagerLock(branchFull){
   showPage('page-main');
@@ -611,7 +631,8 @@ async function phoneGateSubmit(){
   } else if (PHONE_MGMT.includes(norm)){
     localStorage.setItem('hm_is_mgmt','1');
     localStorage.removeItem('hm_mgr_branch');
-    location.href = location.pathname;   // טעינה נקייה → מסלול הנהלה (גישה מלאה)
+    try { localStorage.setItem('hm_mgmt_tabs', JSON.stringify(PHONE_TO_TABS[norm] || [])); } catch(_){}
+    location.href = location.pathname;   // טעינה נקייה → מסלול הנהלה (הרשאות לפי tabs)
   } else {
     document.getElementById('phoneGateError').textContent = 'מספר לא מזוהה. נסה שוב או פנה להנהלה.';
   }
@@ -619,6 +640,7 @@ async function phoneGateSubmit(){
 
 window.addEventListener('DOMContentLoaded', async () => {
   await loadProducts();
+  try { applyTabPerms(); } catch(_){}
   const params = new URLSearchParams(window.location.search);
   const branchParam = params.get('branch');
   const lockParam = params.get('lock');
