@@ -1,0 +1,102 @@
+{
+  "company": {
+    "id": "516500758",
+    "name": "נאטסטיישן בע\"מ",
+    "botNumber": "1",
+    "webRepo": "",
+    "adminUrl": "https://admin.hamamaltd.com",
+    "nameEn": "נאטסטיישן בע\"מ"
+  },
+  "branches": [
+    {
+      "name": "סניף זידנגוף ",
+      "caspitStoreId": "5289",
+      "managerPhone": "1",
+      "groupId": "",
+      "managerLids": []
+    }
+  ],
+  "management": [
+    {
+      "name": "נטלי חממה",
+      "phone": "0526498029",
+      "lid": ""
+    }
+  ],
+  "managementLids": [],
+  "routing": {
+    "activeBranches": [],
+    "achvaBranches": [],
+    "wednesdayBranches": [],
+    "hubs": {}
+  },
+  "messageTemplates": {},
+  "reports": {},
+  "autoMessages": {
+    "enabled": {}
+  },
+  "customReports": [],
+  "customAutomations": [],
+  "whatsapp": {},
+  "adminNotify": "",
+  "managersGroup": "",
+  "caspitDefaults": {
+    "categoryId": "100783",
+    "supplierId": "1454",
+    "supplierName": "א.א חממה בעמ"
+  },
+  "botMenu": {
+    "main": [
+      {
+        "id": "operations",
+        "label": "מרכז הפעולות",
+        "enabled": true,
+        "order": 1,
+        "access": "manager"
+      },
+      {
+        "id": "time_update",
+        "label": "עדכון שעות",
+        "enabled": true,
+        "order": 2,
+        "access": "manager"
+      },
+      {
+        "id": "create_employee",
+        "label": "הקמת עובד חדש",
+        "enabled": true,
+        "order": 3,
+        "access": "manager"
+      },
+      {
+        "id": "delete_order",
+        "label": "מחיקת הזמנה",
+        "enabled": true,
+        "order": 4,
+        "access": "manager"
+      },
+      {
+        "id": "orders_report",
+        "label": "בקשת דוח הזמנות",
+        "enabled": true,
+        "order": 5,
+        "access": "hub"
+      },
+      {
+        "id": "management",
+        "label": "פעולות הנהלה",
+        "enabled": true,
+        "order": 6,
+        "access": "mgmt"
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "id": "t1781602692041",
+      "text": "בבוט - py של עדכון מחיר לפריט לפי 5 ספרות של ברקוד  או שם מלא.",
+      "done": false,
+      "createdAt": "2026-06-16T09:38:12.041Z"
+    }
+  ]
+}
