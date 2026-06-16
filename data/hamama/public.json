@@ -765,7 +765,16 @@
       "enabled": true,
       "order": 0,
       "delivery": {
-        "whatsapp": [],
+        "whatsapp": [
+          {
+            "type": "person",
+            "ref": "עידן"
+          },
+          {
+            "type": "person",
+            "ref": "רועי"
+          }
+        ],
         "email": []
       },
       "status": "live",
