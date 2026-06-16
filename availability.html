@@ -187,6 +187,15 @@ const SHIFT_CSS={בוקר:'morning',ערב:'evening',כפולה:'double',חופ�
 let empName='';
 let selections={}; // { day: type }
 let notes={}; // { day: note }
+let BOT_NUMBER='97297733273';   // נדרס מ-public.json (company.botNumber)
+const COMPANY_SLUG = new URLSearchParams(location.search).get('company') || 'hamama';
+// מושך botNumber מ-public.json הציבורי (יחסית — מקור-אמת)
+(async () => {
+  try {
+    const r = await fetch('data/'+encodeURIComponent(COMPANY_SLUG)+'/public.json?t='+Date.now());
+    if (r.ok) { const cfg = await r.json(); if (cfg.company && cfg.company.botNumber) BOT_NUMBER = String(cfg.company.botNumber); }
+  } catch(_){}
+})();
 
 // Load saved name
 try{
@@ -329,7 +338,6 @@ function submitAvailability(){
   const DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי'];
   const daysStr=DAYS.map(d=>d+':'+(selections[d]||'חופש')).join(',');
   const notesStr=DAYS.filter(d=>notes[d]).map(d=>d+':'+notes[d]).join(',');
-  const BOT_NUMBER='97297733273';
   const msg='הגשת משמרות|'+empName+'|'+branch+'|'+daysStr+'|'+notesStr;
   window.open('https://wa.me/'+BOT_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
 

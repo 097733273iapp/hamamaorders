@@ -567,6 +567,7 @@ function loadBranchMemory() {
 let PHONE_TO_BRANCH = {};   // טלפון מנהל → שם סניף (נבנה מ-branches[].managerPhone)
 let PHONE_MGMT = [];        // טלפוני הנהלה — גישה מלאה (נבנה מ-management[].phone)
 let PHONE_TO_TABS = {};     // טלפון הנהלה → tabs מותרים (נבנה מ-management[].tabs)
+let BOT_NUMBER = '97297733273';   // נדרס מ-public.json (company.botNumber)
 const COMPANY_SLUG = new URLSearchParams(location.search).get('company') || 'hamama';
 function normalizePhone(p){
   let d = (p||'').replace(/\D/g,'');
@@ -579,6 +580,7 @@ function buildPhoneMaps(cfg){
   (cfg.branches||[]).forEach(b => { if (b && b.managerPhone) PHONE_TO_BRANCH[normalizePhone(b.managerPhone)] = b.name; });
   PHONE_MGMT = (cfg.management||[]).map(m => normalizePhone(m && m.phone || '')).filter(Boolean);
   (cfg.management||[]).forEach(m => { if (m && m.phone) PHONE_TO_TABS[normalizePhone(m.phone)] = Array.isArray(m.tabs) ? m.tabs : []; });
+  if (cfg.company && cfg.company.botNumber) BOT_NUMBER = String(cfg.company.botNumber);
 }
 // ══ הרשאות tabs — אותה סמנטיקה כמו הקונסולה (ריק/'*' = הכל; actions = מפתח-על לכל הפעולות; משמרות תמיד) ══
 let MY_TABS = (function(){
@@ -852,7 +854,7 @@ function networkSendWhatsApp(){
   if (parts.length === 0) { alert('אין פריטים בהזמנה'); return; }
   const fullText = parts.join('\n---\n');
   saveLastNetwork();
-  window.open('https://wa.me/97297733273?text='+encodeURIComponent(fullText),'_blank');
+  window.open('https://wa.me/'+BOT_NUMBER+'?text='+encodeURIComponent(fullText),'_blank');
 }
 
 function buildOdephText() {
@@ -916,7 +918,7 @@ function importersShowPreview(){
   document.getElementById('importersModal').classList.add('open');
 }
 function importersCopyText(){ navigator.clipboard.writeText(document.getElementById('importersPreviewText').textContent).then(()=>{closeModal('importersModal');alert('הועתק! 📋');}); }
-function importersSendWhatsApp(){ saveLastImporters(); window.open('https://wa.me/97297733273?text='+encodeURIComponent(document.getElementById('importersPreviewText').textContent),'_blank'); }
+function importersSendWhatsApp(){ saveLastImporters(); window.open('https://wa.me/'+BOT_NUMBER+'?text='+encodeURIComponent(document.getElementById('importersPreviewText').textContent),'_blank'); }
 
 // ══════════════════════════════════════
 // SUPPLIERS (ספקים — כל הספקים מ-products.json)
@@ -1036,7 +1038,7 @@ function supplierSendWhatsApp(){
   const text = document.getElementById('supplierPreviewText').textContent;
   if (currentSupplierKey === 'אחווה') {
     // אחווה — שלח לבוט שיעביר לקבוצה
-    window.open('https://wa.me/97297733273?text='+encodeURIComponent(text),'_blank');
+    window.open('https://wa.me/'+BOT_NUMBER+'?text='+encodeURIComponent(text),'_blank');
   } else {
     window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
   }
@@ -1100,14 +1102,14 @@ function achvaShowPreview() {
   document.getElementById('achvaModal').classList.add('open');
 }
 function achvaCopyText(){ navigator.clipboard.writeText(document.getElementById('achvaPreviewText').textContent).then(()=>{closeModal('achvaModal');alert('הועתק! 📋');}); }
-function achvaSendWhatsApp(){ saveLastAchva(); window.open('https://wa.me/97297733273?text='+encodeURIComponent(document.getElementById('achvaPreviewText').textContent),'_blank'); }
+function achvaSendWhatsApp(){ saveLastAchva(); window.open('https://wa.me/'+BOT_NUMBER+'?text='+encodeURIComponent(document.getElementById('achvaPreviewText').textContent),'_blank'); }
 
 // ══════════════════════════════════════
 // ODEPH (עודף)
 // ══════════════════════════════════════
 const ODEPH_NAMES = { '10ag':'עשר אגורות', '50ag':'חצי שקל', '1nis':'שקל', '5nis':'5 שקל', '10nis':'10 שקל', '20nis':'20 שקל' };
 const ODEPH_IDS = ['10ag','50ag','1nis','5nis','10nis','20nis'];
-const ODEPH_BOT_NUMBER = '97297733273';
+const ODEPH_BOT_NUMBER = '';   // לא בשימוש — ראה BOT_NUMBER (נגזר מ-public.json)
 
 function odephReset() {
   ODEPH_IDS.forEach(id => {
@@ -1168,7 +1170,7 @@ function odephSendWA() {
   const text = document.getElementById('odephPreviewText').textContent;
   if (!text) return;
   saveLastOdeph();
-  window.open('https://wa.me/'+ODEPH_BOT_NUMBER+'?text='+encodeURIComponent(text),'_blank');
+  window.open('https://wa.me/'+BOT_NUMBER+'?text='+encodeURIComponent(text),'_blank');
 }
 
 // ══════════════════════════════════════

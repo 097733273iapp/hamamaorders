@@ -189,6 +189,7 @@ function buildPhoneMaps(cfg){
   PHONE_TO_BRANCH = {};
   (cfg.branches||[]).forEach(b => { if (b && b.managerPhone) PHONE_TO_BRANCH[normalizePhone(b.managerPhone)] = b.name; });
   PHONE_MGMT = (cfg.management||[]).map(m => normalizePhone(m && m.phone || '')).filter(Boolean);
+  if (cfg.company && cfg.company.botNumber) BOT_NUM = String(cfg.company.botNumber);
 }
 const CFG_READY = (async () => {
   try {
@@ -198,7 +199,7 @@ const CFG_READY = (async () => {
 })();
 const DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי'];
 const TL={בוקר:'בוקר',ערב:'ערב'};
-const BOT_NUM='97297733273';
+let BOT_NUM='97297733273';   // נדרס מ-public.json (company.botNumber)
 
 
 // State
