@@ -745,6 +745,33 @@
   "customReports": [],
   "systemReports": [
     {
+      "id": "rep-mqfguqsa",
+      "title": "דוח x עדכני",
+      "desc": "מייצר דוח x לרגע בקשת הדוח. ",
+      "text": "",
+      "spec": "הדוח צריך לקחת מצב נתון מכספיט - כבר יש לך את הגישה לזה דרך הדוח היומי. לבחור את סןג הלקוח 1ו2   ולייצא את הפידיון באותו נוסח של הדוח היומי. ",
+      "source": "caspit",
+      "format": "text",
+      "script": "reports/rep-mqfguqsa.py",
+      "sched": {
+        "type": "daily",
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "owner"
+      },
+      "enabled": true,
+      "order": 0,
+      "delivery": {
+        "whatsapp": [],
+        "email": []
+      },
+      "status": "live",
+      "builtAt": "2026-06-15T17:11:28.403Z"
+    },
+    {
       "id": "daily",
       "title": "דוח סיכום יומי",
       "desc": "סיכום הכנסות ומכירות יומי לכל הסניפים. הבוט קורא את מייל הסיכום מ-posit, מפענח אותו ושולח תקציר.",
@@ -793,38 +820,6 @@
           }
         ],
         "email": []
-      }
-    },
-    {
-      "id": "monthly",
-      "title": "דוח סיכום חודש - לרו\"ח",
-      "desc": "ריכוז עסקאות ואמצעי תשלום חודשי, כקובץ Excel מעוצב, על החודש שהסתיים.",
-      "enabled": true,
-      "order": 4,
-      "sched": {
-        "type": "monthly-day",
-        "dayOfMonth": 1,
-        "hour": 13,
-        "minute": 0
-      },
-      "script": "monthly_report.py",
-      "runner": "python",
-      "routing": {
-        "mode": "bot",
-        "botTarget": "branch-group"
-      },
-      "delivery": {
-        "whatsapp": [],
-        "email": [
-          {
-            "type": "email",
-            "value": "levicpa1@gmail.com"
-          },
-          {
-            "type": "email",
-            "value": "097733273i@gmail.com"
-          }
-        ]
       }
     },
     {
@@ -905,31 +900,36 @@
       }
     },
     {
-      "id": "rep-mqfguqsa",
-      "title": "דוח x עדכני",
-      "desc": "מייצר דוח x לרגע בקשת הדוח. ",
-      "text": "",
-      "spec": "הדוח צריך לקחת מצב נתון מכספיט - כבר יש לך את הגישה לזה דרך הדוח היומי. לבחור את סןג הלקוח 1ו2   ולייצא את הפידיון באותו נוסח של הדוח היומי. ",
-      "source": "caspit",
-      "format": "text",
-      "script": "reports/rep-mqfguqsa.py",
+      "id": "monthly",
+      "title": "דוח סיכום חודש - לרו\"ח",
+      "desc": "ריכוז עסקאות ואמצעי תשלום חודשי, כקובץ Excel מעוצב, על החודש שהסתיים.",
+      "enabled": true,
+      "order": 4,
       "sched": {
-        "type": "daily",
-        "hour": 8,
+        "type": "monthly-day",
+        "dayOfMonth": 1,
+        "hour": 13,
         "minute": 0
       },
+      "script": "monthly_report.py",
+      "runner": "python",
       "routing": {
         "mode": "bot",
-        "botTarget": "owner"
+        "botTarget": "branch-group"
       },
-      "enabled": true,
-      "order": 0,
       "delivery": {
         "whatsapp": [],
-        "email": []
-      },
-      "status": "live",
-      "builtAt": "2026-06-15T17:11:28.403Z"
+        "email": [
+          {
+            "type": "email",
+            "value": "levicpa1@gmail.com"
+          },
+          {
+            "type": "email",
+            "value": "097733273i@gmail.com"
+          }
+        ]
+      }
     }
   ],
   "theme": {
@@ -969,7 +969,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781550800659,
+  "configRefreshRequest": 1781552025830,
   "importerSuppliers": [
     "כרם",
     "אגמ"
@@ -1102,6 +1102,12 @@
     }
   ],
   "tasks": [
+    {
+      "id": "t1781584368514",
+      "text": "אוטטמציה שלח- למחוק את מה שיש על המאסין חוץ ממזהה. ולעשות קיצורים לדוחות שאני רוצה בלחיצה",
+      "done": false,
+      "createdAt": "2026-06-16T04:32:48.514Z"
+    },
     {
       "id": "t1781441684966",
       "text": "בבוט - שיחה קולית שתקליט ותבצע דברים דרך הווטסאפ למשימות שלי. אישיות. נקרא לזה אוטומצית קולית עוזר עידן",
