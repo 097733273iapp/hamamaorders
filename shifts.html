@@ -174,7 +174,7 @@ tbody tr:last-child td{border-bottom:none;}
 <div class="toast" id="toast"></div>
 
 <script>
-const BRANCHES=['הרצליה סוקולוב 16','הרצליה סוקולוב 27','הרצליה צומת כדורי','גבעת שמואל','מודיעין מתחם שופרסל','מודיעין מתחם רמי לוי','מודיעין דם המכבים','פתח תקווה'];
+let BRANCHES=['הרצליה סוקולוב 16','הרצליה סוקולוב 27','הרצליה צומת כדורי','גבעת שמואל','מודיעין מתחם שופרסל','מודיעין מתחם רמי לוי','מודיעין דם המכבים','פתח תקווה'];   // נדרס מ-public.json (branches[].name)
 // זיהוי מנהל לפי טלפון — נגזר מ-public.json (מקור-אמת יחיד: branches[]+management[]). אותם מפתחות localStorage כמו index.html
 let PHONE_TO_BRANCH = {};   // טלפון מנהל → שם סניף
 let PHONE_MGMT = [];        // טלפוני הנהלה — גישה מלאה
@@ -191,6 +191,7 @@ function buildPhoneMaps(cfg){
   PHONE_MGMT = (cfg.management||[]).map(m => normalizePhone(m && m.phone || '')).filter(Boolean);
   if (cfg.company && cfg.company.botNumber) BOT_NUM = String(cfg.company.botNumber);
   COMPANY_NAME = (cfg.company && (cfg.company.name||'').trim()) || COMPANY_NAME;
+  if (Array.isArray(cfg.branches) && cfg.branches.length) BRANCHES = cfg.branches.map(b => b.name).filter(Boolean);
 }
 const CFG_READY = (async () => {
   try {
@@ -688,7 +689,9 @@ async function pgSubmit(){
     const e=document.getElementById('pgErr'); e.textContent='מספר לא מזוהה. נסה שוב או פנה להנהלה.'; e.style.display='block';
   }
 }
-(function() {
+// ה-init מחכה ל-config (BRANCHES נגזר מ-public.json) לפני בדיקת השער ובניית הבוררים
+CFG_READY.then(() => {
+  if (!BRANCHES.includes(curBranch)) curBranch = BRANCHES[0];
   const params = new URLSearchParams(window.location.search);
   const b = params.get('branch');
   const lock = params.get('lock');
@@ -705,10 +708,10 @@ async function pgSubmit(){
   } else {
     showPhoneGate();                    // לא מזוהה — שער טלפון
   }
-})();
-initBranches();
-updateLabels();
-renderAll();
+  initBranches();
+  updateLabels();
+  renderAll();
+});
 
 // ── סנכרון גלילה אופקית בין הטבלאות ──
 (function(){
