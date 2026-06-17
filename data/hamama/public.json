@@ -922,7 +922,7 @@
       "spec": "אני רוצה לבנות דוח עזר שמאגר בתוכו את רוב המידע שיש לאתר של כספיט להציע אני צריך לבנות אותו חכם איתך ולייצר כמה שיותר ENDPOINTS ביחד .זה יעוזר לייצר אחר כך מלא דוחות .",
       "source": "caspit",
       "format": "text",
-      "script": "",
+      "script": "reports/rep-mqhzz1fr.py",
       "sched": {
         "type": "on-demand",
         "hour": 8,
@@ -941,7 +941,27 @@
           }
         ],
         "email": []
-      }
+      },
+      "runner": "python",
+      "endpoints": [
+        "Accounts",
+        "Customers",
+        "Products",
+        "ProductCategories",
+        "ProductGroups",
+        "Documents",
+        "Expenses",
+        "Suppliers",
+        "Agents",
+        "Currencies",
+        "PaymentTerms",
+        "Banks",
+        "Users",
+        "Branches",
+        "PriceLists"
+      ],
+      "maxPages": 1,
+      "status": "live"
     }
   ],
   "theme": {
