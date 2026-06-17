@@ -298,7 +298,42 @@
     }
   },
   "autoMessages": {},
-  "customAutomations": [],
+  "customAutomations": [
+    {
+      "id": "auto-1781722984736",
+      "name": "קיצורי דרך ",
+      "enabled": true,
+      "kind": "process",
+      "text": "",
+      "desc": "שאני רושם בבוט \nדוח מצב - מספק לי הרצה לדוח היומי \nאני בהמשך יוסיף פה כל מיני קיצורי דרך.\nתוסיף פה לדוח את מה שקיים כבר. \nמוטיציה בדיקה \nמוטיבציה שלח . שהמלל שך כל אחד יסביר מה הןא עןשה. ",
+      "status": "pending",
+      "schedule": {
+        "freq": "weekly",
+        "day": 5,
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
+      },
+      "targets": {
+        "branches": [
+          "all"
+        ],
+        "groups": []
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-group",
+            "branch": "*"
+          }
+        ],
+        "email": []
+      }
+    }
+  ],
   "systemAutomations": [
     {
       "id": "shiftAvail",
@@ -982,7 +1017,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781721828790,
+  "configRefreshRequest": 1781722883169,
   "importerSuppliers": [
     "כרם",
     "אגמ"
