@@ -16,6 +16,7 @@ rep-mqhzz1fr — "קריאת נתונים מכספית"
 """
 import json
 import os
+import re
 import sys
 import urllib.request
 import urllib.error
@@ -54,9 +55,14 @@ DEFAULT_ENDPOINTS = [
 ]
 
 
-def _request(url, data=None, timeout=HTTP_TIMEOUT):
+BROWSER_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+              "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
+APIHELP_URL = os.environ.get("CASPIT_APIHELP_URL", "https://app.caspit.biz/ApiHelp")
+
+
+def _request(url, data=None, timeout=HTTP_TIMEOUT, raw_text=False):
     """בקשת HTTP בסיסית. data=dict -> POST JSON, אחרת GET."""
-    headers = {"Accept": "application/json"}
+    headers = {"Accept": "application/json", "User-Agent": BROWSER_UA}
     body = None
     if data is not None:
         body = json.dumps(data).encode("utf-8")
@@ -65,12 +71,37 @@ def _request(url, data=None, timeout=HTTP_TIMEOUT):
                                  method="POST" if data is not None else "GET")
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         raw = resp.read().decode("utf-8", "replace")
+    if raw_text:
+        return raw
     raw = raw.strip()
     try:
         return json.loads(raw)
     except ValueError:
         # תגובת הטוקן מגיעה לעיתים כמחרוזת עם מרכאות
         return raw.strip('"')
+
+
+def discover_endpoints():
+    """
+    גורד את עמוד ApiHelp ומחזיר רשימת controllers ייחודיים מסוג GET-list
+    (api/v1/<Name> שתומכים ב-page). אם הגרידה נכשלת — נופל לרשימת ברירת המחדל.
+    """
+    try:
+        html = _request(APIHELP_URL, raw_text=True)
+    except Exception as e:  # noqa: BLE001
+        print("  (discover: ApiHelp fetch failed: %s — using default list)" % e)
+        return list(DEFAULT_ENDPOINTS)
+    # endpoints מסוג רשימה: GET api/v1/<Name>?token=...&page=...
+    found = re.findall(r"GET\s+api/v1/([A-Za-z]+)\?token=[^/<]*page=", html)
+    if not found:
+        # נפילה רכה: כל api/v1/<Name> ללא /{id}
+        found = re.findall(r"api/v1/([A-Za-z]+)(?![A-Za-z/{])", html)
+    seen, ordered = set(), []
+    for name in found:
+        if name not in seen and name.lower() != "token":
+            seen.add(name)
+            ordered.append(name)
+    return ordered or list(DEFAULT_ENDPOINTS)
 
 
 def get_token(creds):
@@ -144,9 +175,47 @@ def build_report(cfg=None):
     return "\n".join(lines)
 
 
-def main():
+def discover_and_dump(out_path="caspit_dump.json"):
+    """
+    מצב גילוי: מגלה את כל ה-endpoints מ-ApiHelp, דוגם כל אחד עם טוקן אמיתי,
+    ושומר dump מלא ל-out_path. מחזיר את ה-dict שנשמר. מריצים פעם אחת אצל הלקוח.
+    """
+    creds = config_loader.caspit_credentials()
+    token = get_token(creds)
+    endpoints = discover_endpoints()
+    print("discover: %d endpoints — %s" % (len(endpoints), ", ".join(endpoints)))
+
+    result = {"baseUrl": BASE_URL, "endpoints": {}}
+    for ep in endpoints:
+        records, err = fetch_endpoint(ep, token, max_pages=1)
+        entry = {
+            "ok": err is None,
+            "error": err,
+            "count": len(records),
+            "fields": list(records[0].keys()) if records and isinstance(records[0], dict) else [],
+            "sample": records[0] if records else None,
+        }
+        result["endpoints"][ep] = entry
+        status = "✗ %s" % err if err else "%d rec" % len(records)
+        print("  • %-20s %s" % (ep, status))
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+    print("נשמר: %s (%d endpoints)" % (out_path, len(result["endpoints"])))
+    return result
+
+
+def main(argv=None):
+    argv = argv if argv is not None else sys.argv[1:]
     try:
-        print(build_report())
+        if "--discover" in argv:
+            out = "caspit_dump.json"
+            for a in argv:
+                if a.startswith("--out="):
+                    out = a.split("=", 1)[1]
+            discover_and_dump(out)
+        else:
+            print(build_report())
     except Exception as e:  # noqa: BLE001
         print("שגיאה בהפקת הדוח %s: %s" % (REPORT_ID, e))
         sys.exit(1)
