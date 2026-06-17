@@ -30,22 +30,27 @@ HTTP_TIMEOUT = int(os.environ.get("CASPIT_TIMEOUT", "30"))
 
 # רשימת ברירת מחדל של ENDPOINTS לקריאה (read-only, GET, עם דפדוף page).
 # ניתן לעקוף דרך config: report["endpoints"] = ["Customers", "Products", ...]
+# הערה: כספית לא חושפת "רשימת endpoints". הרשימה כאן משלבת מה שאומת מול
+# התיעוד (Products/Customers/Documents/Accounts/Suppliers/Expenses/Currencies/
+# Users/Log/Hashavshevet/Pdf) יחד עם מועמדים ידועים נוספים. הדוח מדווח לכל
+# endpoint אם הוחזרו רשומות או שגיאה — כך שמות לא־קיימים מסומנים ✗ אוטומטית.
 DEFAULT_ENDPOINTS = [
     "Accounts",
     "Customers",
+    "Suppliers",
+    "Agents",
     "Products",
     "ProductCategories",
     "ProductGroups",
+    "PriceLists",
     "Documents",
     "Expenses",
-    "Suppliers",
-    "Agents",
     "Currencies",
     "PaymentTerms",
     "Banks",
-    "Users",
     "Branches",
-    "PriceLists",
+    "Users",
+    "Log",
 ]
 
 
