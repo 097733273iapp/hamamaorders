@@ -7,7 +7,8 @@
     "webRepo": "097733273iapp/hamamaorders",
     "adminUrl": "https://admin.hamamaltd.com",
     "nameEn": "Garinei Afula Hamama",
-    "botRepo": "097733273iapp/Hamamabot"
+    "botRepo": "097733273iapp/Hamamabot",
+    "links": []
   },
   "branches": [
     {
@@ -981,7 +982,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781698607763,
+  "configRefreshRequest": 1781721828790,
   "importerSuppliers": [
     "כרם",
     "אגמ"
@@ -1118,6 +1119,12 @@
     }
   ],
   "tasks": [
+    {
+      "id": "t1781722224234",
+      "text": "קיצורי דרך להנהלה - להכניס לאוטומציות.",
+      "done": false,
+      "createdAt": "2026-06-17T18:50:24.234Z"
+    },
     {
       "id": "t1781672083464",
       "text": "להגדיר שכל שיחה נפתחת בדוחות אוטומציות עם גישה לריפו החדש",
