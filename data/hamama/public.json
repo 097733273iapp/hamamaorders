@@ -1004,7 +1004,7 @@
     "main": [
       {
         "id": "operations",
-        "label": "מרכז הפעולות {כתובת}",
+        "label": "מרכז הפעולות - https://admin.hamamaltd.com/",
         "enabled": true,
         "order": 1,
         "desc": "שולח לינק למרכז הניהול (admin.hamamaltd.com). המשתמש מתחבר ורואה את הממשק שלו.",
