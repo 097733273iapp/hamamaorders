@@ -1,7 +1,0 @@
-__pycache__/
-*.pyc
-caspit_dump.json
-caspit_secrets.json
-secrets.json
-.caspit.json
-.env
