@@ -298,42 +298,7 @@
     }
   },
   "autoMessages": {},
-  "customAutomations": [
-    {
-      "id": "auto-1781722984736",
-      "name": "קיצורי דרך ",
-      "enabled": true,
-      "kind": "process",
-      "text": "",
-      "desc": "שאני רושם בבוט \nדוח מצב - מספק לי הרצה לדוח היומי \nאני בהמשך יוסיף פה כל מיני קיצורי דרך.\nתוסיף פה לדוח את מה שקיים כבר. \nמוטיציה בדיקה \nמוטיבציה שלח . שהמלל שך כל אחד יסביר מה הןא עןשה. ",
-      "status": "pending",
-      "schedule": {
-        "freq": "weekly",
-        "day": 5,
-        "hour": 8,
-        "minute": 0
-      },
-      "routing": {
-        "mode": "bot",
-        "botTarget": "branch-group"
-      },
-      "targets": {
-        "branches": [
-          "all"
-        ],
-        "groups": []
-      },
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "branch-group",
-            "branch": "*"
-          }
-        ],
-        "email": []
-      }
-    }
-  ],
+  "customAutomations": [],
   "systemAutomations": [
     {
       "id": "shiftAvail",
@@ -645,6 +610,55 @@
       "script": "item_creator.py",
       "enabled": true,
       "order": 12
+    },
+    {
+      "id": "auto-1781722984736",
+      "title": "⚡ קיצורי דרך",
+      "desc": "קיצורי-דרך לבעלים: פקודות קצרות שכותבים בצ'אט הבוט ומפעילות פעולה מיידית. הסקריפט מייצר את קטלוג הקיצורים (פקודה + הסבר), וה-listener מנתב כל פקודה לפעולה לפי הרשימה. הוספת קיצור = עריכת הרשימה כאן בלבד.",
+      "text": "⚡ *קיצורי דרך*\n━━━━━━━━━━━━━━━━━━\nכתוב אחת מהפקודות הבאות בצ'אט:\n\n{קיצורים}\n━━━━━━━━━━━━━━━━━━\n_נשלח אוטומטית_",
+      "kind": "process",
+      "script": "reports/auto-1781722984736.py",
+      "shortcuts": [
+        {
+          "cmd": "דוח מצב",
+          "action": "report:rep-mqfguqsa",
+          "desc": "מריץ את 'דוח x עדכני' (מצב פדיון נוכחי מ-Caspit) ושולח לפי הגדרת הניתוב של הדוח."
+        },
+        {
+          "cmd": "מוטיבציה בדיקה",
+          "action": "motivation:test",
+          "desc": "מריץ את דוח המוטיבציה השבועי ושולח לך תצוגה מקדימה בלבד — לא נשלח לסניפים."
+        },
+        {
+          "cmd": "מוטיבציה שלח",
+          "action": "motivation:send",
+          "desc": "מריץ ושולח בפועל את הודעות המוטיבציה לכל קבוצות הסניפים."
+        },
+        {
+          "cmd": "קיצורים",
+          "action": "shortcuts:list",
+          "desc": "מציג את רשימת כל קיצורי הדרך הזמינים (ההודעה הזו)."
+        }
+      ],
+      "sched": {
+        "type": "on-demand",
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "owner"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "owner"
+          }
+        ],
+        "email": []
+      },
+      "enabled": true,
+      "order": 13
     }
   ],
   "productGroups": [
@@ -779,10 +793,6 @@
           {
             "type": "person",
             "ref": "עידן"
-          },
-          {
-            "type": "person",
-            "ref": "רועי"
           }
         ],
         "email": []
@@ -1017,7 +1027,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781722883169,
+  "configRefreshRequest": 1781726276181,
   "importerSuppliers": [
     "כרם",
     "אגמ"
