@@ -922,7 +922,7 @@
       "spec": "אני רוצה לבנות דוח עזר שמאגר בתוכו את רוב המידע שיש לאתר של כספיט להציע אני צריך לבנות אותו חכם איתך ולייצר כמה שיותר ENDPOINTS ביחד .זה יעוזר לייצר אחר כך מלא דוחות .",
       "source": "caspit",
       "format": "text",
-      "script": "reports/rep-mqhzz1fr.py",
+      "script": "",
       "sched": {
         "type": "on-demand",
         "hour": 8,
@@ -941,28 +941,7 @@
           }
         ],
         "email": []
-      },
-      "runner": "python",
-      "endpoints": [
-        "Accounts",
-        "Customers",
-        "Suppliers",
-        "Agents",
-        "Products",
-        "ProductCategories",
-        "ProductGroups",
-        "PriceLists",
-        "Documents",
-        "Expenses",
-        "Currencies",
-        "PaymentTerms",
-        "Banks",
-        "Branches",
-        "Users",
-        "Log"
-      ],
-      "maxPages": 1,
-      "status": "live"
+      }
     }
   ],
   "theme": {
@@ -1002,7 +981,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781696084721,
+  "configRefreshRequest": 1781698607763,
   "importerSuppliers": [
     "כרם",
     "אגמ"
@@ -1025,7 +1004,7 @@
     "main": [
       {
         "id": "operations",
-        "label": "מרכז הפעולות",
+        "label": "מרכז הפעולות {כתובת}",
         "enabled": true,
         "order": 1,
         "desc": "שולח לינק למרכז הניהול (admin.hamamaltd.com). המשתמש מתחבר ורואה את הממשק שלו.",
