@@ -7,7 +7,7 @@
     "webRepo": "097733273iapp/hamamaorders",
     "adminUrl": "https://admin.hamamaltd.com",
     "nameEn": "Garinei Afula Hamama",
-    "botRepo": "097733273iapp/Hamamabot",
+    "botRepo": "097733273iapp/hamama-monorepo",
     "links": []
   },
   "branches": [
@@ -986,6 +986,41 @@
         ],
         "email": []
       }
+    },
+    {
+      "id": "rep-mqj98vrg",
+      "title": "מבצעים בכספיט לקראת סיום",
+      "desc": "בדיקת מבצעים/הטבות בכספית שמסתיימים בשבוע הקרוב (עד יום שני שאחריו), ושליחת אקסל לאנג'ל עם עמודות להחלטה: לעדכן? ולאיזה תאריך לכל הטבה.",
+      "text": "",
+      "spec": "בדיקת מבצעים שמסתיימים בשבוע הקרוב - ושליחת ווטסאפ לאנג'ל - כולל איזה תאריך לעדכן אם כן או לא. צריך לבדוק את ההטבות - מבצעים - להריץ בדיקה לתאריכי סיום - ומהשבוע הקרוב עד שני לאחר מכן לעלות בהודעה - כולל תשובה עם לעדכן ואם כן לאיזה תאריך לכל הטבה.",
+      "source": "caspit",
+      "format": "excel",
+      "script": "reports/rep-mqj98vrg.py",
+      "updateFlow": "caspit-promo",
+      "sched": {
+        "type": "on-demand",
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "person"
+      },
+      "enabled": true,
+      "order": 6,
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "person",
+            "ref": "אנגל"
+          },
+          {
+            "type": "person",
+            "ref": "עידן"
+          }
+        ],
+        "email": []
+      }
     }
   ],
   "theme": {
@@ -1025,7 +1060,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781771792847,
+  "configRefreshRequest": 1781773138714,
   "importerSuppliers": [
     "כרם",
     "אגמ"
