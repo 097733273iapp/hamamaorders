@@ -659,61 +659,6 @@
       },
       "enabled": true,
       "order": 13
-    },
-    {
-      "id": "auto-1781771823014",
-      "title": "",
-      "enabled": true,
-      "kind": "process",
-      "text": "",
-      "desc": "",
-      "spec": "",
-      "source": "caspit",
-      "format": "excel",
-      "status": "pending",
-      "sched": {
-        "type": "weekly",
-        "day": 5,
-        "hour": 8,
-        "minute": 0
-      },
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "branch-group",
-            "branch": "*"
-          }
-        ],
-        "email": []
-      },
-      "order": 14
-    },
-    {
-      "id": "auto-1781771841604",
-      "title": "",
-      "enabled": true,
-      "kind": "schedule",
-      "text": "{תאריך}\n",
-      "desc": "",
-      "spec": "",
-      "source": "caspit",
-      "format": "excel",
-      "sched": {
-        "type": "weekly",
-        "day": 5,
-        "hour": 8,
-        "minute": 0
-      },
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "branch-group",
-            "branch": "*"
-          }
-        ],
-        "email": []
-      },
-      "order": 15
     }
   ],
   "productGroups": [
@@ -1035,6 +980,35 @@
       },
       "enabled": true,
       "order": 5,
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "owner"
+          }
+        ],
+        "email": []
+      }
+    },
+    {
+      "id": "rep-mqj8xm58",
+      "title": "",
+      "desc": "",
+      "text": "",
+      "spec": "",
+      "source": "caspit",
+      "format": "excel",
+      "script": "",
+      "sched": {
+        "type": "daily",
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "owner"
+      },
+      "enabled": true,
+      "order": 6,
       "delivery": {
         "whatsapp": [
           {
