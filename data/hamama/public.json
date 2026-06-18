@@ -659,6 +659,61 @@
       },
       "enabled": true,
       "order": 13
+    },
+    {
+      "id": "auto-1781771823014",
+      "title": "",
+      "enabled": true,
+      "kind": "process",
+      "text": "",
+      "desc": "",
+      "spec": "",
+      "source": "caspit",
+      "format": "excel",
+      "status": "pending",
+      "sched": {
+        "type": "weekly",
+        "day": 5,
+        "hour": 8,
+        "minute": 0
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-group",
+            "branch": "*"
+          }
+        ],
+        "email": []
+      },
+      "order": 14
+    },
+    {
+      "id": "auto-1781771841604",
+      "title": "",
+      "enabled": true,
+      "kind": "schedule",
+      "text": "{תאריך}\n",
+      "desc": "",
+      "spec": "",
+      "source": "caspit",
+      "format": "excel",
+      "sched": {
+        "type": "weekly",
+        "day": 5,
+        "hour": 8,
+        "minute": 0
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-group",
+            "branch": "*"
+          }
+        ],
+        "email": []
+      },
+      "order": 15
     }
   ],
   "productGroups": [
@@ -968,7 +1023,7 @@
       "spec": "אני רוצה לבנות דוח עזר שמאגר בתוכו את רוב המידע שיש לאתר של כספיט להציע אני צריך לבנות אותו חכם איתך ולייצר כמה שיותר ENDPOINTS ביחד .זה יעוזר לייצר אחר כך מלא דוחות .",
       "source": "caspit",
       "format": "text",
-      "script": "",
+      "script": "reports/rep-mqhzz1fr.py",
       "sched": {
         "type": "on-demand",
         "hour": 8,
@@ -1027,7 +1082,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781726276181,
+  "configRefreshRequest": 1781771792847,
   "importerSuppliers": [
     "כרם",
     "אגמ"
