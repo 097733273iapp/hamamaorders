@@ -184,7 +184,8 @@
   "caspitDefaults": {
     "categoryId": 100783,
     "supplierId": 1454,
-    "supplierName": "א.א חממה בעמ"
+    "supplierName": "א.א חממה בעמ",
+    "storeId": "315"
   },
   "paths": {
     "empReport": "C:\\Users\\LENOVO\\emp report",
@@ -624,16 +625,6 @@
           "desc": "מריץ את 'דוח x עדכני' (מצב פדיון נוכחי מ-Caspit) ושולח לפי הגדרת הניתוב של הדוח."
         },
         {
-          "cmd": "מוטיבציה בדיקה",
-          "action": "motivation:test",
-          "desc": "מריץ את דוח המוטיבציה השבועי ושולח לך תצוגה מקדימה בלבד — לא נשלח לסניפים."
-        },
-        {
-          "cmd": "מוטיבציה שלח",
-          "action": "motivation:send",
-          "desc": "מריץ ושולח בפועל את הודעות המוטיבציה לכל קבוצות הסניפים."
-        },
-        {
           "cmd": "קיצורים",
           "action": "shortcuts:list",
           "desc": "מציג את רשימת כל קיצורי הדרך הזמינים (ההודעה הזו)."
@@ -977,7 +968,7 @@
         "botTarget": "owner"
       },
       "enabled": true,
-      "order": 5,
+      "order": 6,
       "delivery": {
         "whatsapp": [
           {
@@ -1007,7 +998,7 @@
         "botTarget": "person"
       },
       "enabled": true,
-      "order": 6,
+      "order": 5,
       "delivery": {
         "whatsapp": [
           {
@@ -1060,7 +1051,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1781773138714,
+  "configRefreshRequest": 1781781049364,
   "importerSuppliers": [
     "כרם",
     "אגמ"
