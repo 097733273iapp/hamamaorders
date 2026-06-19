@@ -328,33 +328,6 @@
       }
     },
     {
-      "id": "shiftRemind",
-      "title": "🌄 תזכורת משמרות",
-      "text": "🌄 בוקר אור! מי שטרם שלח — המשמרות נסגרות בעוד שעתיים, לאחר מכן לא יהיה ניתן להזין.\n\n{לינק}",
-      "enabled": true,
-      "order": 1,
-      "kind": "schedule",
-      "sched": {
-        "type": "weekly",
-        "day": 4,
-        "hour": 10,
-        "minute": 0
-      },
-      "routing": {
-        "mode": "bot",
-        "botTarget": "branch-group"
-      },
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "branch-group",
-            "branch": "*"
-          }
-        ],
-        "email": []
-      }
-    },
-    {
       "id": "sundaypdf",
       "title": "ייצור PDF אוטומטי להזמנות רשת ",
       "text": "",
@@ -383,6 +356,33 @@
       }
     },
     {
+      "id": "shiftRemind",
+      "title": "🌄 תזכורת משמרות",
+      "text": "🌄 בוקר אור! מי שטרם שלח — המשמרות נסגרות בעוד שעתיים, לאחר מכן לא יהיה ניתן להזין.\n\n{לינק}",
+      "enabled": true,
+      "order": 1,
+      "kind": "schedule",
+      "sched": {
+        "type": "weekly",
+        "day": 4,
+        "hour": 10,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-group",
+            "branch": "*"
+          }
+        ],
+        "email": []
+      }
+    },
+    {
       "id": "odephpdf",
       "title": "ייצור דוח PDF לעודף ",
       "text": "",
@@ -394,118 +394,6 @@
         "type": "weekly",
         "day": 0,
         "hour": 12,
-        "minute": 0
-      },
-      "routing": {
-        "mode": "bot",
-        "botTarget": "branch-group"
-      },
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "group",
-            "ref": "managers"
-          }
-        ],
-        "email": []
-      }
-    },
-    {
-      "id": "shiftMgrLink",
-      "title": "🕛 לינק שיבוץ משמרות",
-      "text": "🕛 צהריים טובים! מצורף לינק לסידור המשמרות, נא לטפל עד 19:00 בבקשה 👇\n\n{לינק}",
-      "enabled": true,
-      "order": 4,
-      "kind": "schedule",
-      "sched": {
-        "type": "weekly",
-        "day": 4,
-        "hour": 12,
-        "minute": 5
-      },
-      "routing": {
-        "mode": "bot",
-        "botTarget": "manager-private"
-      },
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "branch-manager",
-            "branch": "*"
-          }
-        ],
-        "email": []
-      }
-    },
-    {
-      "id": "achva",
-      "title": "📦 בקשת הזמנות אחווה",
-      "text": "☀️ *בוקר אור*\n\nנא לשלוח הזמנות של אחווה עד סוף היום 📦\n\nמחר נשלחת הזמנה לספק",
-      "enabled": true,
-      "order": 5,
-      "kind": "schedule",
-      "sched": {
-        "type": "monthly-last",
-        "hour": 10,
-        "minute": 0,
-        "fridayShift": true
-      },
-      "routing": {
-        "mode": "bot",
-        "botTarget": "branch-group"
-      },
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "group",
-            "ref": "achva"
-          }
-        ],
-        "email": []
-      }
-    },
-    {
-      "id": "zd",
-      "title": "⏰ תזכורת זד (סוף חודש)",
-      "text": "⏰ *תזכורת — סוף חודש*\n\nהיום סוף חודש — לא לשכוח לסגור זד בסוף משמרת ✅\n\nהגשה עד השעה {DEADLINE} 🙏",
-      "enabled": true,
-      "order": 6,
-      "kind": "schedule",
-      "sched": {
-        "type": "monthly-last",
-        "hour": 12,
-        "minute": 0
-      },
-      "routing": {
-        "mode": "bot",
-        "botTarget": "branch-group"
-      },
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "group",
-            "ref": "managers"
-          }
-        ],
-        "email": []
-      }
-    },
-    {
-      "id": "accleaning",
-      "title": "🌀 ניקוי מזגנים",
-      "text": "☀️ *בוקר אור לכולם*\n\nהגיע העת לנקות פילטרים של מזגנים 🌀\n\nלעשות מזגן מזגן ולוודא שהוא מכובה לפני.\nמוציאים את הפילטרים, שוטפים שני צדדים, נותנים להתייבש כמה דקות ומחזירים.\n\nשכל מנהל יסתכל בסניף שלו 👇\n\n🔹 *כדורי* — מעל הטבעי מזגן גדול מאחורי הקופה + בחדר הקלייה מזגנים קטנים\n🔹 *סוקולוב 16* — בחוץ 2 מזגנים בפתחי שירות (יש להם פילטרים — תדבר איתי מקסימום). בפנים מזגן אחד — אני אבוא לעשות אותו\n🔹 *סוקולוב 27* — 4 מזגנים באמצע יש פילטרים\n🔹 *גבעת שמואל* — מזגן קטן + מזגן גדול, אתם כבר יודעים 💪\n🔹 *פתח תקווה* — 4 מזגנים קטנים, הכי קל — מזגן מזגן ולהחזיר\n🔹 *רמי לוי* — מזגן קטן + מזגן גדול, יש לכם סולם גבוה — להגיע ולשלוף בזהירות\n🔹 *שופרסל* — 2 מזגנים קטנים בחנות + מזגן גדול למעלה — להיעזר באבי/אנגל בניקוי שלו\n🔹 *מודיעין יעקבי* — 2 מזגנים, הפילטרים ממש על הקיר הגדול בין המחסן לחנות — לדבר עם אנג'ל אם יש בעיה\n\n✅ שכל מנהל ירשום *בוצע*\n📅 היום יום טוב לזה — ללא סחורות\n⏰ מקסימום עד מחר לבצע\n\nאני חייב לקבל פידבק חוזר מכולם שבוצע 🙏\n*תודה רבה ויום טוב!*",
-      "enabled": true,
-      "order": 7,
-      "kind": "schedule",
-      "sched": {
-        "type": "nth-weekday-of-months",
-        "nth": 1,
-        "weekday": 2,
-        "months": [
-          5,
-          11
-        ],
-        "hour": 8,
         "minute": 0
       },
       "routing": {
@@ -582,6 +470,33 @@
       }
     },
     {
+      "id": "shiftMgrLink",
+      "title": "🕛 לינק שיבוץ משמרות",
+      "text": "🕛 צהריים טובים! מצורף לינק לסידור המשמרות, נא לטפל עד 19:00 בבקשה 👇\n\n{לינק}",
+      "enabled": true,
+      "order": 4,
+      "kind": "schedule",
+      "sched": {
+        "type": "weekly",
+        "day": 4,
+        "hour": 12,
+        "minute": 5
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "manager-private"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-manager",
+            "branch": "*"
+          }
+        ],
+        "email": []
+      }
+    },
+    {
       "id": "timeUpdate",
       "kind": "manual",
       "title": "🕐 עדכון שעות עובד",
@@ -589,7 +504,34 @@
       "does": "מעדכן שעון נוכחות (כניסה/יציאה) ב-Caspit לפי בחירת המנהל.",
       "script": "caspit_api.py",
       "enabled": true,
-      "order": 4
+      "order": 5
+    },
+    {
+      "id": "achva",
+      "title": "📦 בקשת הזמנות אחווה",
+      "text": "☀️ *בוקר אור*\n\nנא לשלוח הזמנות של אחווה עד סוף היום 📦\n\nמחר נשלחת הזמנה לספק",
+      "enabled": true,
+      "order": 5,
+      "kind": "schedule",
+      "sched": {
+        "type": "monthly-last",
+        "hour": 10,
+        "minute": 0,
+        "fridayShift": true
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "achva"
+          }
+        ],
+        "email": []
+      }
     },
     {
       "id": "employeeCreate",
@@ -599,17 +541,33 @@
       "does": "יוצר עובד-קופאי חדש ב-Caspit (שם, כרטיס מגנטי, סניף).",
       "script": "employee_creator.py",
       "enabled": true,
-      "order": 5
+      "order": 6
     },
     {
-      "id": "itemCreate",
-      "kind": "manual",
-      "title": "📦 הקמת מוצר חדש",
-      "text": "",
-      "does": "מחלץ פרטי מוצר מתמונת חשבונית ויוצר אותו ב-Caspit.",
-      "script": "item_creator.py",
+      "id": "zd",
+      "title": "⏰ תזכורת זד (סוף חודש)",
+      "text": "⏰ *תזכורת — סוף חודש*\n\nהיום סוף חודש — לא לשכוח לסגור זד בסוף משמרת ✅\n\nהגשה עד השעה {DEADLINE} 🙏",
       "enabled": true,
-      "order": 7
+      "order": 6,
+      "kind": "schedule",
+      "sched": {
+        "type": "monthly-last",
+        "hour": 12,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "managers"
+          }
+        ],
+        "email": []
+      }
     },
     {
       "id": "auto-1781722984736",
@@ -648,7 +606,49 @@
         "email": []
       },
       "enabled": true,
-      "order": 6
+      "order": 4
+    },
+    {
+      "id": "accleaning",
+      "title": "🌀 ניקוי מזגנים",
+      "text": "☀️ *בוקר אור לכולם*\n\nהגיע העת לנקות פילטרים של מזגנים 🌀\n\nלעשות מזגן מזגן ולוודא שהוא מכובה לפני.\nמוציאים את הפילטרים, שוטפים שני צדדים, נותנים להתייבש כמה דקות ומחזירים.\n\nשכל מנהל יסתכל בסניף שלו 👇\n\n🔹 *כדורי* — מעל הטבעי מזגן גדול מאחורי הקופה + בחדר הקלייה מזגנים קטנים\n🔹 *סוקולוב 16* — בחוץ 2 מזגנים בפתחי שירות (יש להם פילטרים — תדבר איתי מקסימום). בפנים מזגן אחד — אני אבוא לעשות אותו\n🔹 *סוקולוב 27* — 4 מזגנים באמצע יש פילטרים\n🔹 *גבעת שמואל* — מזגן קטן + מזגן גדול, אתם כבר יודעים 💪\n🔹 *פתח תקווה* — 4 מזגנים קטנים, הכי קל — מזגן מזגן ולהחזיר\n🔹 *רמי לוי* — מזגן קטן + מזגן גדול, יש לכם סולם גבוה — להגיע ולשלוף בזהירות\n🔹 *שופרסל* — 2 מזגנים קטנים בחנות + מזגן גדול למעלה — להיעזר באבי/אנגל בניקוי שלו\n🔹 *מודיעין יעקבי* — 2 מזגנים, הפילטרים ממש על הקיר הגדול בין המחסן לחנות — לדבר עם אנג'ל אם יש בעיה\n\n✅ שכל מנהל ירשום *בוצע*\n📅 היום יום טוב לזה — ללא סחורות\n⏰ מקסימום עד מחר לבצע\n\nאני חייב לקבל פידבק חוזר מכולם שבוצע 🙏\n*תודה רבה ויום טוב!*",
+      "enabled": true,
+      "order": 7,
+      "kind": "schedule",
+      "sched": {
+        "type": "nth-weekday-of-months",
+        "nth": 1,
+        "weekday": 2,
+        "months": [
+          5,
+          11
+        ],
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
+      },
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "managers"
+          }
+        ],
+        "email": []
+      }
+    },
+    {
+      "id": "itemCreate",
+      "kind": "manual",
+      "title": "📦 הקמת מוצר חדש",
+      "text": "",
+      "does": "מחלץ פרטי מוצר מתמונת חשבונית ויוצר אותו ב-Caspit.",
+      "script": "item_creator.py",
+      "enabled": true,
+      "order": 7
     }
   ],
   "productGroups": [
