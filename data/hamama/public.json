@@ -134,7 +134,7 @@
     {
       "name": "אבי לוי",
       "phone": "0526498029",
-      "lid": "",
+      "lid": "14242296111225",
       "tabs": [
         "actions",
         "importers"
@@ -147,7 +147,8 @@
     "100412107554962",
     "276342591516916",
     "155207350640796",
-    "97409992515611"
+    "97409992515611",
+    "14242296111225"
   ],
   "adminNotify": "972505921127",
   "managersGroup": "972505921127-1466933692@g.us",
@@ -992,7 +993,7 @@
       "title": "דוח סיכום חודש - לרו\"ח",
       "desc": "ריכוז עסקאות ואמצעי תשלום חודשי, כקובץ Excel מעוצב, על החודש שהסתיים.",
       "enabled": true,
-      "order": 5,
+      "order": 6,
       "sched": {
         "type": "monthly-day",
         "dayOfMonth": 1,
@@ -1038,11 +1039,50 @@
         "botTarget": "owner"
       },
       "enabled": true,
-      "order": 6,
+      "order": 7,
       "delivery": {
         "whatsapp": [
           {
             "type": "owner"
+          }
+        ],
+        "email": []
+      }
+    },
+    {
+      "id": "rep-mqovvkqt",
+      "title": "מצב מכירות מבצעי החודש",
+      "desc": "שואב מכספית את מכירות מבצעי-החודש (מבצעים ששמם מכיל \"לחברי מועדון\"), מפיק אקסל, ושולח שתי הודעות דרבון שונות: לעובדים (קבוצות הסניפים/רשת) ולמנהלים (קבוצת המנהלים) — שתיהן עם מספרים.",
+      "spec": "שאיבת מכירות מבצעי-החודש מכספית (מבצעים מסומנים בשם \"לחברי מועדון\"), והפקת דרבון: הודעה אחת לעובדים (עידוד+מספרים) והודעה שנייה למנהלים (ניתוח+אקסל מצורף).",
+      "source": "caspit",
+      "format": "excel",
+      "script": "reports/rep-mqovvkqt.py",
+      "deliverFlow": "promo-sales-dual",
+      "promoNameFilter": "לחברי מועדון",
+      "outputDir": "E:\\האחסון שלי (097733273i@gmail.com)\\חנות\\דוחות\\מוצרי מבצע -מכירות",
+      "testRecipient": "0505921127",
+      "textEmployees": "",
+      "textManagers": "",
+      "sched": {
+        "type": "on-demand",
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
+      },
+      "enabled": true,
+      "order": 5,
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-group",
+            "branch": "*"
+          },
+          {
+            "type": "group",
+            "ref": "managers"
           }
         ],
         "email": []
@@ -1086,7 +1126,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1782041389480,
+  "configRefreshRequest": 1782119013472,
   "importerSuppliers": [
     "כרם",
     "אגמ"
@@ -1095,9 +1135,9 @@
     "אגמ": "111"
   },
   "runRequest": {
-    "id": "rep-mqfguqsa",
+    "id": "rep-mqovvkqt",
     "type": "report",
-    "at": "2026-06-16T07:25:04.479Z"
+    "at": "2026-06-22T08:56:40.000Z"
   },
   "scheduleState": {},
   "deletedSysReports": [
