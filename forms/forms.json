@@ -1,0 +1,27 @@
+{
+  "categories": [
+    {"id":"employees","title":"עובדים","icon":"👥"},
+    {"id":"procedures","title":"נהלי עבודה ובקרה","icon":"📋"},
+    {"id":"tasks","title":"מטלות","icon":"🧹"},
+    {"id":"logistics","title":"הזמנות ולוגיסטיקה","icon":"🚚"},
+    {"id":"inventory","title":"מלאי ומחירונים","icon":"📦"}
+  ],
+  "forms": [
+    {"id":"f-jobapp","label":"טופס הגשת מועמדות","category":"employees","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/job-application.pdf"},
+    {"id":"f-cashier","label":"הצהרת קופאי","category":"employees","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/cashier-declaration.pdf"},
+    {"id":"f-surplus","label":"הסכם אחריות קופת עודף","category":"employees","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/surplus-cash-agreement.pdf"},
+    {"id":"f-termination","label":"הודעה על הפסקת העסקה","category":"employees","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/termination-letter.pdf"},
+    {"id":"f-resignation","label":"הודעה על סיום עבודה (התפטרות)","category":"employees","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/resignation-letter.pdf"},
+    {"id":"f-visit","label":"דוח ביקור בסניף","category":"procedures","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/branch-visit.pdf"},
+    {"id":"f-cash","label":"דיווח מזומן יומי","category":"procedures","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/cash-report.pdf"},
+    {"id":"f-shift","label":"סידור משמרות שבועי","category":"procedures","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/weekly-shift.pdf"},
+    {"id":"f-cleaning","label":"מטלות דו-שבועיות","category":"tasks","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/cleaning-tasks.pdf"},
+    {"id":"f-ordbr","label":"הזמנות שבועיות מסניפים","category":"logistics","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/orders-branches.pdf"},
+    {"id":"f-ordcandy","label":"הזמנות ממתקים — סוקולוב 27","category":"logistics","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/orders-candy.pdf"},
+    {"id":"f-supret","label":"החזרות לספק","category":"logistics","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/supplier-returns.pdf"},
+    {"id":"f-return","label":"טופס החזרה","category":"logistics","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/return-form.pdf"},
+    {"id":"f-inv","label":"ספירת מלאי שנתי","category":"inventory","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/inventory-count.pdf"},
+    {"id":"f-price","label":"מחירון מארזים","category":"inventory","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/pricelist.pdf"},
+    {"id":"f-catalog","label":"הזמנות קמעונאים — קטלוג","category":"inventory","url":"https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/retail-catalog.pdf"}
+  ]
+}
