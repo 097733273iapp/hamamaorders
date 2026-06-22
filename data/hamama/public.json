@@ -972,7 +972,12 @@
       "script": "reports/test-revenue.py",
       "status": "live",
       "emails": [],
-      "sched": null,
+      "sched": {
+        "type": "monthly-day",
+        "dayOfMonth": 1,
+        "hour": 9,
+        "minute": 0
+      },
       "routing": {
         "mode": "bot",
         "botTarget": "owner"
@@ -982,11 +987,64 @@
       "delivery": {
         "whatsapp": [
           {
-            "type": "owner"
+            "type": "person",
+            "ref": "עידן"
           }
         ],
         "email": []
       }
+    },
+    {
+      "id": "rep-mqovvkqt",
+      "title": "מצב מכירות מבצעי החודש",
+      "desc": "שואב מכספית את מכירות מבצעי-החודש (מבצעים ששמם מכיל \"לחברי מועדון\"), מפיק אקסל, ושולח שתי הודעות דרבון שונות: לעובדים (קבוצות הסניפים/רשת) ולמנהלים (קבוצת המנהלים) — שתיהן עם מספרים.",
+      "spec": "שאיבת מכירות מבצעי-החודש מכספית (מבצעים מסומנים בשם \"לחברי מועדון\"), והפקת דרבון: הודעה אחת לעובדים (עידוד+מספרים) והודעה שנייה למנהלים (ניתוח+אקסל מצורף).",
+      "source": "caspit",
+      "format": "excel",
+      "script": "reports/rep-mqovvkqt.py",
+      "deliverFlow": "promo-sales-dual",
+      "promoNameFilter": "לחברי מועדון",
+      "outputDir": "E:\\האחסון שלי (097733273i@gmail.com)\\חנות\\דוחות\\מוצרי מבצע -מכירות",
+      "testRecipient": "0505921127",
+      "sched": {
+        "type": "weekly",
+        "hour": 12,
+        "minute": 0,
+        "day": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "branch-group"
+      },
+      "enabled": true,
+      "order": 5,
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "branch-group",
+            "branch": "*"
+          },
+          {
+            "type": "group",
+            "ref": "managers"
+          }
+        ],
+        "email": []
+      },
+      "deliveryEmployees": {
+        "whatsapp": [
+          {
+            "type": "group",
+            "ref": "network"
+          }
+        ],
+        "email": []
+      },
+      "deliveryManagers": {
+        "whatsapp": [],
+        "email": []
+      },
+      "textMessage": "🔥 *מבצעי מועדון {תקופה} — קרב הסניפים!* 🏆\n👇 דירוג הסניפים בכל מבצע — בתמונה\n━━━━━━━━━━━━━━━━━━\n{מבצעים}"
     },
     {
       "id": "monthly",
@@ -1048,45 +1106,6 @@
         ],
         "email": []
       }
-    },
-    {
-      "id": "rep-mqovvkqt",
-      "title": "מצב מכירות מבצעי החודש",
-      "desc": "שואב מכספית את מכירות מבצעי-החודש (מבצעים ששמם מכיל \"לחברי מועדון\"), מפיק אקסל, ושולח שתי הודעות דרבון שונות: לעובדים (קבוצות הסניפים/רשת) ולמנהלים (קבוצת המנהלים) — שתיהן עם מספרים.",
-      "spec": "שאיבת מכירות מבצעי-החודש מכספית (מבצעים מסומנים בשם \"לחברי מועדון\"), והפקת דרבון: הודעה אחת לעובדים (עידוד+מספרים) והודעה שנייה למנהלים (ניתוח+אקסל מצורף).",
-      "source": "caspit",
-      "format": "excel",
-      "script": "reports/rep-mqovvkqt.py",
-      "deliverFlow": "promo-sales-dual",
-      "promoNameFilter": "לחברי מועדון",
-      "outputDir": "E:\\האחסון שלי (097733273i@gmail.com)\\חנות\\דוחות\\מוצרי מבצע -מכירות",
-      "testRecipient": "0505921127",
-      "textEmployees": "",
-      "textManagers": "",
-      "sched": {
-        "type": "on-demand",
-        "hour": 8,
-        "minute": 0
-      },
-      "routing": {
-        "mode": "bot",
-        "botTarget": "branch-group"
-      },
-      "enabled": true,
-      "order": 5,
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "branch-group",
-            "branch": "*"
-          },
-          {
-            "type": "group",
-            "ref": "managers"
-          }
-        ],
-        "email": []
-      }
     }
   ],
   "theme": {
@@ -1137,7 +1156,7 @@
   "runRequest": {
     "id": "rep-mqovvkqt",
     "type": "report",
-    "at": "2026-06-22T08:56:40.000Z"
+    "at": "2026-06-22T11:38:13.000Z"
   },
   "scheduleState": {},
   "deletedSysReports": [
