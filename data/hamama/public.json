@@ -537,20 +537,6 @@
       "order": 5
     },
     {
-      "id": "timeUpdate",
-      "kind": "manual",
-      "title": "🕐 עדכון שעות עובד",
-      "text": "",
-      "does": "מעדכן שעון נוכחות (כניסה/יציאה) ב-Caspit לפי בחירת המנהל.",
-      "script": "caspit_api.py",
-      "enabled": true,
-      "order": 7,
-      "delivery": {
-        "whatsapp": [],
-        "email": []
-      }
-    },
-    {
       "id": "achva",
       "title": "📦 בקשת הזמנות אחווה",
       "text": "☀️ *בוקר אור*\n\nנא לשלוח הזמנות של אחווה עד סוף היום 📦\n\nמחר נשלחת הזמנה לספק",
@@ -574,20 +560,6 @@
             "ref": "achva"
           }
         ],
-        "email": []
-      }
-    },
-    {
-      "id": "employeeCreate",
-      "kind": "manual",
-      "title": "👤 הקמת עובד חדש",
-      "text": "",
-      "does": "יוצר עובד-קופאי חדש ב-Caspit (שם, כרטיס מגנטי, סניף).",
-      "script": "employee_creator.py",
-      "enabled": true,
-      "order": 8,
-      "delivery": {
-        "whatsapp": [],
         "email": []
       }
     },
@@ -618,21 +590,30 @@
       }
     },
     {
-      "id": "hoursReport",
+      "id": "itemCreate",
       "kind": "manual",
-      "title": "📊 דוח שעות לעובד",
-      "text": "📊 *בדיקת שעות עובד*\n\n{בודק} בדק שעות עבודה לעובד *{עובד}*\n🏢 סניף: {סניף}\n📅 {תקופה}",
-      "does": "מחזיר את סך השעות הכללי של עובד מ-Caspit (נוכחי/קודם). בכל בדיקה נשלחת התראה לנמעני ה-delivery (ברירת-מחדל: מנהל הרשת). משתנים בהתראה: {בודק} {עובד} {סניף} {תקופה}.",
+      "title": "📦 הקמת מוצר חדש",
+      "text": "",
+      "does": "מחלץ פרטי מוצר מתמונת חשבונית ויוצר אותו ב-Caspit.",
+      "script": "item_creator.py",
+      "enabled": true,
+      "order": 6,
+      "delivery": {
+        "whatsapp": [],
+        "email": []
+      }
+    },
+    {
+      "id": "timeUpdate",
+      "kind": "manual",
+      "title": "🕐 עדכון שעות עובד",
+      "text": "",
+      "does": "מעדכן שעון נוכחות (כניסה/יציאה) ב-Caspit לפי בחירת המנהל.",
       "script": "caspit_api.py",
       "enabled": true,
-      "order": 9,
+      "order": 7,
       "delivery": {
-        "whatsapp": [
-          {
-            "type": "person",
-            "ref": "אנגל"
-          }
-        ],
+        "whatsapp": [],
         "email": []
       }
     },
@@ -669,16 +650,35 @@
       }
     },
     {
-      "id": "itemCreate",
+      "id": "employeeCreate",
       "kind": "manual",
-      "title": "📦 הקמת מוצר חדש",
+      "title": "👤 הקמת עובד חדש",
       "text": "",
-      "does": "מחלץ פרטי מוצר מתמונת חשבונית ויוצר אותו ב-Caspit.",
-      "script": "item_creator.py",
+      "does": "יוצר עובד-קופאי חדש ב-Caspit (שם, כרטיס מגנטי, סניף).",
+      "script": "employee_creator.py",
       "enabled": true,
-      "order": 6,
+      "order": 8,
       "delivery": {
         "whatsapp": [],
+        "email": []
+      }
+    },
+    {
+      "id": "hoursReport",
+      "kind": "manual",
+      "title": "📊 דוח שעות לעובד",
+      "text": "📊 *בדיקת שעות עובד*\n\n{בודק} בדק שעות עבודה לעובד *{עובד}*\n🏢 סניף: {סניף}\n📅 {תקופה}",
+      "does": "מחזיר את סך השעות הכללי של עובד מ-Caspit (נוכחי/קודם). בכל בדיקה נשלחת התראה לנמעני ה-delivery (ברירת-מחדל: מנהל הרשת). משתנים בהתראה: {בודק} {עובד} {סניף} {תקופה}.",
+      "script": "caspit_api.py",
+      "enabled": true,
+      "order": 9,
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "person",
+            "ref": "אנגל"
+          }
+        ],
         "email": []
       }
     }
@@ -1163,14 +1163,12 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1782132759332,
+  "configRefreshRequest": 1782154873956,
   "importerSuppliers": [
     "כרם",
     "אגמ"
   ],
-  "supplierPhones": {
-    "אגמ": "111"
-  },
+  "supplierPhones": {},
   "scheduleState": {},
   "deletedSysReports": [
     "rep-mqf2zf5w",
@@ -1301,13 +1299,143 @@
       "id": "form-101",
       "label": "טופס 101",
       "type": "link",
-      "url": "https://tpz.link/9szr8"
+      "url": "https://tpz.link/9szr8",
+      "group": "employees"
     },
     {
       "id": "form-contract",
       "label": "הסכם עבודה",
       "type": "link",
-      "url": "https://app.easydo.co.il/publicForm/6d6b8b07-44c2-4d73-8497-d2f41e216555"
+      "url": "https://app.easydo.co.il/publicForm/6d6b8b07-44c2-4d73-8497-d2f41e216555",
+      "group": "employees"
+    },
+    {
+      "id": "f-jobapp",
+      "label": "טופס הגשת מועמדות",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/job-application.pdf",
+      "sendToEmployee": false,
+      "group": "employees"
+    },
+    {
+      "id": "f-cashier",
+      "label": "הצהרת קופאי",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/cashier-declaration.pdf",
+      "sendToEmployee": false,
+      "group": "employees"
+    },
+    {
+      "id": "f-surplus",
+      "label": "הסכם אחריות קופת עודף",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/surplus-cash-agreement.pdf",
+      "sendToEmployee": false,
+      "group": "employees"
+    },
+    {
+      "id": "f-termination",
+      "label": "הודעה על הפסקת העסקה",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/termination-letter.pdf",
+      "sendToEmployee": false,
+      "group": "employees"
+    },
+    {
+      "id": "f-resignation",
+      "label": "הודעה על סיום עבודה (התפטרות)",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/resignation-letter.pdf",
+      "sendToEmployee": false,
+      "group": "employees"
+    },
+    {
+      "id": "f-visit",
+      "label": "דוח ביקור בסניף",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/branch-visit.pdf",
+      "sendToEmployee": false,
+      "group": "procedures"
+    },
+    {
+      "id": "f-cash",
+      "label": "דיווח מזומן יומי",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/cash-report.pdf",
+      "sendToEmployee": false,
+      "group": "procedures"
+    },
+    {
+      "id": "f-shift",
+      "label": "סידור משמרות שבועי",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/weekly-shift.pdf",
+      "sendToEmployee": false,
+      "group": "procedures"
+    },
+    {
+      "id": "f-cleaning",
+      "label": "מטלות דו-שבועיות",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/cleaning-tasks.pdf",
+      "sendToEmployee": false,
+      "group": "tasks"
+    },
+    {
+      "id": "f-ordbr",
+      "label": "הזמנות שבועיות מסניפים",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/orders-branches.pdf",
+      "sendToEmployee": false,
+      "group": "logistics"
+    },
+    {
+      "id": "f-ordcandy",
+      "label": "הזמנות ממתקים — סוקולוב 27",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/orders-candy.pdf",
+      "sendToEmployee": false,
+      "group": "logistics"
+    },
+    {
+      "id": "f-supret",
+      "label": "החזרות לספק",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/supplier-returns.pdf",
+      "sendToEmployee": false,
+      "group": "logistics"
+    },
+    {
+      "id": "f-return",
+      "label": "טופס החזרה",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/return-form.pdf",
+      "sendToEmployee": false,
+      "group": "logistics"
+    },
+    {
+      "id": "f-inv",
+      "label": "ספירת מלאי שנתי",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/inventory-count.pdf",
+      "sendToEmployee": false,
+      "group": "inventory"
+    },
+    {
+      "id": "f-price",
+      "label": "מחירון מארזים",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/pricelist.pdf",
+      "sendToEmployee": false,
+      "group": "inventory"
+    },
+    {
+      "id": "f-catalog",
+      "label": "הזמנות קמעונאים — קטלוג",
+      "type": "file",
+      "url": "https://raw.githubusercontent.com/097733273iapp/hamamaorders/main/forms/retail-catalog.pdf",
+      "sendToEmployee": false,
+      "group": "inventory"
     }
   ],
   "tasks": [
@@ -1324,5 +1452,27 @@
     "id": "test-revenue",
     "type": "report",
     "at": "2026-06-22T12:59:16.703Z"
-  }
+  },
+  "formGroups": [
+    {
+      "id": "employees",
+      "title": "עובדים"
+    },
+    {
+      "id": "procedures",
+      "title": "נהלי עבודה ובקרה"
+    },
+    {
+      "id": "tasks",
+      "title": "מטלות"
+    },
+    {
+      "id": "logistics",
+      "title": "הזמנות ולוגיסטיקה"
+    },
+    {
+      "id": "inventory",
+      "title": "מלאי ומחירונים"
+    }
+  ]
 }
