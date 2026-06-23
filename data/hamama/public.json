@@ -1150,7 +1150,7 @@
       "dryRun": false,
       "sched": {
         "type": "monthly-day",
-        "dayOfMonth": 1,
+        "dayOfMonth": 15,
         "hour": 8,
         "minute": 0
       },
