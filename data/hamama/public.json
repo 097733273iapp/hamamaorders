@@ -1077,6 +1077,47 @@
       "textMessage": "🔥 *מבצעי מועדון {תקופה} — קרב הסניפים!* 🏆\n👇 דירוג הסניפים בכל מבצע — בתמונה\n━━━━━━━━━━━━━━━━━━\n{מבצעים}"
     },
     {
+      "id": "rep-mqqd6qe2",
+      "title": "דוח מחיקת עובדים לא פעילים",
+      "desc": "רץ אחת לחודש. הופך עובדים שלא צברו שעות-עבודה בחודשיים האחרונים ללא-פעילים ב-Caspit, ושולח אקסל עם הרשימה לפי הניתוב והתזמון שמוגדרים כאן.",
+      "text": "",
+      "spec": "הדוח רץ אחת לחודש והופך עובדים שלא היה להם שעות עבודה בחודשיים האחרונים ללא פעילים במערכת. שולח ווטסאפ ומייל בהתאם לניתוב ולתזמון.",
+      "source": "caspit",
+      "format": "excel",
+      "script": "reports/rep-mqqd6qe2.py",
+      "inactiveMonths": 2,
+      "dryRun": false,
+      "sched": {
+        "type": "monthly-day",
+        "dayOfMonth": 15,
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "owner"
+      },
+      "enabled": true,
+      "order": 7,
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "owner"
+          }
+        ],
+        "email": [
+          {
+            "type": "email",
+            "value": "097733273i@gmail.com"
+          }
+        ]
+      },
+      "skipEmployees": [
+        "עידן חממה",
+        "רועי חממה"
+      ]
+    },
+    {
       "id": "monthly",
       "title": "דוח סיכום חודש - לרו\"ח",
       "desc": "ריכוז עסקאות ואמצעי תשלום חודשי, כקובץ Excel מעוצב, על החודש שהסתיים.",
@@ -1136,42 +1177,6 @@
         ],
         "email": []
       }
-    },
-    {
-      "id": "rep-mqqd6qe2",
-      "title": "דוח מחיקת עובדים לא פעילים",
-      "desc": "רץ אחת לחודש. הופך עובדים שלא צברו שעות-עבודה בחודשיים האחרונים ללא-פעילים ב-Caspit, ושולח אקסל עם הרשימה לפי הניתוב והתזמון שמוגדרים כאן.",
-      "text": "",
-      "spec": "הדוח רץ אחת לחודש והופך עובדים שלא היה להם שעות עבודה בחודשיים האחרונים ללא פעילים במערכת. שולח ווטסאפ ומייל בהתאם לניתוב ולתזמון.",
-      "source": "caspit",
-      "format": "excel",
-      "script": "reports/rep-mqqd6qe2.py",
-      "inactiveMonths": 2,
-      "dryRun": false,
-      "sched": {
-        "type": "monthly-day",
-        "dayOfMonth": 1,
-        "hour": 8,
-        "minute": 0
-      },
-      "routing": {
-        "mode": "bot",
-        "botTarget": "owner"
-      },
-      "enabled": true,
-      "order": 7,
-      "delivery": {
-        "whatsapp": [
-          {
-            "type": "owner"
-          }
-        ],
-        "email": []
-      },
-      "skipEmployees": [
-        "עידן חממה",
-        "רועי חממה"
-      ]
     }
   ],
   "theme": {
