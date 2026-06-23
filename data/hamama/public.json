@@ -189,8 +189,6 @@
     "storeId": "315"
   },
   "paths": {
-    "empReport": "C:\\Users\\LENOVO\\emp report",
-    "whatsapp": "C:\\Users\\LENOVO\\whatsapp",
     "python": "C:\\Users\\LENOVO\\AppData\\Local\\Python\\bin\\python.exe"
   },
   "_meta": {
@@ -646,6 +644,20 @@
             "ref": "managers"
           }
         ],
+        "email": []
+      }
+    },
+    {
+      "id": "auto-1782195201544",
+      "kind": "manual",
+      "title": "עדכון מחיר/ברקוד לפריט",
+      "text": "",
+      "does": "מעדכן בכספיט מחיר קנייה (ללא מע\"מ) ומחיר מכירה, או ברקוד, לפריט קיים. חיפוש לפי שם או 5 ספרות ברקוד, בחירה, בחירת מה לעדכן (מחיר/ברקוד), ושמירה. שלב 2 בתת-תפריט 'מוצרים בכספיט' בבוט.",
+      "script": "reports/auto-1782195201544.py",
+      "enabled": true,
+      "order": 10,
+      "delivery": {
+        "whatsapp": [],
         "email": []
       }
     },
@@ -1124,6 +1136,38 @@
         ],
         "email": []
       }
+    },
+    {
+      "id": "rep-mqqd6qe2",
+      "title": "דוח מחיקת עובדים לא פעילים",
+      "desc": "רץ אחת לחודש. הופך עובדים שלא צברו שעות-עבודה בחודשיים האחרונים ללא-פעילים ב-Caspit, ושולח אקסל עם הרשימה לפי הניתוב והתזמון שמוגדרים כאן.",
+      "text": "",
+      "spec": "הדוח רץ אחת לחודש והופך עובדים שלא היה להם שעות עבודה בחודשיים האחרונים ללא פעילים במערכת. שולח ווטסאפ ומייל בהתאם לניתוב ולתזמון.",
+      "source": "caspit",
+      "format": "excel",
+      "script": "reports/rep-mqqd6qe2.py",
+      "inactiveMonths": 2,
+      "dryRun": false,
+      "sched": {
+        "type": "monthly-day",
+        "dayOfMonth": 1,
+        "hour": 8,
+        "minute": 0
+      },
+      "routing": {
+        "mode": "bot",
+        "botTarget": "owner"
+      },
+      "enabled": true,
+      "order": 9,
+      "delivery": {
+        "whatsapp": [
+          {
+            "type": "owner"
+          }
+        ],
+        "email": []
+      }
     }
   ],
   "theme": {
@@ -1163,7 +1207,7 @@
       "off": "#9aa0ab"
     }
   },
-  "configRefreshRequest": 1782154873956,
+  "configRefreshRequest": 1782204485539,
   "importerSuppliers": [
     "כרם",
     "אגמ"
@@ -1228,8 +1272,8 @@
     ],
     "mgmt": [
       {
-        "id": "new_product",
-        "label": "הקמת מוצר חדש",
+        "id": "caspit_products",
+        "label": "מוצרים בכספיט",
         "enabled": true,
         "order": 1,
         "access": "mgmt"
